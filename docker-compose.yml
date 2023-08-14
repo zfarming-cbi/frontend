@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  pqrs-frontend:
+    image: registry.gitlab.com/pqrs-ote/frontend:${VITE_APP_ENV}
+    container_name: pqrs-frontend
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - VITE_APP_TITLE=${VITE_APP_TITLE}
+        - VITE_SERVER_URL=${VITE_SERVER_URL}
+        - VITE_APP_ENV=${VITE_APP_ENV}
+    ports:
+      - 3000:80
+    networks:
+      - prqs-net
+
+networks:
+  prqs-net:
+    name: prqs-net
+  

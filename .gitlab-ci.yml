@@ -1,0 +1,63 @@
+stages:
+  - sast
+  - linter
+  - testing
+  - build
+  - deploy
+
+variables:
+  CONTAINER_IMAGE_NAME: "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest"
+  CONTAINER_BK_IMAGE_NAME: "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - node_modules/
+
+sast:
+  stage: sast
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
+linter:
+  stage: linter
+  image: node:16
+  except:
+    - production
+  before_script:
+    - yarn install
+  script:
+    - yarn run format
+
+testing:
+  stage: testing
+  image: node:16
+  before_script:
+    - yarn install
+  script:
+    - yarn run test:coverage
+
+build:
+  stage: build
+  only:
+    - staging
+    - production
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull --build-arg VITE_APP_TITLE="$VITE_APP_TITLE" --build-arg VITE_SERVER_URL="$VITE_SERVER_URL" --build-arg VITE_APP_ENV="$VITE_APP_ENV" -t $CONTAINER_IMAGE_NAME -t $CONTAINER_BK_IMAGE_NAME --no-cache .
+    - docker push $CONTAINER_IMAGE_NAME
+    - docker push $CONTAINER_BK_IMAGE_NAME
+    - docker logout
+
+deploy:
+  stage: deploy
+  only:
+    - staging
+    - production
+  script:
+    - echo "TODO, image $CI_REGISTRY_IMAGE in branch $CI_COMMIT_BRANCH, merge branch $CI_MERGE_REQUEST_TARGET_BRANCH_NAME."
+

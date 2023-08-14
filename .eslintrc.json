@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "standard-with-typescript",
+    "plugin:react/recommended",
+    "plugin:@typescripts-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [],
+  "parser": "@typescripts-eslint/parser ",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescripts-eslint", "prettier"],
+  "rules": {}
+}
