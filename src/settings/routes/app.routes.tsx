@@ -26,7 +26,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
   {
     path: ROUTE_PATH.Dashboard,
     element: <DashboardScreen />,
-    // loader: AuthenticationRouteLoader,
+    loader: AuthenticationRouteLoader,
     children: [
       {
         index: true,

@@ -4,5 +4,5 @@ export enum ROUTE_PATH {
   Dashboard = "/dashboard",
   Associate = "/dashboard/asociado",
   PQRS = "/dashboard/pqrs",
-  Assignments = "/dashboard/asignaciones",
+  Assignments = "/dashboard/Unidades ZFarmings",
 }

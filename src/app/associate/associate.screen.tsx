@@ -70,7 +70,7 @@ export const AssociateScreen = () => {
 
   return (
     <Grid container flex={1} flexDirection="column">
-      <Toolbar title="Asociados" buttons={toolbarButtons} />
+      <Toolbar title="Centros de Formacion" buttons={toolbarButtons} />
       <Grid
         sx={{ padding: 2, alignSelf: "center", justifyContent: "center" }}
         item

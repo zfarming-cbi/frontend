@@ -15,9 +15,9 @@ services:
     ports:
       - 3000:80
     networks:
-      - prqs-net
+      - zfarming-net
 
 networks:
-  prqs-net:
-    name: prqs-net
+  zfarming-net:
+    name: zfarming-net
   

@@ -44,21 +44,21 @@ export const DashboardScreen: FC = () => {
       },
       {
         icon: <PeopleIcon />,
-        text: "Asociados",
+        text: "Centros de Formacion",
         action() {
           navigate(ROUTE_PATH.Associate)
         },
       },
       {
         icon: <SupportAgentIcon />,
-        text: "PQRS/OTE",
+        text: "Galería Plantas",
         action() {
           navigate(ROUTE_PATH.PQRS)
         },
       },
       {
         icon: <EngineeringIcon />,
-        text: "Asignaciones",
+        text: "Unidades ZFarmings",
         action() {
           navigate(ROUTE_PATH.Assignments)
         },

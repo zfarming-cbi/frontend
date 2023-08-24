@@ -7,12 +7,11 @@ import { useFormik } from "formik"
 import { APP_THEME } from "../../settings/theme/theme"
 import * as Yup from "yup"
 import LOGO_FULL from "../../assets/placeholder.png"
-import { LOG_IN } from "../../settings/grahpql/queries/login.query"
-import { useLazyQuery } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
 import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import { blue, grey } from "@mui/material/colors"
+import { useLoginMutation } from "../../settings/api/endpoints/authentication"
 
 export const LoginScreen: FC = () => {
   const navigate = useNavigate()
@@ -26,42 +25,21 @@ export const LoginScreen: FC = () => {
     username: string
     password: string
   }>({
-    initialValues: {
-      username: "jhondoe@mail.com",
-      password: "jhon.doe",
-    },
-    // initialValues: { username: "", password: "" },
+    initialValues: { username: "", password: "" },
     validationSchema: SignInSchema,
-    onSubmit(values) {
-      const { username, password } = values
-      // doLogin({
-      //   variables: {
-      //     credential: {
-      //       username,
-      //       password,
-      //     },
-      //   },
-      // })
-      const saveIsSuccess = AuthenticationSaveHandler(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-      )
-      if (!saveIsSuccess) return
-
-      navigate(ROUTE_PATH.Dashboard, { replace: true })
+    async onSubmit(credentials) {
+      doLogin(credentials)
     },
   })
 
-  const [doLogin, { loading, data }] = useLazyQuery<{
-    login: { token: string; success: boolean; msg: string; code: string }
-  }>(LOG_IN)
+  const [doLogin, { data, isLoading, error }] = useLoginMutation()
 
   useEffect(() => {
-    const { login } = data ?? {}
-    if (!login ?? !login?.success) return
-
-    const saveIsSuccess = AuthenticationSaveHandler(login.token)
+    const { access_token } = data ?? {}
+    if (!access_token) return
+    const saveIsSuccess = AuthenticationSaveHandler(access_token)
+    console.log({ saveIsSuccess })
     if (!saveIsSuccess) return
-
     navigate(ROUTE_PATH.Dashboard, { replace: true })
   }, [data])
 
@@ -82,7 +60,7 @@ export const LoginScreen: FC = () => {
           elevation={3}
         >
           <Box paddingY={4}>
-            <img src={LOGO_FULL} width="90%" />
+            <img src={LOGO_FULL} width="90%" alt="Agricultura Cero" />
             <Box sx={{ paddingTop: 1, display: "none" }}>
               <Typography fontWeight="bold" fontSize={12} textAlign={"center"}>
                 AGRICULTURA CERO
@@ -101,7 +79,7 @@ export const LoginScreen: FC = () => {
               name="username"
               id="username"
               value={usernameInputValue}
-              disabled={loading}
+              disabled={isLoading}
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.username}
@@ -116,12 +94,12 @@ export const LoginScreen: FC = () => {
               name="password"
               id="password"
               value={passwordInputValue}
-              disabled={loading}
+              disabled={isLoading}
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.password}
             />
-            {data?.login.success === false && (
+            {!!error && (
               <Alert
                 sx={{
                   marginTop: 1,
@@ -132,12 +110,13 @@ export const LoginScreen: FC = () => {
                 severity="error"
                 variant="filled"
               >
-                {data.login.msg} ({data.login.code})
+                lo sentimos en este momento no podemos validar la información
+                {/* {JSON.stringify(error)} */}
               </Alert>
             )}
             <Box sx={{ height: 8, width: 1 }} />
             <LoadingButton
-              loading={loading}
+              loading={isLoading}
               loadingPosition="start"
               startIcon={<UnLockIcon />}
               fullWidth
