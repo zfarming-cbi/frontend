@@ -6,6 +6,8 @@ import { Add as AddIcon, Search as FilterIcon } from "@mui/icons-material"
 import { useGetFarmsQuery } from '../../settings/api/endpoints/farm';
 import { useAppDispatch } from '../../settings/redux/hooks';
 import { showFormCreateFarm } from '../../settings/redux/dialogs.slice';
+import { DateTime } from 'luxon';
+import LOGO_FULL from "../../assets/logo-2.png"
 
 export interface FarmListRow {
   id?: string | number
@@ -40,32 +42,36 @@ export const FarmScreen: React.FC = () => {
   return (
     <Grid container flex={1} flexDirection="column">
       <Toolbar title="Gestión de granjas" buttons={toolbarButtons} />
-      <Grid item container>
+      <Grid item container gap={2} padding={2}>
         {farms.map((farm, index) => (
-          <Card
-            sx={{
-              marginX: 2,
-              marginY: 2,
-              height: 250,
-              width: 250,
-            }}>
-            <CardActionArea>
-              <CardContent>
-                <Box sx={{ height: "125px" }}>
-                  <Typography fontWeight="ligth" fontSize={20} textAlign={"center"} color={"grey"}>
+          <Card sx={{ width: 250 }}>
+            <CardActionArea sx={{ display: "flex", flex: 1, justifyContent: "center", flexDirection: "column" }}>
+              <CardMedia
+                component="img"
+                image={LOGO_FULL}
+                alt="plant"
+                height={131}
+                width={132}
+                sx={{ objectFit: "contain", alignSelf: "center" }}
+              />
+              <CardContent sx={{ display: "flex", flex: 1, width: "100%" }}>
+                <Box sx={{ display: "flex", flex: 1, height: "125px", width: "100%", flexDirection: "column" }}>
+                  <Typography fontWeight="ligth" fontSize={20} textAlign={"center"} color={"black"}>
                     {farm.name}
                   </Typography>
-                </Box>
-                <Box sx={{ height: "125px" }}>
-                  <Typography fontWeight="ligth" fontSize={20} textAlign={"center"} color={"grey"}>
-                    {farm.description}
-                  </Typography>
-                  <Typography fontWeight="ligth" fontSize={10} textAlign={"center"} color={"grey"}>
-                    Fecha inicial : {farm.start_crop_dt}
-                  </Typography>
-                  <Typography fontWeight="ligth" fontSize={10} textAlign={"center"} color={"grey"}>
-                    Fecha final : {farm.end_crop_dt}
-                  </Typography>
+                  <Box marginY={2} width={"100%"}>
+                    <Typography fontWeight="ligth" fontSize={15} textAlign={"left"} color={"grey"}>
+                      {farm.description}
+                    </Typography>
+                  </Box>
+                  <Box marginBottom={1} sx={{ flexDirection: "column", display: "flex", width: "100%" }}>
+                    <Typography fontWeight="ligth" fontSize={10} color={"grey"}>
+                      Siembra : {DateTime.fromISO(farm.start_crop_dt).toLocaleString(DateTime.DATETIME_MED)}
+                    </Typography>
+                    <Typography fontWeight="ligth" fontSize={10} color={"grey"}>
+                      Cosecha : {DateTime.fromISO(farm.end_crop_dt).toLocaleString(DateTime.DATETIME_MED)}
+                    </Typography>
+                  </Box>
                 </Box>
               </CardContent>
             </CardActionArea>

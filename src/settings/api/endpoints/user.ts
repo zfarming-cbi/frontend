@@ -12,6 +12,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
+      providesTags: ["User"],
     }),
     createUsers: build.mutation<UserDTO, UserDTO>({
       query: (body) => ({
@@ -23,6 +24,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
+      invalidatesTags: ["User"],
     }),
   }),
   overrideExisting: false,

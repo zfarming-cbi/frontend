@@ -33,6 +33,9 @@ export const SignupScreen: FC = () => {
             company: "", nit: ""
         },
         validationSchema: SignUpSchema,
+        validateOnMount: false,
+        validateOnBlur: true,
+        validateOnChange: false,
         async onSubmit(credentials) {
             doSignup(credentials)
         },

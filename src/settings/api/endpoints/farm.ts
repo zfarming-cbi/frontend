@@ -13,6 +13,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
+      providesTags: ["Farm"],
     }),
     createFarm: build.mutation<FarmDTO, FarmDTO>({
       query: (body) => ({
@@ -24,6 +25,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
+      invalidatesTags: ["Farm"],
     }),
   }),
   overrideExisting: false,

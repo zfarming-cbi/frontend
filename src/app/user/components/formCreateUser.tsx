@@ -28,6 +28,9 @@ export const FormCreateUser: FC<Props> = (props) => {
     initialValues: {
       username: "", password: "", firstname: "", lastname: "",
     },
+    validateOnMount: false,
+    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema: FormCreateUserSchema,
     async onSubmit(credentials) {
       doCreateUsers(credentials)

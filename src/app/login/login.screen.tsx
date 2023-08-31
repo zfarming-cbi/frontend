@@ -24,6 +24,9 @@ export const LoginScreen: FC = () => {
     password: string
   }>({
     initialValues: { username: "", password: "" },
+    validateOnMount: false,
+    validateOnBlur: true,
+    validateOnChange: false,
     validationSchema: SignInSchema,
     async onSubmit(credentials) {
       doLogin(credentials)

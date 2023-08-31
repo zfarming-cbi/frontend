@@ -5,6 +5,7 @@ import * as Yup from "yup"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { closeFormCreateFarm, closeFormCreateUser } from "../../../settings/redux/dialogs.slice"
 import { useCreateFarmMutation } from "../../../settings/api/endpoints/farm"
+import { DateTime } from "luxon"
 
 interface Props {
     onSave(): void
@@ -26,7 +27,7 @@ export const FormCreateFarm: FC<Props> = (props) => {
         end_crop_dt: string
     }>({
         initialValues: {
-            name: "", description: "", start_crop_dt: "", end_crop_dt: ""
+            name: "", description: "", start_crop_dt: new Date().toString(), end_crop_dt: new Date().toString()
         },
         validationSchema: FormCreateFarmSchema,
         async onSubmit(credentials) {
