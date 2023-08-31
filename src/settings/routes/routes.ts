@@ -1,8 +1,9 @@
 export enum ROUTE_PATH {
   Root = "/",
   Login = "/login",
+  Singup = "/signup",
   Dashboard = "/dashboard",
-  Associate = "/dashboard/asociado",
+  User = "/dashboard/user",
   PQRS = "/dashboard/pqrs",
   Assignments = "/dashboard/Unidades ZFarmings",
 }

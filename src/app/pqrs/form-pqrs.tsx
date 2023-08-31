@@ -20,7 +20,7 @@ interface Props {
   onCancel(): void
 }
 
-interface PQRS {}
+interface PQRS { }
 
 export const FormPQRS: React.FC<Props> = (props) => {
   const { onSave, onCancel } = props
@@ -46,7 +46,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
 
   const [pqrsForm, setPQRSForm] = useState<PQRS>()
 
-  const onSavePQRS = () => {}
+  const onSavePQRS = () => { }
 
   return (
     <Grid
@@ -212,7 +212,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
       </Grid>
 
       <Grid item>
-      <TextField
+        <TextField
           fullWidth
           label="Descripción del reporte"
           name="description"
@@ -222,7 +222,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
           minRows={4}
           maxRows={10}
           defaultValue=""
-          />
+        />
       </Grid>
 
       <DialogActions >

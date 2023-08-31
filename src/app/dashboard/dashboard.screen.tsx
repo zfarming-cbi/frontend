@@ -18,8 +18,8 @@ import DrawerMenu, {
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
-  Man as PeopleIcon,
-  Engineering as EngineeringIcon,
+  People as PeopleIcon,
+  Agriculture as AgricultureIcon,
   SupportAgent as SupportAgentIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material"
@@ -27,10 +27,14 @@ import {
 import { FormPQRS } from "../pqrs/form-pqrs"
 import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
+  closeFormCreateFarm,
+  closeFormCreateUser,
   closeFormPQRS,
   selectorDialogs,
 } from "../../settings/redux/dialogs.slice"
 import { Dialog } from "../../share/components/dialog"
+import { FormCreateUser } from "../user/components/formCreateUser"
+import { FormCreateFarm } from "../assignments/components/formCreateFarm"
 
 export const DashboardScreen: FC = () => {
   const menuItems: DrawerMenuProps["items"] = [
@@ -44,9 +48,16 @@ export const DashboardScreen: FC = () => {
       },
       {
         icon: <PeopleIcon />,
-        text: "Centros de Formacion",
+        text: "Usuarios",
         action() {
-          navigate(ROUTE_PATH.Associate)
+          navigate(ROUTE_PATH.User)
+        },
+      },
+      {
+        icon: <AgricultureIcon />,
+        text: "Unidades ZFarmings",
+        action() {
+          navigate(ROUTE_PATH.Assignments)
         },
       },
       {
@@ -56,18 +67,11 @@ export const DashboardScreen: FC = () => {
           navigate(ROUTE_PATH.PQRS)
         },
       },
-      {
-        icon: <EngineeringIcon />,
-        text: "Unidades ZFarmings",
-        action() {
-          navigate(ROUTE_PATH.Assignments)
-        },
-      },
     ],
   ]
 
   const navigate = useNavigate()
-  const { formPQRS } = useAppSelector(selectorDialogs)
+  const { formPQRS, formCreateUser, formCreateFarm } = useAppSelector(selectorDialogs)
   const dispatch = useAppDispatch()
 
   const onClickLogoutButton = () => {
@@ -89,7 +93,17 @@ export const DashboardScreen: FC = () => {
     dispatch(closeFormPQRS())
   }
 
-  const onSavePQRSForm = () => {}
+  const onCloseFormCreateUser = () => {
+    dispatch(closeFormCreateUser())
+  }
+
+  const onCloseFormCreateFarm = () => {
+    dispatch(closeFormCreateFarm())
+  }
+
+  const onSavePQRSForm = () => { }
+  const onSaveFormCreateUser = () => { }
+  const onSaveFormCreateFarm = () => { }
 
   return (
     <>
@@ -135,9 +149,27 @@ export const DashboardScreen: FC = () => {
         title={"Registro de PQRS"}
         onClose={onClosePQRSForm}
         visible={formPQRS.visible}
-        // visible={true}
+      // visible={true}
       >
         <FormPQRS onCancel={onClosePQRSForm} onSave={onSavePQRSForm} />
+      </Dialog>
+
+      <Dialog
+        title={"Registro usuarios"}
+        onClose={onCloseFormCreateUser}
+        visible={formCreateUser.visible}
+      // visible={true}
+      >
+        <FormCreateUser onCancel={onCloseFormCreateUser} onSave={onSaveFormCreateUser} />
+      </Dialog>
+
+      <Dialog
+        title={"Registro de granjas"}
+        onClose={onCloseFormCreateFarm}
+        visible={formCreateFarm.visible}
+      // visible={true}
+      >
+        <FormCreateFarm onCancel={onCloseFormCreateFarm} onSave={onSaveFormCreateFarm} />
       </Dialog>
     </>
   )

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "./store"
 
 interface DialogsState {
-  formAssociate: {
+  formCreateUser: {
     visible: boolean
     data?: any
   }
@@ -10,14 +10,14 @@ interface DialogsState {
     visible: boolean
     data?: any
   }
-  formAssigment: {
+  formCreateFarm: {
     visible: boolean
     data?: any
   }
 }
 
 const initialState: DialogsState = {
-  formAssociate: {
+  formCreateUser: {
     visible: false,
     data: undefined,
   },
@@ -25,7 +25,7 @@ const initialState: DialogsState = {
     visible: false,
     data: undefined,
   },
-  formAssigment: {
+  formCreateFarm: {
     visible: false,
     data: undefined,
   },
@@ -46,8 +46,37 @@ export const dialogsSlice = createSlice({
       state.formPQRS.visible = false
       state.formPQRS.data = undefined
     },
+    showFormCreateUser: (
+      state,
+      action: PayloadAction<DialogsState["formCreateUser"]>
+    ) => {
+      state.formCreateUser.visible = action.payload.visible
+      state.formCreateUser.data = action.payload.data
+    },
+    closeFormCreateUser: (state) => {
+      state.formCreateUser.visible = false
+      state.formCreateUser.data = undefined
+    },
+    showFormCreateFarm: (
+      state,
+      action: PayloadAction<DialogsState["formCreateFarm"]>
+    ) => {
+      state.formCreateFarm.visible = action.payload.visible
+      state.formCreateFarm.data = action.payload.data
+    },
+    closeFormCreateFarm: (state) => {
+      state.formCreateFarm.visible = false
+      state.formCreateFarm.data = undefined
+    },
   },
 })
 
-export const { showFormToAddPQRS, closeFormPQRS } = dialogsSlice.actions
+export const {
+  showFormToAddPQRS,
+  closeFormPQRS,
+  showFormCreateUser,
+  closeFormCreateUser,
+  showFormCreateFarm,
+  closeFormCreateFarm,
+} = dialogsSlice.actions
 export const selectorDialogs = (state: RootState) => state.dialogs

@@ -1,5 +1,5 @@
 import { createBrowserRouter, redirect, RouteObject } from "react-router-dom"
-import { AssociateScreen } from "../../app/associate/associate.screen"
+import { UserScreen } from "../../app/user/user.screen"
 import { DashboardScreen } from "../../app/dashboard/dashboard.screen"
 import { LoginScreen } from "../../app/login/login.screen"
 import { RootScreen } from "../../app/root/root.screen"
@@ -10,7 +10,8 @@ import {
 import { ROUTE_PATH } from "./routes"
 import { HomeScreen } from "../../app/home/home.screen"
 import { PQRSScreen } from "../../app/pqrs/pqrs.screen"
-import { AssignmentsScreen } from "../../app/assignments/assignments.screen"
+import { FarmScreen } from "../../app/assignments/farm.screen"
+import { SignupScreen } from "../../app/signup/signup.screen"
 
 export const ROUTER_OPTIONS: RouteObject[] = [
   {
@@ -24,6 +25,11 @@ export const ROUTER_OPTIONS: RouteObject[] = [
     loader: AuthenticationLessRouteLoader,
   },
   {
+    path: ROUTE_PATH.Singup,
+    element: <SignupScreen />,
+    loader: AuthenticationLessRouteLoader,
+  },
+  {
     path: ROUTE_PATH.Dashboard,
     element: <DashboardScreen />,
     loader: AuthenticationRouteLoader,
@@ -33,8 +39,8 @@ export const ROUTER_OPTIONS: RouteObject[] = [
         element: <HomeScreen />,
       },
       {
-        path: ROUTE_PATH.Associate,
-        element: <AssociateScreen />,
+        path: ROUTE_PATH.User,
+        element: <UserScreen />,
       },
       {
         path: ROUTE_PATH.PQRS,
@@ -42,7 +48,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
       },
       {
         path: ROUTE_PATH.Assignments,
-        element: <AssignmentsScreen />,
+        element: <FarmScreen />,
       },
     ],
   },

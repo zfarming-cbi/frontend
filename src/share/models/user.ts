@@ -1,6 +1,6 @@
-export interface User {
-  name: string
+export interface UserDTO {
+  id?: string
+  firstname: string
+  lastname: string
   username: string
-  email: string
-  avatar: string
 }

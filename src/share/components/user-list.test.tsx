@@ -1,6 +1,5 @@
 import { screen, render } from "@testing-library/react"
 import { describe, it } from "vitest"
-import { GET_USERS } from "../../settings/grahpql/queries/queries"
 import { User } from "../models/user"
 import { UserList } from "./user-list"
 

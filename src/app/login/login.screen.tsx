@@ -4,13 +4,11 @@ import { Alert, Grid, Paper, TextField, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Box } from "@mui/system"
 import { useFormik } from "formik"
-import { APP_THEME } from "../../settings/theme/theme"
 import * as Yup from "yup"
 import LOGO_FULL from "../../assets/placeholder.png"
 import { useNavigate } from "react-router-dom"
 import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
 import { ROUTE_PATH } from "../../settings/routes/routes"
-import { blue, grey } from "@mui/material/colors"
 import { useLoginMutation } from "../../settings/api/endpoints/authentication"
 
 export const LoginScreen: FC = () => {
@@ -126,6 +124,10 @@ export const LoginScreen: FC = () => {
             >
               Iniciar sesión
             </LoadingButton>
+            <Typography fontSize={12} textAlign={"center"} padding={1}>
+              ¿No tienes una cuenta?
+              <a href="/signup"> Registrate aqui</a>
+            </Typography>
           </Box>
           <Box paddingTop={4} paddingBottom={2}>
             <Typography fontSize={8} textAlign={"center"} padding={1}>

@@ -1,5 +1,5 @@
 export interface SignupDTO {
-  name: string
+  company: string
   nit: string
   firstname: string
   lastname: string
