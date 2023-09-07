@@ -5,7 +5,7 @@ const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query<UserDTO[], void>({
       query: () => ({
-        url: "/users",
+        url: "/user/all",
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -14,9 +14,9 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
-    createUsers: build.mutation<UserDTO, UserDTO>({
+    createUser: build.mutation<UserDTO, UserDTO>({
       query: (body) => ({
-        url: "/users",
+        url: "/user",
         method: "POST",
         body,
         headers: {
@@ -26,8 +26,36 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    updateUser: build.mutation<UserDTO, UserDTO>({
+      query: (body) => ({
+        url: "/user",
+        method: "PATCH",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+    getUser: build.query<UserDTO, void>({
+      query: (body) => ({
+        url: "/user",
+        method: "GET",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetUsersQuery, useCreateUsersMutation } = extendedApi
+export const {
+  useGetUsersQuery,
+  useGetUserQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} = extendedApi

@@ -1,33 +1,32 @@
 import { API } from ".."
-import { FarmDTO } from "../../../share/models/farm"
+import { CompanyDTO } from "../../../share/models/company"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getFarms: build.query<FarmDTO[], void>({
-      query: () => ({
-        url: "/farms",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-      }),
-      providesTags: ["Farm"],
-    }),
-    createFarm: build.mutation<FarmDTO, FarmDTO>({
+    updateCompany: build.mutation<CompanyDTO, CompanyDTO>({
       query: (body) => ({
-        url: "/farms",
-        method: "POST",
+        url: "/company",
+        method: "PATCH",
         body,
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
         },
       }),
-      invalidatesTags: ["Farm"],
+    }),
+    getCompany: build.query<CompanyDTO, void>({
+      query: (body) => ({
+        url: "/company",
+        method: "GET",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
     }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetFarmsQuery, useCreateFarmMutation } = extendedApi
+export const { useUpdateCompanyMutation, useGetCompanyQuery } = extendedApi

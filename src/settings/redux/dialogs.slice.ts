@@ -14,6 +14,18 @@ interface DialogsState {
     visible: boolean
     data?: any
   }
+  formCreateDevice: {
+    visible: boolean
+    data?: any
+  }
+  formCreatePlant: {
+    visible: boolean
+    data?: any
+  }
+  assignDevice: {
+    visible: boolean
+    data?: any
+  }
 }
 
 const initialState: DialogsState = {
@@ -26,6 +38,18 @@ const initialState: DialogsState = {
     data: undefined,
   },
   formCreateFarm: {
+    visible: false,
+    data: undefined,
+  },
+  formCreateDevice: {
+    visible: false,
+    data: undefined,
+  },
+  formCreatePlant: {
+    visible: false,
+    data: undefined,
+  },
+  assignDevice: {
     visible: false,
     data: undefined,
   },
@@ -68,6 +92,39 @@ export const dialogsSlice = createSlice({
       state.formCreateFarm.visible = false
       state.formCreateFarm.data = undefined
     },
+    showFormCreateDevice: (
+      state,
+      action: PayloadAction<DialogsState["formCreateDevice"]>
+    ) => {
+      state.formCreateDevice.visible = action.payload.visible
+      state.formCreateDevice.data = action.payload.data
+    },
+    closeFormCreateDevice: (state) => {
+      state.formCreateDevice.visible = false
+      state.formCreateDevice.data = undefined
+    },
+    showFormCreatePlant: (
+      state,
+      action: PayloadAction<DialogsState["formCreatePlant"]>
+    ) => {
+      state.formCreatePlant.visible = action.payload.visible
+      state.formCreatePlant.data = action.payload.data
+    },
+    closeFormCreatePlant: (state) => {
+      state.formCreatePlant.visible = false
+      state.formCreatePlant.data = undefined
+    },
+    showAsignDevice: (
+      state,
+      action: PayloadAction<DialogsState["assignDevice"]>
+    ) => {
+      state.assignDevice.visible = action.payload.visible
+      state.assignDevice.data = action.payload.data
+    },
+    closeAsignDevice: (state) => {
+      state.assignDevice.visible = false
+      state.assignDevice.data = undefined
+    },
   },
 })
 
@@ -78,5 +135,11 @@ export const {
   closeFormCreateUser,
   showFormCreateFarm,
   closeFormCreateFarm,
+  showFormCreateDevice,
+  closeFormCreateDevice,
+  showFormCreatePlant,
+  closeFormCreatePlant,
+  closeAsignDevice,
+  showAsignDevice,
 } = dialogsSlice.actions
 export const selectorDialogs = (state: RootState) => state.dialogs

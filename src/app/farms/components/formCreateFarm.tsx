@@ -2,49 +2,49 @@ import { FC } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useCreateUserMutation } from "../../../settings/api/endpoints/user"
 import { useAppDispatch } from "../../../settings/redux/hooks"
-import { closeFormCreateUser } from "../../../settings/redux/dialogs.slice"
+import { closeFormCreateFarm } from "../../../settings/redux/dialogs.slice"
+import { useCreateFarmMutation } from "../../../settings/api/endpoints/farm"
 
 interface Props {
   onSave(): void
   onCancel(): void
 }
 
-export const FormCreateUser: FC<Props> = (props) => {
+export const FormCreateFarm: FC<Props> = (props) => {
   const {
     handleChange,
     handleBlur,
     handleSubmit,
     errors,
-    values: { password: passwordInputValue, username: usernameInputValue,
-      firstname: firstnameInputValue, lastname: lastnameInputValue },
+    values: {
+      name: nameInputValue,
+      description: descriptionInputValue,
+      start_crop_dt: start_crop_dtInputValue,
+      end_crop_dt: end_crop_dtInputValue,
+    },
   } = useFormik<{
-    username: string
-    password: string
-    firstname: string
-    lastname: string
+    name: string
+    description: string
+    start_crop_dt: string
+    end_crop_dt: string
   }>({
     initialValues: {
-      username: "", password: "", firstname: "", lastname: "",
+      name: "",
+      description: "",
+      start_crop_dt: new Date().toString(),
+      end_crop_dt: new Date().toString(),
     },
-    validateOnMount: false,
-    validateOnBlur: true,
-    validateOnChange: false,
-    validationSchema: FormCreateUserSchema,
+    validationSchema: FormCreateFarmSchema,
     async onSubmit(credentials) {
-      doCreateUsers(credentials)
-      dispatch(
-        closeFormCreateUser()
-      )
+      doCreateFarm(credentials)
+      dispatch(closeFormCreateFarm())
     },
   })
 
   const dispatch = useAppDispatch()
 
-  const [doCreateUsers, { isLoading, error }] = useCreateUserMutation()
-
-  const onSaveUser = () => { }
+  const [doCreateFarm, { isLoading, error }] = useCreateFarmMutation()
 
   return (
     <Grid
@@ -58,61 +58,62 @@ export const FormCreateUser: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
-          label="Email"
-          variant="outlined"
-          name="username"
-          id="username"
-          value={usernameInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.username}
-        />
-      </Grid>
-      <Grid item xs>
-        <TextField
-          fullWidth
-          required
           label="Nombre"
           variant="outlined"
-          name="firstname"
-          id="firstname"
-          value={firstnameInputValue}
+          name="name"
+          id="name"
+          value={nameInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.firstname}
+          error={!!errors.name}
         />
       </Grid>
       <Grid item xs>
         <TextField
           fullWidth
           required
-          label="Apellido"
+          label="Descripción"
           variant="outlined"
-          name="lastname"
-          id="lastname"
-          value={lastnameInputValue}
+          name="description"
+          id="description"
+          value={descriptionInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.lastname}
+          error={!!errors.description}
+        />
+      </Grid>
+      <Grid item xs>
+        <TextField
+          fullWidth
+          label="Fecha inicial"
+          type="date"
+          required
+          variant="outlined"
+          name="start_crop_dt"
+          id="start_crop_dt"
+          value={start_crop_dtInputValue}
+          disabled={isLoading}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={!!errors.start_crop_dt}
         />
       </Grid>
       <Grid item xs>
         <TextField
           fullWidth
           required
-          type="password"
-          label="Contraseña"
+          label="Fecha final"
+          type="date"
           variant="outlined"
-          name="password"
-          id="password"
-          value={passwordInputValue}
+          name="end_crop_dt"
+          id="end_crop_dt"
+          value={end_crop_dtInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.password}
+          error={!!errors.end_crop_dt}
         />
       </Grid>
       {!!error && (
@@ -130,7 +131,7 @@ export const FormCreateUser: FC<Props> = (props) => {
           {/* {JSON.stringify(error)} */}
         </Alert>
       )}
-      <DialogActions >
+      <DialogActions>
         <Grid container item xs={12} justifyContent="end" marginTop={1}>
           <Button sx={{ marginInline: 1 }} type="submit">
             Guardar
@@ -141,21 +142,7 @@ export const FormCreateUser: FC<Props> = (props) => {
   )
 }
 
-const FormCreateUserSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El nombre de usuario no es valido."),
-  password: Yup.string()
-    .min(2)
-    .max(50)
-    .required("El password ingresado no es valido"),
-  firstname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El nombre no es valido."),
-  lastname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El apellido no es valido."),
+const FormCreateFarmSchema = Yup.object().shape({
+  name: Yup.string().min(3).max(50).required("El nombre no es valido."),
+  description: Yup.string().min(3).max(250).required("El nombre no es valido."),
 })

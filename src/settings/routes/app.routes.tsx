@@ -10,8 +10,13 @@ import {
 import { ROUTE_PATH } from "./routes"
 import { HomeScreen } from "../../app/home/home.screen"
 import { PQRSScreen } from "../../app/pqrs/pqrs.screen"
-import { FarmScreen } from "../../app/assignments/farm.screen"
+import { FarmScreen } from "../../app/farms/farm.screen"
 import { SignupScreen } from "../../app/signup/signup.screen"
+import { DeviceScreen } from "../../app/device/device.screen"
+import { ProfileScreen } from "../../app/profile/profile.screen"
+import { CompanyScreen } from "../../app/company/company.screen"
+import { DeviceByFarmScreen } from "../../app/farms/farm.device.screen"
+import { PlantScreen } from "../../app/plant/plant.screen"
 
 export const ROUTER_OPTIONS: RouteObject[] = [
   {
@@ -47,8 +52,28 @@ export const ROUTER_OPTIONS: RouteObject[] = [
         element: <PQRSScreen />,
       },
       {
-        path: ROUTE_PATH.Assignments,
+        path: ROUTE_PATH.Farms,
         element: <FarmScreen />,
+      },
+      {
+        path: ROUTE_PATH.DeviceByFarm,
+        element: <DeviceByFarmScreen />,
+      },
+      {
+        path: ROUTE_PATH.Device,
+        element: <DeviceScreen />,
+      },
+      {
+        path: ROUTE_PATH.Profile,
+        element: <ProfileScreen />,
+      },
+      {
+        path: ROUTE_PATH.Company,
+        element: <CompanyScreen />,
+      },
+      {
+        path: ROUTE_PATH.Plant,
+        element: <PlantScreen />,
       },
     ],
   },

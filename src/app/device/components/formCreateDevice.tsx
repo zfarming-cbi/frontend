@@ -2,49 +2,52 @@ import { FC } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useCreateUserMutation } from "../../../settings/api/endpoints/user"
 import { useAppDispatch } from "../../../settings/redux/hooks"
-import { closeFormCreateUser } from "../../../settings/redux/dialogs.slice"
+import { useCreateDevicesMutation } from "../../../settings/api/endpoints/device"
+import { closeFormCreateDevice } from "../../../settings/redux/dialogs.slice"
 
 interface Props {
   onSave(): void
   onCancel(): void
 }
 
-export const FormCreateUser: FC<Props> = (props) => {
+export const FormCreateDevice: FC<Props> = (props) => {
   const {
     handleChange,
     handleBlur,
     handleSubmit,
     errors,
-    values: { password: passwordInputValue, username: usernameInputValue,
-      firstname: firstnameInputValue, lastname: lastnameInputValue },
+    values: {
+      name: nameInputValue,
+      description: descriptionInputValue,
+      code: codeInputValue,
+    },
   } = useFormik<{
-    username: string
-    password: string
-    firstname: string
-    lastname: string
+    name: string
+    description: string
+    code: string
   }>({
     initialValues: {
-      username: "", password: "", firstname: "", lastname: "",
+      name: "",
+      description: "",
+      code: "",
     },
     validateOnMount: false,
     validateOnBlur: true,
     validateOnChange: false,
-    validationSchema: FormCreateUserSchema,
+    validationSchema: FormCreateDeviceSchema,
     async onSubmit(credentials) {
-      doCreateUsers(credentials)
-      dispatch(
-        closeFormCreateUser()
-      )
+      console.log("entro al metdodo")
+      doCreateDevices(credentials)
+      dispatch(closeFormCreateDevice())
     },
   })
 
   const dispatch = useAppDispatch()
 
-  const [doCreateUsers, { isLoading, error }] = useCreateUserMutation()
+  const [doCreateDevices, { isLoading, error }] = useCreateDevicesMutation()
 
-  const onSaveUser = () => { }
+  const onSaveDevice = () => {}
 
   return (
     <Grid
@@ -58,61 +61,45 @@ export const FormCreateUser: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
-          label="Email"
-          variant="outlined"
-          name="username"
-          id="username"
-          value={usernameInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.username}
-        />
-      </Grid>
-      <Grid item xs>
-        <TextField
-          fullWidth
-          required
           label="Nombre"
           variant="outlined"
-          name="firstname"
-          id="firstname"
-          value={firstnameInputValue}
+          name="name"
+          id="name"
+          value={nameInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.firstname}
+          error={!!errors.name}
         />
       </Grid>
       <Grid item xs>
         <TextField
           fullWidth
           required
-          label="Apellido"
+          label="Descripción"
           variant="outlined"
-          name="lastname"
-          id="lastname"
-          value={lastnameInputValue}
+          name="description"
+          id="description"
+          value={descriptionInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.lastname}
+          error={!!errors.description}
         />
       </Grid>
       <Grid item xs>
         <TextField
           fullWidth
           required
-          type="password"
-          label="Contraseña"
+          label="Código"
           variant="outlined"
-          name="password"
-          id="password"
-          value={passwordInputValue}
+          name="code"
+          id="code"
+          value={codeInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.password}
+          error={!!errors.code}
         />
       </Grid>
       {!!error && (
@@ -130,7 +117,7 @@ export const FormCreateUser: FC<Props> = (props) => {
           {/* {JSON.stringify(error)} */}
         </Alert>
       )}
-      <DialogActions >
+      <DialogActions>
         <Grid container item xs={12} justifyContent="end" marginTop={1}>
           <Button sx={{ marginInline: 1 }} type="submit">
             Guardar
@@ -141,21 +128,10 @@ export const FormCreateUser: FC<Props> = (props) => {
   )
 }
 
-const FormCreateUserSchema = Yup.object().shape({
-  username: Yup.string()
+const FormCreateDeviceSchema = Yup.object().shape({
+  name: Yup.string()
     .min(3)
     .max(50)
-    .required("El nombre de usuario no es valido."),
-  password: Yup.string()
-    .min(2)
-    .max(50)
-    .required("El password ingresado no es valido"),
-  firstname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El nombre no es valido."),
-  lastname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El apellido no es valido."),
+    .required("El nombre del dispositivo no es valido."),
+  code: Yup.string().min(3).max(20).required("El código no es válido."),
 })

@@ -2,49 +2,50 @@ import { FC } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useCreateUserMutation } from "../../../settings/api/endpoints/user"
 import { useAppDispatch } from "../../../settings/redux/hooks"
-import { closeFormCreateUser } from "../../../settings/redux/dialogs.slice"
+import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
+import { CheckBox } from "@mui/icons-material"
+import { closeFormCreatePlant } from "../../../settings/redux/dialogs.slice"
 
 interface Props {
   onSave(): void
   onCancel(): void
 }
 
-export const FormCreateUser: FC<Props> = (props) => {
+export const FormCreatePlant: FC<Props> = (props) => {
   const {
     handleChange,
     handleBlur,
     handleSubmit,
     errors,
-    values: { password: passwordInputValue, username: usernameInputValue,
-      firstname: firstnameInputValue, lastname: lastnameInputValue },
+    values: {
+      name: nameInputValue,
+      content: contentInputValue,
+      growing_time: growing_timeInputValue,
+      public: publicInputValue,
+    },
   } = useFormik<{
-    username: string
-    password: string
-    firstname: string
-    lastname: string
+    name: string
+    content: string
+    growing_time: string
+    public: boolean
   }>({
     initialValues: {
-      username: "", password: "", firstname: "", lastname: "",
+      name: "",
+      content: "",
+      growing_time: new Date().toString(),
+      public: false,
     },
-    validateOnMount: false,
-    validateOnBlur: true,
-    validateOnChange: false,
-    validationSchema: FormCreateUserSchema,
+    validationSchema: FormCreatePlantSchema,
     async onSubmit(credentials) {
-      doCreateUsers(credentials)
-      dispatch(
-        closeFormCreateUser()
-      )
+      doCreatePlant(credentials)
+      dispatch(closeFormCreatePlant())
     },
   })
 
   const dispatch = useAppDispatch()
 
-  const [doCreateUsers, { isLoading, error }] = useCreateUserMutation()
-
-  const onSaveUser = () => { }
+  const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
 
   return (
     <Grid
@@ -58,62 +59,62 @@ export const FormCreateUser: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
-          label="Email"
-          variant="outlined"
-          name="username"
-          id="username"
-          value={usernameInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.username}
-        />
-      </Grid>
-      <Grid item xs>
-        <TextField
-          fullWidth
-          required
           label="Nombre"
           variant="outlined"
-          name="firstname"
-          id="firstname"
-          value={firstnameInputValue}
+          name="name"
+          id="name"
+          value={nameInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.firstname}
+          error={!!errors.name}
         />
       </Grid>
       <Grid item xs>
         <TextField
           fullWidth
           required
-          label="Apellido"
+          label="Contenido"
           variant="outlined"
-          name="lastname"
-          id="lastname"
-          value={lastnameInputValue}
+          name="content"
+          id="content"
+          value={contentInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.lastname}
+          error={!!errors.content}
         />
       </Grid>
       <Grid item xs>
         <TextField
           fullWidth
+          label="Fecha de siembra"
+          type="date"
           required
-          type="password"
-          label="Contraseña"
           variant="outlined"
-          name="password"
-          id="password"
-          value={passwordInputValue}
+          name="growing_time"
+          id="growing_time"
+          value={growing_timeInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.password}
+          error={!!errors.growing_time}
         />
+      </Grid>
+      <Grid item xs>
+        <CheckBox></CheckBox>
+        {/* <CheckBox
+          required
+          label="Publico"
+          variant="outlined"
+          name="public"
+          id="public"
+          value={publicInputValue}
+          disabled={isLoading}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={!!errors.publicInputValue}
+        ></CheckBox> */}
       </Grid>
       {!!error && (
         <Alert
@@ -130,7 +131,7 @@ export const FormCreateUser: FC<Props> = (props) => {
           {/* {JSON.stringify(error)} */}
         </Alert>
       )}
-      <DialogActions >
+      <DialogActions>
         <Grid container item xs={12} justifyContent="end" marginTop={1}>
           <Button sx={{ marginInline: 1 }} type="submit">
             Guardar
@@ -141,21 +142,7 @@ export const FormCreateUser: FC<Props> = (props) => {
   )
 }
 
-const FormCreateUserSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El nombre de usuario no es valido."),
-  password: Yup.string()
-    .min(2)
-    .max(50)
-    .required("El password ingresado no es valido"),
-  firstname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El nombre no es valido."),
-  lastname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El apellido no es valido."),
+const FormCreatePlantSchema = Yup.object().shape({
+  name: Yup.string().min(3).max(50).required("El nombre no es valido."),
+  content: Yup.string().min(3).max(250).required("El contenido no es valido."),
 })

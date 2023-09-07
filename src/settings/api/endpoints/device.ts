@@ -1,22 +1,22 @@
 import { API } from ".."
-import { FarmDTO } from "../../../share/models/farm"
+import { DeviceDTO, DeviceInputDTO } from "../../../share/models/device"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getFarms: build.query<FarmDTO[], void>({
-      query: () => ({
-        url: "/farms",
+    getDevices: build.query<DeviceDTO[], DeviceInputDTO>({
+      query: ({ farmid }) => ({
+        url: `/device/all/${farmid}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
         },
       }),
-      providesTags: ["Farm"],
+      providesTags: ["Device"],
     }),
-    createFarm: build.mutation<FarmDTO, FarmDTO>({
+    createDevices: build.mutation<DeviceDTO, DeviceDTO>({
       query: (body) => ({
-        url: "/farms",
+        url: "/device",
         method: "POST",
         body,
         headers: {
@@ -24,10 +24,10 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
-      invalidatesTags: ["Farm"],
+      invalidatesTags: ["Device"],
     }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetFarmsQuery, useCreateFarmMutation } = extendedApi
+export const { useGetDevicesQuery, useCreateDevicesMutation } = extendedApi

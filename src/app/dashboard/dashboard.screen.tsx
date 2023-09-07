@@ -22,19 +22,29 @@ import {
   Agriculture as AgricultureIcon,
   SupportAgent as SupportAgentIcon,
   Logout as LogoutIcon,
+  Devices as DeviceIcon,
+  AccountCircle as AccountCircleIcon,
+  Business as BusinessIcon,
+  Yard as PlantIcon,
 } from "@mui/icons-material"
 
 import { FormPQRS } from "../pqrs/form-pqrs"
 import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
+  closeFormCreateDevice,
   closeFormCreateFarm,
+  closeFormCreatePlant,
   closeFormCreateUser,
   closeFormPQRS,
   selectorDialogs,
+  closeAsignDevice,
 } from "../../settings/redux/dialogs.slice"
 import { Dialog } from "../../share/components/dialog"
 import { FormCreateUser } from "../user/components/formCreateUser"
-import { FormCreateFarm } from "../assignments/components/formCreateFarm"
+import { FormCreateFarm } from "../farms/components/formCreateFarm"
+import { FormCreateDevice } from "../device/components/formCreateDevice"
+import { FormCreatePlant } from "../plant/components/formCreatePlant"
+import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
 
 export const DashboardScreen: FC = () => {
   const menuItems: DrawerMenuProps["items"] = [
@@ -57,7 +67,7 @@ export const DashboardScreen: FC = () => {
         icon: <AgricultureIcon />,
         text: "Unidades ZFarmings",
         action() {
-          navigate(ROUTE_PATH.Assignments)
+          navigate(ROUTE_PATH.Farms)
         },
       },
       {
@@ -67,11 +77,46 @@ export const DashboardScreen: FC = () => {
           navigate(ROUTE_PATH.PQRS)
         },
       },
+      {
+        icon: <DeviceIcon />,
+        text: "Dispositivos",
+        action() {
+          navigate(ROUTE_PATH.Device)
+        },
+      },
+      {
+        icon: <AccountCircleIcon />,
+        text: "Perfil de usuario",
+        action() {
+          navigate(ROUTE_PATH.Profile)
+        },
+      },
+      {
+        icon: <BusinessIcon />,
+        text: "Empresa",
+        action() {
+          navigate(ROUTE_PATH.Company)
+        },
+      },
+      {
+        icon: <PlantIcon />,
+        text: "Plantas",
+        action() {
+          navigate(ROUTE_PATH.Plant)
+        },
+      },
     ],
   ]
 
   const navigate = useNavigate()
-  const { formPQRS, formCreateUser, formCreateFarm } = useAppSelector(selectorDialogs)
+  const {
+    formPQRS,
+    formCreateUser,
+    formCreateFarm,
+    formCreateDevice,
+    formCreatePlant,
+    assignDevice,
+  } = useAppSelector(selectorDialogs)
   const dispatch = useAppDispatch()
 
   const onClickLogoutButton = () => {
@@ -101,9 +146,24 @@ export const DashboardScreen: FC = () => {
     dispatch(closeFormCreateFarm())
   }
 
-  const onSavePQRSForm = () => { }
-  const onSaveFormCreateUser = () => { }
-  const onSaveFormCreateFarm = () => { }
+  const onCloseFormCreateDevice = () => {
+    dispatch(closeFormCreateDevice())
+  }
+
+  const onCloseFormCreatePlant = () => {
+    dispatch(closeFormCreatePlant())
+  }
+
+  const onCloseAsignDevice = () => {
+    dispatch(closeAsignDevice())
+  }
+
+  const onSavePQRSForm = () => {}
+  const onSaveFormCreateUser = () => {}
+  const onSaveFormCreateFarm = () => {}
+  const onSaveFormCreateDevice = () => {}
+  const onSaveFormCreatePlant = () => {}
+  const onSaveAsignDevice = () => {}
 
   return (
     <>
@@ -149,7 +209,7 @@ export const DashboardScreen: FC = () => {
         title={"Registro de PQRS"}
         onClose={onClosePQRSForm}
         visible={formPQRS.visible}
-      // visible={true}
+        // visible={true}
       >
         <FormPQRS onCancel={onClosePQRSForm} onSave={onSavePQRSForm} />
       </Dialog>
@@ -158,18 +218,55 @@ export const DashboardScreen: FC = () => {
         title={"Registro usuarios"}
         onClose={onCloseFormCreateUser}
         visible={formCreateUser.visible}
-      // visible={true}
       >
-        <FormCreateUser onCancel={onCloseFormCreateUser} onSave={onSaveFormCreateUser} />
+        <FormCreateUser
+          onCancel={onCloseFormCreateUser}
+          onSave={onSaveFormCreateUser}
+        />
       </Dialog>
 
       <Dialog
         title={"Registro de granjas"}
         onClose={onCloseFormCreateFarm}
         visible={formCreateFarm.visible}
-      // visible={true}
       >
-        <FormCreateFarm onCancel={onCloseFormCreateFarm} onSave={onSaveFormCreateFarm} />
+        <FormCreateFarm
+          onCancel={onCloseFormCreateFarm}
+          onSave={onSaveFormCreateFarm}
+        />
+      </Dialog>
+
+      <Dialog
+        title={"Registro de dispositivos"}
+        onClose={onCloseFormCreateDevice}
+        visible={formCreateDevice.visible}
+      >
+        <FormCreateDevice
+          onCancel={onCloseFormCreateDevice}
+          onSave={onSaveFormCreateDevice}
+        />
+      </Dialog>
+
+      <Dialog
+        title={"Registro de plantas"}
+        onClose={onCloseFormCreatePlant}
+        visible={formCreatePlant.visible}
+      >
+        <FormCreatePlant
+          onCancel={onCloseFormCreatePlant}
+          onSave={onSaveFormCreatePlant}
+        />
+      </Dialog>
+
+      <Dialog
+        title={"Asignar dispositivos"}
+        onClose={onCloseAsignDevice}
+        visible={assignDevice.visible}
+      >
+        <AsigmentDevice
+          onCancel={onCloseAsignDevice}
+          onSave={onSaveAsignDevice}
+        />
       </Dialog>
     </>
   )
