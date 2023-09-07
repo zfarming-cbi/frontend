@@ -9,6 +9,6 @@ export enum ROUTE_PATH {
   Device = "/dashboard/device",
   Profile = "/dashboard/profile",
   Company = "/dashboard/company",
-  DeviceByFarm = "/dashboard/farm/:id",
+  DeviceByFarm = "/dashboard/farm/:farmId",
   Plant = "/dashboard/plant",
 }

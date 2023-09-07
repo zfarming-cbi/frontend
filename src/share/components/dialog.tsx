@@ -12,7 +12,7 @@ interface Props extends PropsWithChildren {
   title: string
   visible: boolean
   onClose?(): void
-  onCancel?():void
+  onCancel?(): void
 }
 
 export const Dialog: FC<Props> = (props) => {
@@ -24,6 +24,7 @@ export const Dialog: FC<Props> = (props) => {
       onClose={onCancel}
       open={visible}
       fullWidth
+      maxWidth="lg"
     >
       <DialogTitle>
         <Typography variant="h5">{title}</Typography>

@@ -37,7 +37,6 @@ export const FormCreateDevice: FC<Props> = (props) => {
     validateOnChange: false,
     validationSchema: FormCreateDeviceSchema,
     async onSubmit(credentials) {
-      console.log("entro al metdodo")
       doCreateDevices(credentials)
       dispatch(closeFormCreateDevice())
     },

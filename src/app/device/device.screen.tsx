@@ -28,7 +28,7 @@ export const DeviceScreen = () => {
 
   const dispatch = useAppDispatch()
 
-  const { data, isLoading, error } = useGetDevicesQuery({ farmid: "" })
+  const { data, isLoading, error } = useGetDevicesQuery({ farmId: "" })
 
   const devices = React.useMemo(() => {
     return (

@@ -24,8 +24,8 @@ export interface DeviceByFarmListRow {
 }
 
 export const DeviceByFarmScreen: React.FC = () => {
-  const { farmid } = useParams()
-  const { data, isLoading, error } = useGetDevicesQuery({ farmid })
+  const { farmId } = useParams()
+  const { data, isLoading, error } = useGetDevicesQuery({ farmId })
 
   const toolbarButtons: ToolbarButton[] = [
     {

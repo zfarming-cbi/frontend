@@ -76,7 +76,7 @@ export const FarmScreen: React.FC = () => {
               onClick={() =>
                 navigate(
                   ROUTE_PATH.DeviceByFarm.replace(
-                    ":id",
+                    ":farmId",
                     farm.id?.toString() ?? ""
                   )
                 )

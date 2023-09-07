@@ -1,11 +1,15 @@
 import { API } from ".."
-import { DeviceDTO, DeviceInputDTO } from "../../../share/models/device"
+import {
+  DeviceDTO,
+  DeviceInputDTO,
+  UpdateDeviceDTO,
+} from "../../../share/models/device"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
     getDevices: build.query<DeviceDTO[], DeviceInputDTO>({
-      query: ({ farmid }) => ({
-        url: `/device/all/${farmid}`,
+      query: ({ farmId }) => ({
+        url: `/device/all/${farmId}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,8 +30,24 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["Device"],
     }),
+    updateDevice: build.mutation<DeviceDTO, UpdateDeviceDTO & { id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/device/${id}`,
+        method: "PATCH",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: ["Device"],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetDevicesQuery, useCreateDevicesMutation } = extendedApi
+export const {
+  useGetDevicesQuery,
+  useCreateDevicesMutation,
+  useUpdateDeviceMutation,
+} = extendedApi

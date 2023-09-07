@@ -6,5 +6,10 @@ export interface DeviceDTO {
 }
 
 export interface DeviceInputDTO {
-  farmid?: string
+  farmId?: string
+}
+
+export interface UpdateDeviceDTO {
+  farmId: string
+  plantId: string
 }
