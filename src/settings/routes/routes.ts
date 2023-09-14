@@ -12,4 +12,6 @@ export enum ROUTE_PATH {
   DeviceByFarm = "/dashboard/farm/:farmId",
   Plant = "/dashboard/plant",
   Galery = "/galery",
+  ForgotPassword = "/forgot-password",
+  RecoverPassword = "/recover-password/:uuid",
 }

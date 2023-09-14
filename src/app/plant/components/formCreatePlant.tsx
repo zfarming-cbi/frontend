@@ -54,7 +54,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
   const dispatch = useAppDispatch()
 
   const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
-  const [value, setValue] = React.useState("**Hello world!!!**")
+  const [value, setValue] = React.useState("")
 
   return (
     <Grid

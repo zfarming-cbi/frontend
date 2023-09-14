@@ -159,6 +159,9 @@ export const LoginScreen: FC = () => {
               Iniciar sesión
             </LoadingButton>
             <Typography fontSize={12} textAlign={"center"} padding={1}>
+              <a href="/forgot-password">¿Olvidaste tu contraseña? </a>
+            </Typography>
+            <Typography fontSize={12} textAlign={"center"} padding={1}>
               ¿No tienes una cuenta?
               <a href="/signup"> Registrate aqui</a>
             </Typography>

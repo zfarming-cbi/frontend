@@ -18,6 +18,8 @@ import { CompanyScreen } from "../../app/company/company.screen"
 import { DeviceByFarmScreen } from "../../app/farms/farm.device.screen"
 import { PlantScreen } from "../../app/plant/plant.screen"
 import { GaleryScreen } from "../../app/galery/galery.screen"
+import { ForgotPasswordScreen } from "../../app/forgot/forgot.screen"
+import { RecoverPasswordScreen } from "../../app/forgot/resetPassword.screen"
 
 export const ROUTER_OPTIONS: RouteObject[] = [
   {
@@ -38,6 +40,14 @@ export const ROUTER_OPTIONS: RouteObject[] = [
   {
     path: ROUTE_PATH.Galery,
     element: <GaleryScreen />,
+  },
+  {
+    path: ROUTE_PATH.ForgotPassword,
+    element: <ForgotPasswordScreen />,
+  },
+  {
+    path: ROUTE_PATH.RecoverPassword,
+    element: <RecoverPasswordScreen />,
   },
   {
     path: ROUTE_PATH.Dashboard,
