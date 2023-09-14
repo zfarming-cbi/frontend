@@ -2,20 +2,27 @@ import * as React from "react"
 import Grid from "@mui/material/Grid"
 import {
   Box,
+  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
   IconButton,
+  TextField,
   Toolbar,
   Typography,
 } from "@mui/material"
-import LOGO_FULL from "../../assets/logo-2.png"
-import { AppBar } from "../dashboard/components/AppBar"
-import { Comment, Login, ThumbUp } from "@mui/icons-material"
+import {
+  Comment,
+  FirstPage,
+  LastPage,
+  Pageview,
+  Search,
+  ThumbUp,
+} from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
+import LOGO_FULL from "../../assets/placeholder.png"
 
 export const GaleryScreen: React.FC = () => {
   const navigate = useNavigate()
@@ -103,26 +110,41 @@ export const GaleryScreen: React.FC = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Grid item paddingBottom={4} xs={12}>
-        <AppBar position="fixed">
-          <Toolbar variant="dense">
-            <Typography variant="h6" noWrap component="div" align="center">
-              Galeria de plantas
-            </Typography>
-            <Box sx={{ flex: 1 }} />
-            <Typography
-              fontWeight="ligth"
-              fontSize={15}
-              textAlign={"center"}
-              color={"white"}
-            >
-              Iniciar sesión
-            </Typography>
-            <IconButton onClick={() => navigate(ROUTE_PATH.Login)}>
-              <Login sx={{ color: "white" }} />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+      <Grid item xs={12}>
+        <Grid container item xs={12} justifyContent={"end"}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(ROUTE_PATH.Login)}
+          >
+            Iniciar sesión
+          </Button>
+        </Grid>
+        <Grid container item xs={12} justifyContent={"center"}>
+          <img src={LOGO_FULL} width="30%" alt="Agricultura Cero" />
+        </Grid>
+        <Grid container item xs={12} justifyContent={"center"}>
+          <Typography variant="h4" noWrap component="div" align="center">
+            Galeria de plantas
+          </Typography>
+        </Grid>
+        <Grid container item xs={12} justifyContent={"start"} marginBottom={2}>
+          <TextField
+            variant="outlined"
+            label="Buscar planta"
+            name="searchPlant"
+            id="searchPlant"
+            InputProps={{
+              endAdornment: <Search sx={{ mr: 1 }} color="disabled" />,
+            }}
+          />
+          <IconButton>
+            <FirstPage />
+          </IconButton>
+          <IconButton>
+            <LastPage />
+          </IconButton>
+        </Grid>
       </Grid>
       <Box
         alignSelf="center"
@@ -141,87 +163,88 @@ export const GaleryScreen: React.FC = () => {
           return (
             // <Grid paddingTop={2} item sx={{ maxWidth: 400 }}>
             <Card sx={{ display: "flex", flexDirection: "row", ...style }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <CardContent
-                  sx={{ display: "flex", flex: 1, flexDirection: "column" }}
-                >
-                  <Typography
-                    fontWeight="ligth"
-                    fontSize={20}
-                    textAlign={"left"}
-                    color={"black"}
+              <CardActionArea sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <CardContent
+                    sx={{ display: "flex", flex: 1, flexDirection: "column" }}
                   >
-                    {plant.name}
-                  </Typography>
-                  <Typography
-                    fontWeight="ligth"
-                    fontSize={10}
-                    textAlign={"left"}
-                    color={"black"}
-                  >
-                    {plant.content}
-                  </Typography>
-                </CardContent>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
-                >
-                  <Box
-                    paddingRight={2}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <IconButton>
-                      <ThumbUp />
-                    </IconButton>
                     <Typography
                       fontWeight="ligth"
-                      fontSize={10}
-                      textAlign={"center"}
+                      fontSize={20}
+                      textAlign={"left"}
                       color={"black"}
                     >
-                      {" "}
-                      {plant.likes}
+                      {plant.name}
                     </Typography>
-                  </Box>
-                  <Box
-                    paddingRight={2}
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    <IconButton>
-                      <Comment />
-                    </IconButton>
                     <Typography
                       fontWeight="ligth"
                       fontSize={10}
-                      textAlign={"center"}
+                      textAlign={"left"}
                       color={"black"}
                     >
-                      {" "}
-                      {plant.comments}
+                      {plant.content}
                     </Typography>
-                  </Box>
+                  </CardContent>
                   <Box
-                    paddingRight={2}
-                    sx={{ display: "flex", alignItems: "center" }}
+                    sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
                   >
-                    <Typography
-                      fontWeight="ligth"
-                      fontSize={10}
-                      textAlign={"center"}
-                      color={"grey"}
+                    <Box
+                      paddingRight={2}
+                      sx={{ display: "flex", alignItems: "center" }}
                     >
-                      Publicado: {plant.growing_time}
-                    </Typography>
+                      <IconButton>
+                        <ThumbUp />
+                      </IconButton>
+                      <Typography
+                        fontWeight="ligth"
+                        fontSize={10}
+                        textAlign={"center"}
+                        color={"black"}
+                      >
+                        {" "}
+                        {plant.likes}
+                      </Typography>
+                    </Box>
+                    <Box
+                      paddingRight={2}
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
+                      <IconButton>
+                        <Comment />
+                      </IconButton>
+                      <Typography
+                        fontWeight="ligth"
+                        fontSize={10}
+                        textAlign={"center"}
+                        color={"black"}
+                      >
+                        {" "}
+                        {plant.comments}
+                      </Typography>
+                    </Box>
+                    <Box
+                      paddingRight={2}
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
+                      <Typography
+                        fontWeight="ligth"
+                        fontSize={10}
+                        textAlign={"center"}
+                        color={"grey"}
+                      >
+                        Publicado: {plant.growing_time}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-              <CardMedia
-                component="img"
-                image={plant.image}
-                alt="plant"
-                sx={{ width: 150 }}
-              />
+                <CardMedia
+                  component="img"
+                  image={plant.image}
+                  alt="plant"
+                  sx={{ width: 150 }}
+                />
+              </CardActionArea>
             </Card>
-            // </Grid>
           )
         })}
       </Box>

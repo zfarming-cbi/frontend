@@ -26,6 +26,8 @@ import {
   AccountCircle as AccountCircleIcon,
   Business as BusinessIcon,
   Yard as PlantIcon,
+  Yard,
+  Grass,
 } from "@mui/icons-material"
 
 import { FormPQRS } from "../pqrs/form-pqrs"
@@ -103,6 +105,13 @@ export const DashboardScreen: FC = () => {
         text: "Plantas",
         action() {
           navigate(ROUTE_PATH.Plant)
+        },
+      },
+      {
+        icon: <Grass />,
+        text: "Galeria de plantas",
+        action() {
+          navigate(ROUTE_PATH.Galery)
         },
       },
     ],
