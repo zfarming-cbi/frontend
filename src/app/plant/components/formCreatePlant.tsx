@@ -1,4 +1,4 @@
-import { FC } from "react"
+import React, { FC } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../../settings/redux/hooks"
 import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
 import { CheckBox } from "@mui/icons-material"
 import { closeFormCreatePlant } from "../../../settings/redux/dialogs.slice"
+import MDEditor, { commands } from "@uiw/react-md-editor"
 
 interface Props {
   onSave(): void
@@ -43,9 +44,17 @@ export const FormCreatePlant: FC<Props> = (props) => {
     },
   })
 
+  const codePreview = {
+    name: "preview",
+    keyCommand: "preview",
+    value: "preview",
+    icon: <Button />,
+  }
+
   const dispatch = useAppDispatch()
 
   const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
+  const [value, setValue] = React.useState("**Hello world!!!**")
 
   return (
     <Grid
@@ -71,7 +80,12 @@ export const FormCreatePlant: FC<Props> = (props) => {
         />
       </Grid>
       <Grid item xs>
-        <TextField
+        <MDEditor
+          value={value}
+          preview="edit"
+          extraCommands={[codePreview, commands.fullscreen]}
+        />
+        {/* <TextField
           fullWidth
           required
           label="Contenido"
@@ -83,7 +97,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.content}
-        />
+        /> */}
       </Grid>
       <Grid item xs>
         <TextField

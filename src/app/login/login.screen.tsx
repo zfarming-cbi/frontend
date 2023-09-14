@@ -1,6 +1,15 @@
 import { FC, useEffect } from "react"
 import UnLockIcon from "@mui/icons-material/LockOpen"
-import { Alert, Grid, Paper, TextField, Typography } from "@mui/material"
+import {
+  Alert,
+  AppBar,
+  Grid,
+  IconButton,
+  Paper,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Box } from "@mui/system"
 import { useFormik } from "formik"
@@ -10,6 +19,7 @@ import { useNavigate } from "react-router-dom"
 import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import { useLoginMutation } from "../../settings/api/endpoints/authentication"
+import { Login, Yard } from "@mui/icons-material"
 
 export const LoginScreen: FC = () => {
   const navigate = useNavigate()
@@ -18,12 +28,12 @@ export const LoginScreen: FC = () => {
     handleBlur,
     handleSubmit,
     errors,
-    values: { password: passwordInputValue, username: usernameInputValue },
+    values: { password: passwordInputValue, email: emailInputValue },
   } = useFormik<{
-    username: string
+    email: string
     password: string
   }>({
-    initialValues: { username: "", password: "" },
+    initialValues: { email: "", password: "" },
     validateOnMount: false,
     validateOnBlur: true,
     validateOnChange: false,
@@ -55,6 +65,27 @@ export const LoginScreen: FC = () => {
         backgroundColor: "#D0D0D1", //blue[100],
       }}
     >
+      <Grid item paddingBottom={4} xs={12}>
+        <AppBar position="fixed">
+          <Toolbar variant="dense">
+            <Typography variant="h6" noWrap component="div" align="center">
+              Z-farming
+            </Typography>
+            <Box sx={{ flex: 1 }} />
+            <Typography
+              fontWeight="ligth"
+              fontSize={15}
+              textAlign={"center"}
+              color={"white"}
+            >
+              Galeria de plantas
+            </Typography>
+            <IconButton onClick={() => navigate(ROUTE_PATH.Galery)}>
+              <Yard sx={{ color: "white" }} />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </Grid>
       <Grid item xs={10} sm={6} lg={4}>
         <Paper
           sx={{ paddingX: 4, textAlign: "center", backgroundColor: "white" }}
@@ -75,15 +106,15 @@ export const LoginScreen: FC = () => {
             <TextField
               fullWidth
               required
-              label="Nombre de usuario"
+              label="Email"
               variant="outlined"
-              name="username"
-              id="username"
-              value={usernameInputValue}
+              name="email"
+              id="email"
+              value={emailInputValue}
               disabled={isLoading}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={!!errors.username}
+              error={!!errors.email}
             />
             <Box sx={{ height: 8, width: 1 }} />
             <TextField
@@ -149,7 +180,7 @@ export const LoginScreen: FC = () => {
 }
 
 const SignInSchema = Yup.object().shape({
-  username: Yup.string()
+  email: Yup.string()
     .min(3)
     .max(50)
     .required("El nombre de usuario no es valido."),

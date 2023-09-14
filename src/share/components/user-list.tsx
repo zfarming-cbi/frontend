@@ -8,10 +8,10 @@ import {
   Typography,
 } from "@mui/material"
 import React, { FC } from "react"
-import { User } from "../models/user"
+import { UserDTO } from "../models/user"
 
 interface UserListProps {
-  users: User[]
+  users: UserDTO[]
 }
 
 export const UserList: FC<UserListProps> = (props) => {
@@ -21,11 +21,8 @@ export const UserList: FC<UserListProps> = (props) => {
         return (
           <React.Fragment key={key}>
             <ListItem alignItems="flex-start" role="contentinfo">
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src={user.avatar} />
-              </ListItemAvatar>
               <ListItemText
-                primary={user.name}
+                primary={user.firstname}
                 secondary={
                   <>
                     <Typography
@@ -36,7 +33,7 @@ export const UserList: FC<UserListProps> = (props) => {
                     >
                       {user.email}
                     </Typography>
-                    {`\n@${user.username}`}
+                    {`\n@${user.email}`}
                   </>
                 }
               />

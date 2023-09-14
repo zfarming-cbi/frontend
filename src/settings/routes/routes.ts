@@ -11,4 +11,5 @@ export enum ROUTE_PATH {
   Company = "/dashboard/company",
   DeviceByFarm = "/dashboard/farm/:farmId",
   Plant = "/dashboard/plant",
+  Galery = "/galery",
 }

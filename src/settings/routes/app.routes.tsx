@@ -17,6 +17,7 @@ import { ProfileScreen } from "../../app/profile/profile.screen"
 import { CompanyScreen } from "../../app/company/company.screen"
 import { DeviceByFarmScreen } from "../../app/farms/farm.device.screen"
 import { PlantScreen } from "../../app/plant/plant.screen"
+import { GaleryScreen } from "../../app/galery/galery.screen"
 
 export const ROUTER_OPTIONS: RouteObject[] = [
   {
@@ -33,6 +34,10 @@ export const ROUTER_OPTIONS: RouteObject[] = [
     path: ROUTE_PATH.Singup,
     element: <SignupScreen />,
     loader: AuthenticationLessRouteLoader,
+  },
+  {
+    path: ROUTE_PATH.Galery,
+    element: <GaleryScreen />,
   },
   {
     path: ROUTE_PATH.Dashboard,

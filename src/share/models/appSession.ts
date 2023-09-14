@@ -1,5 +1,5 @@
 export interface JWTContent {
-  username: string
+  email: string
   iss: string
   aud: string
   sub: string
@@ -11,6 +11,5 @@ export interface JWTContent {
 export interface AppSession {
   tokenContent?: JWTContent
   isLogged?: boolean
-  username?: string
   email?: string
 }

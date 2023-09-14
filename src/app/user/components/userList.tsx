@@ -6,19 +6,17 @@ export interface UserListRow {
   id?: string | number
   firstname: string
   lastname: string
-  username: string
+  email: string
 }
 
 const COLUMNS_DEF: GridColDef[] = [
   { field: "id", headerName: "#", width: 70 },
   { field: "firstname", headerName: "Nombre", flex: 1 },
   { field: "lastname", headerName: "Apellido", flex: 1 },
-  { field: "username", headerName: "Email", flex: 1 },
+  { field: "email", headerName: "Email", flex: 1 },
 ]
 
-export const UserList: React.FC<{ rows: UserListRow[] }> = (
-  props
-) => {
+export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
   return (
     <Grid container p={1}>
       <DataGrid

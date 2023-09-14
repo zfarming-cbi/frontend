@@ -1,14 +1,14 @@
-import * as React from 'react';
+import * as React from "react"
 import { Grid } from "@mui/material"
 import { Add as AddIcon, Search as FilterIcon } from "@mui/icons-material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import { UserList, UserListRow } from "./components/userList"
-import { useGetUsersQuery } from '../../settings/api/endpoints/user';
-import { useAppDispatch } from '../../settings/redux/hooks';
-import { showFormCreateUser } from '../../settings/redux/dialogs.slice';
+import { useGetUsersQuery } from "../../settings/api/endpoints/user"
+import { useAppDispatch } from "../../settings/redux/hooks"
+import { showFormCreateUser } from "../../settings/redux/dialogs.slice"
 
 export const UserScreen = () => {
-  var open = false;
+  var open = false
   const toolbarButtons: ToolbarButton[] = [
     {
       icon: <AddIcon />,
@@ -23,17 +23,23 @@ export const UserScreen = () => {
     },
     {
       icon: <FilterIcon />,
-      action() { },
+      action() {},
     },
   ]
 
   const dispatch = useAppDispatch()
 
-
   const { data, isLoading, error } = useGetUsersQuery()
 
   const users = React.useMemo(() => {
-    return data?.map<UserListRow>(({ id, firstname, lastname, username }) => ({ id, firstname, lastname, username })) ?? []
+    return (
+      data?.map<UserListRow>(({ id, firstname, lastname, email }) => ({
+        id,
+        firstname,
+        lastname,
+        email,
+      })) ?? []
+    )
   }, [data])
 
   return (

@@ -17,16 +17,23 @@ export const FormCreateUser: FC<Props> = (props) => {
     handleBlur,
     handleSubmit,
     errors,
-    values: { password: passwordInputValue, username: usernameInputValue,
-      firstname: firstnameInputValue, lastname: lastnameInputValue },
+    values: {
+      password: passwordInputValue,
+      email: emailInputValue,
+      firstname: firstnameInputValue,
+      lastname: lastnameInputValue,
+    },
   } = useFormik<{
-    username: string
+    email: string
     password: string
     firstname: string
     lastname: string
   }>({
     initialValues: {
-      username: "", password: "", firstname: "", lastname: "",
+      email: "",
+      password: "",
+      firstname: "",
+      lastname: "",
     },
     validateOnMount: false,
     validateOnBlur: true,
@@ -34,9 +41,7 @@ export const FormCreateUser: FC<Props> = (props) => {
     validationSchema: FormCreateUserSchema,
     async onSubmit(credentials) {
       doCreateUsers(credentials)
-      dispatch(
-        closeFormCreateUser()
-      )
+      dispatch(closeFormCreateUser())
     },
   })
 
@@ -44,7 +49,7 @@ export const FormCreateUser: FC<Props> = (props) => {
 
   const [doCreateUsers, { isLoading, error }] = useCreateUserMutation()
 
-  const onSaveUser = () => { }
+  const onSaveUser = () => {}
 
   return (
     <Grid
@@ -60,13 +65,13 @@ export const FormCreateUser: FC<Props> = (props) => {
           required
           label="Email"
           variant="outlined"
-          name="username"
-          id="username"
-          value={usernameInputValue}
+          name="email"
+          id="email"
+          value={emailInputValue}
           disabled={isLoading}
           onChange={handleChange}
           onBlur={handleBlur}
-          error={!!errors.username}
+          error={!!errors.email}
         />
       </Grid>
       <Grid item xs>
@@ -130,7 +135,7 @@ export const FormCreateUser: FC<Props> = (props) => {
           {/* {JSON.stringify(error)} */}
         </Alert>
       )}
-      <DialogActions >
+      <DialogActions>
         <Grid container item xs={12} justifyContent="end" marginTop={1}>
           <Button sx={{ marginInline: 1 }} type="submit">
             Guardar
@@ -142,7 +147,7 @@ export const FormCreateUser: FC<Props> = (props) => {
 }
 
 const FormCreateUserSchema = Yup.object().shape({
-  username: Yup.string()
+  email: Yup.string()
     .min(3)
     .max(50)
     .required("El nombre de usuario no es valido."),
@@ -150,12 +155,6 @@ const FormCreateUserSchema = Yup.object().shape({
     .min(2)
     .max(50)
     .required("El password ingresado no es valido"),
-  firstname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El nombre no es valido."),
-  lastname: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El apellido no es valido."),
+  firstname: Yup.string().min(3).max(50).required("El nombre no es valido."),
+  lastname: Yup.string().min(3).max(50).required("El apellido no es valido."),
 })

@@ -24,7 +24,7 @@ export const AuthenticationRouteLoader = () => {
   const tokenInfo = JWT<JWTContent>(token)
   const isTokenExpired = tokenInfo.exp < Date.now() / 1000
 
-  if (!tokenInfo?.username || isTokenExpired) {
+  if (!tokenInfo?.email || isTokenExpired) {
     localStorage.clear()
     ReduxStore.dispatch(logout())
     return redirect(ROUTE_PATH.Login)
@@ -33,8 +33,7 @@ export const AuthenticationRouteLoader = () => {
   ReduxStore.dispatch(
     logIn({
       isLogged: true,
-      email: tokenInfo.username,
-      username: tokenInfo.username,
+      email: tokenInfo.email,
       // tokenContent: tokenInfo,
     })
   )
@@ -45,7 +44,7 @@ export const AuthenticationRouteLoader = () => {
 export const AuthenticationSaveHandler = (token: string): boolean => {
   try {
     const tokenInfo = JWT<JWTContent>(token)
-    if (!tokenInfo?.username) {
+    if (!tokenInfo?.email) {
       localStorage.clear()
       ReduxStore.dispatch(logout())
       return false
@@ -54,8 +53,7 @@ export const AuthenticationSaveHandler = (token: string): boolean => {
     ReduxStore.dispatch(
       logIn({
         isLogged: true,
-        email: tokenInfo.username,
-        username: tokenInfo.username,
+        email: tokenInfo.email,
       })
     )
     return true
