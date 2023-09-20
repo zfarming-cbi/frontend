@@ -15,10 +15,9 @@ const extendedApi = API.injectEndpoints({
       }),
     }),
     getCompany: build.query<CompanyDTO, void>({
-      query: (body) => ({
+      query: () => ({
         url: "/company",
         method: "GET",
-        body,
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",

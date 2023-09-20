@@ -26,8 +26,26 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["Plant"],
     }),
+    getPlantsForGalery: build.query<
+      PlantDTO[],
+      { page: string; perPage: string }
+    >({
+      query: ({ page, perPage }) => ({
+        url: `/plants/galery?page=${page}&perPage=${perPage}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Plant"],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetPlantsQuery, useCreatePlantMutation } = extendedApi
+export const {
+  useGetPlantsQuery,
+  useCreatePlantMutation,
+  useGetPlantsForGaleryQuery,
+} = extendedApi

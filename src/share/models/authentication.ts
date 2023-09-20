@@ -19,6 +19,15 @@ export interface RecoverPasswordDTO {
   password: string
 }
 
+export interface ChangePasswordDTO {
+  currentPassword: string
+  newPassword: string
+}
+
+export interface RecoverPasswordScreenDTO {
+  uuid?: string
+}
+
 export interface TokenDTO {
   access_token: string
 }

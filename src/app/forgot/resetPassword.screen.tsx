@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import UnLockIcon from "@mui/icons-material/LockOpen"
 import { Alert, Grid, Paper, TextField, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
@@ -6,7 +6,11 @@ import { Box } from "@mui/system"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import LOGO_FULL from "../../assets/placeholder.png"
-import { useResetPassowrdMutation } from "../../settings/api/endpoints/authentication"
+import {
+  useResetPassowrdMutation,
+  useVerifyUuidQuery,
+} from "../../settings/api/endpoints/authentication"
+import { useParams } from "react-router-dom"
 
 export const RecoverPasswordScreen: FC = () => {
   const {
@@ -30,6 +34,11 @@ export const RecoverPasswordScreen: FC = () => {
     async onSubmit(credentials) {
       doResetPassword({ password: credentials.password })
     },
+  })
+
+  const { uuid } = useParams()
+  const [response] = useVerifyUuidQuery({
+    uuid,
   })
 
   const [doResetPassword, { data, isLoading, error }] =
@@ -62,65 +71,72 @@ export const RecoverPasswordScreen: FC = () => {
               Reestablece tu contraseña
             </Typography>
           </Box>
-          <Box component="form" onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              required
-              label="Nueva contraseña"
-              variant="outlined"
-              name="password"
-              id="password"
-              value={passwordInputValue}
-              disabled={isLoading}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={!!errors.password}
-            />
-            <TextField
-              fullWidth
-              required
-              label="Confirma la contraseña"
-              variant="outlined"
-              name="confirmPassword"
-              id="confirmPassword"
-              value={confirmPasswordInputValue}
-              disabled={isLoading}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={!!errors.confirmPassword}
-            />
-            <Box sx={{ height: 8, width: 1 }} />
-            {!!error && (
-              <Alert
-                sx={{
-                  marginTop: 1,
-                  textAlign: "left",
-                  fontSize: 10,
-                  alignItems: "center",
-                }}
-                severity="error"
-                variant="filled"
+          {!!response.error && (
+            <Box>
+              <Typography>{JSON.stringify(response.error)}</Typography>
+            </Box>
+          )}
+          {response.error && (
+            <Box component="form" onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                required
+                label="Nueva contraseña"
+                variant="outlined"
+                name="password"
+                id="password"
+                value={passwordInputValue}
+                disabled={isLoading}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={!!errors.password}
+              />
+              <TextField
+                fullWidth
+                required
+                label="Confirma la contraseña"
+                variant="outlined"
+                name="confirmPassword"
+                id="confirmPassword"
+                value={confirmPasswordInputValue}
+                disabled={isLoading}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={!!errors.confirmPassword}
+              />
+              <Box sx={{ height: 8, width: 1 }} />
+              {!!error && (
+                <Alert
+                  sx={{
+                    marginTop: 1,
+                    textAlign: "left",
+                    fontSize: 10,
+                    alignItems: "center",
+                  }}
+                  severity="error"
+                  variant="filled"
+                >
+                  lo sentimos en este momento no podemos validar la información
+                  {/* {JSON.stringify(error)} */}
+                </Alert>
+              )}
+              <Box sx={{ height: 8, width: 1 }} />
+              <LoadingButton
+                loading={isLoading}
+                loadingPosition="start"
+                startIcon={<UnLockIcon />}
+                fullWidth
+                variant="contained"
+                color="primary"
+                type="submit"
               >
-                lo sentimos en este momento no podemos validar la información
-                {/* {JSON.stringify(error)} */}
-              </Alert>
-            )}
-            <Box sx={{ height: 8, width: 1 }} />
-            <LoadingButton
-              loading={isLoading}
-              loadingPosition="start"
-              startIcon={<UnLockIcon />}
-              fullWidth
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Enviar
-            </LoadingButton>
-            <Typography fontSize={12} textAlign={"center"} padding={1}>
-              <a href="/login">Iniciar sesión </a>
-            </Typography>
-          </Box>
+                Enviar
+              </LoadingButton>
+              <Typography fontSize={12} textAlign={"center"} padding={1}>
+                <a href="/login">Iniciar sesión </a>
+              </Typography>
+            </Box>
+          )}
           <Box paddingTop={4} paddingBottom={2}>
             <Typography fontSize={8} textAlign={"center"} padding={1}>
               Todos los derechos reservados

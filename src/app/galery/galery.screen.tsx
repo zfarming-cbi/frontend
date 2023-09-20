@@ -9,23 +9,52 @@ import {
   CardMedia,
   IconButton,
   TextField,
-  Toolbar,
   Typography,
 } from "@mui/material"
 import {
   Comment,
   FirstPage,
   LastPage,
-  Pageview,
   Search,
   ThumbUp,
 } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import LOGO_FULL from "../../assets/placeholder.png"
+import { useGetPlantsForGaleryQuery } from "../../settings/api/endpoints/plant"
+
+export interface PlantListRow {
+  id?: string | number
+  name: string
+  likes: number
+  comments: number
+  growing_time: string
+  content: string
+  image: string
+}
 
 export const GaleryScreen: React.FC = () => {
   const navigate = useNavigate()
+  const { data, isLoading, error } = useGetPlantsForGaleryQuery({
+    page: "1",
+    perPage: "2",
+  })
+
+  const plants2 = React.useMemo(() => {
+    return (
+      data?.map<PlantListRow>(
+        ({ id, name, likes, comments, growing_time, content, image }) => ({
+          id,
+          name,
+          likes: likes?.length ?? 0,
+          comments: comments?.length ?? 0,
+          growing_time,
+          content,
+          image,
+        })
+      ) ?? []
+    )
+  }, [data])
   const plants = [
     {
       name: "Tomate",
@@ -156,13 +185,16 @@ export const GaleryScreen: React.FC = () => {
           width: "100%",
         }}
       >
-        {plants.map((plant, index) => {
+        {plants2.map((plant, index) => {
           const style = !index
             ? { gridRowEnd: "span 1fr", gridColumnEnd: "span 2" }
             : {}
           return (
             // <Grid paddingTop={2} item sx={{ maxWidth: 400 }}>
-            <Card sx={{ display: "flex", flexDirection: "row", ...style }}>
+            <Card
+              sx={{ display: "flex", flexDirection: "row", ...style }}
+              key={index}
+            >
               <CardActionArea sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <CardContent

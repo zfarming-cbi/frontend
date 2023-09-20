@@ -1,8 +1,10 @@
 import { API } from ".."
 import {
+  ChangePasswordDTO,
   ForgotDTO,
   LoginDTO,
   RecoverPasswordDTO,
+  RecoverPasswordScreenDTO,
   SignupDTO,
   TokenDTO,
 } from "../../../share/models/authentication"
@@ -42,9 +44,30 @@ const extendedApi = API.injectEndpoints({
         },
       }),
     }),
+    verifyUuid: build.query<void, RecoverPasswordScreenDTO>({
+      query: ({ uuid }) => ({
+        url: `/auth/recover-password/${uuid}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+    }),
     resetPassowrd: build.mutation<void, RecoverPasswordDTO>({
       query: (body) => ({
         url: "/auth/recover-password",
+        method: "PATCH",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+    }),
+    changePassowrd: build.mutation<void, ChangePasswordDTO>({
+      query: (body) => ({
+        url: "/auth/change-password",
         method: "PATCH",
         body,
         headers: {
@@ -62,4 +85,6 @@ export const {
   useLoginMutation,
   useForgotMutation,
   useResetPassowrdMutation,
+  useChangePassowrdMutation,
+  useVerifyUuidQuery,
 } = extendedApi

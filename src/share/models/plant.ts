@@ -4,4 +4,7 @@ export interface PlantDTO {
   content: string
   growing_time: string
   public: boolean
+  image: string
+  likes?: []
+  comments?: []
 }
