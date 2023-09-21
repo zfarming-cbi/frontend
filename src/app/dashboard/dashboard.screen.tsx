@@ -24,9 +24,7 @@ import {
   Logout as LogoutIcon,
   Devices as DeviceIcon,
   AccountCircle as AccountCircleIcon,
-  Business as BusinessIcon,
   Yard as PlantIcon,
-  Yard,
   Grass,
 } from "@mui/icons-material"
 
@@ -91,13 +89,6 @@ export const DashboardScreen: FC = () => {
         text: "Perfil de usuario",
         action() {
           navigate(ROUTE_PATH.Profile)
-        },
-      },
-      {
-        icon: <BusinessIcon />,
-        text: "Empresa",
-        action() {
-          navigate(ROUTE_PATH.Company)
         },
       },
       {

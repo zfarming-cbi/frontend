@@ -39,10 +39,19 @@ export const FormCreatePlant: FC<Props> = (props) => {
     },
     validationSchema: FormCreatePlantSchema,
     async onSubmit(credentials) {
-      doCreatePlant(credentials)
+      if (!value) {
+        setContentEmpty(true)
+        return
+      }
+      doCreatePlant({ ...credentials, content: value ?? "" })
       dispatch(closeFormCreatePlant())
     },
   })
+
+  const dispatch = useAppDispatch()
+  const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
+  const [value, setValue] = React.useState<string>()
+  const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
 
   const codePreview = {
     name: "preview",
@@ -50,11 +59,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
     value: "preview",
     icon: <Button />,
   }
-
-  const dispatch = useAppDispatch()
-
-  const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
-  const [value, setValue] = React.useState("")
 
   return (
     <Grid
@@ -81,24 +85,26 @@ export const FormCreatePlant: FC<Props> = (props) => {
       </Grid>
       <Grid item xs>
         <MDEditor
+          data-color-mode="light"
           value={value}
-          preview="edit"
+          onChange={setValue}
           extraCommands={[codePreview, commands.fullscreen]}
         />
-        {/* <TextField
-          fullWidth
-          required
-          label="Contenido"
-          variant="outlined"
-          name="content"
-          id="content"
-          value={contentInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.content}
-        /> */}
       </Grid>
+      {contentEmpty && (
+        <Alert
+          sx={{
+            marginTop: 1,
+            textAlign: "left",
+            fontSize: 10,
+            alignItems: "center",
+          }}
+          severity="error"
+          variant="filled"
+        >
+          Es necesario agregar una descripción o contenido.
+        </Alert>
+      )}
       <Grid item xs>
         <TextField
           fullWidth
@@ -114,21 +120,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
           onBlur={handleBlur}
           error={!!errors.growing_time}
         />
-      </Grid>
-      <Grid item xs>
-        <CheckBox></CheckBox>
-        {/* <CheckBox
-          required
-          label="Publico"
-          variant="outlined"
-          name="public"
-          id="public"
-          value={publicInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.publicInputValue}
-        ></CheckBox> */}
       </Grid>
       {!!error && (
         <Alert
@@ -158,5 +149,4 @@ export const FormCreatePlant: FC<Props> = (props) => {
 
 const FormCreatePlantSchema = Yup.object().shape({
   name: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  content: Yup.string().min(3).max(250).required("El contenido no es valido."),
 })

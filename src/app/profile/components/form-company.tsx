@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import {
   Alert,
   Avatar,
@@ -22,7 +22,11 @@ import {
 } from "../../../settings/api/endpoints/company"
 
 export const FormCompany: FC = () => {
-  const { data } = useGetCompanyQuery()
+  const { data } = useGetCompanyQuery() //@toDo: usar los lazy query y utilizar el useEffect
+  useEffect(() => {
+    setFieldValue("name", data?.name)
+    setFieldValue("nit", data?.nit)
+  }, [data])
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -38,6 +42,7 @@ export const FormCompany: FC = () => {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
     errors,
     values: { name: nameInputValue, nit: nitInputValue },
   } = useFormik<{
@@ -45,8 +50,8 @@ export const FormCompany: FC = () => {
     nit: string
   }>({
     initialValues: {
-      name: data ? data.name : "",
-      nit: data ? data.nit : "",
+      name: "",
+      nit: "",
     },
     validateOnMount: false,
     validateOnBlur: true,

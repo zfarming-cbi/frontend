@@ -49,8 +49,6 @@ export const FormCreateUser: FC<Props> = (props) => {
 
   const [doCreateUsers, { isLoading, error }] = useCreateUserMutation()
 
-  const onSaveUser = () => {}
-
   return (
     <Grid
       container

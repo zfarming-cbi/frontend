@@ -10,8 +10,10 @@ export enum ROUTE_PATH {
   Profile = "/dashboard/profile",
   Company = "/dashboard/company",
   DeviceByFarm = "/dashboard/farm/:farmId",
+  DeviceMeasuring = "/dashboard/measuring-history/:deviceId",
   Plant = "/dashboard/plant",
   Galery = "/galery",
+  PlantByGalery = "/plant-by-galery",
   ForgotPassword = "/forgot-password",
   RecoverPassword = "/recover-password/:uuid",
 }

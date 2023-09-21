@@ -28,7 +28,10 @@ export const PlantScreen = () => {
 
   const dispatch = useAppDispatch()
 
-  const { data, isLoading, error } = useGetPlantsQuery()
+  const { data, isLoading, error } = useGetPlantsQuery({
+    page: "1",
+    perPage: "10",
+  })
 
   const plants = React.useMemo(() => {
     return (

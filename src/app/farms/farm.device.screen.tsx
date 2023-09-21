@@ -10,11 +10,13 @@ import {
 } from "@mui/material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import LOGO_FULL from "../../assets/logo-2.png"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useGetDevicesQuery } from "../../settings/api/endpoints/device"
 import { Add as AddIcon } from "@mui/icons-material"
 import { showAsignDevice } from "../../settings/redux/dialogs.slice"
 import { useAppDispatch } from "../../settings/redux/hooks"
+import { useGetMeasuringsQuery } from "../../settings/api/endpoints/measuringHistory"
+import { ROUTE_PATH } from "../../settings/routes/routes"
 
 export interface DeviceByFarmListRow {
   id?: string | number
@@ -24,6 +26,7 @@ export interface DeviceByFarmListRow {
 }
 
 export const DeviceByFarmScreen: React.FC = () => {
+  const navigate = useNavigate()
   const { farmId } = useParams()
   const { data, isLoading, error } = useGetDevicesQuery({ farmId })
 
@@ -65,6 +68,14 @@ export const DeviceByFarmScreen: React.FC = () => {
                 justifyContent: "center",
                 flexDirection: "column",
               }}
+              onClick={() =>
+                navigate(
+                  ROUTE_PATH.DeviceMeasuring.replace(
+                    ":deviceId",
+                    device.id?.toString() ?? ""
+                  )
+                )
+              }
             >
               <CardMedia
                 component="img"

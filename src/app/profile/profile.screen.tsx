@@ -13,16 +13,32 @@ export const ProfileScreen: FC = () => {
         padding={2}
         container
         flex={1}
-        flexDirection="column"
+        flexDirection="row"
         alignItems={"center"}
+        xs={12}
+        spacing={2}
       >
-        <Card sx={{ width: "700px" }}>
-          <CardContent>
-            <FormProfile />
-            <FormChangePassword />
-            <FormCompany />
-          </CardContent>
-        </Card>
+        <Grid item xs={4}>
+          <Card>
+            <CardContent>
+              <FormProfile />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4}>
+          <Card>
+            <CardContent>
+              <FormChangePassword />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4}>
+          <Card>
+            <CardContent>
+              <FormCompany />
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </Grid>
   )

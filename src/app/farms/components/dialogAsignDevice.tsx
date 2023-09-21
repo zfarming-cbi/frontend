@@ -20,6 +20,8 @@ import { DeviceListRow } from "../../device/components/deviceList"
 import { DataGrid, GridColDef, GridEventListener, esES } from "@mui/x-data-grid"
 import LOGO_FULL from "../../../assets/logo-2.png"
 import { useParams } from "react-router-dom"
+import { useAppDispatch } from "../../../settings/redux/hooks"
+import { closeAsignDevice } from "../../../settings/redux/dialogs.slice"
 
 interface Props {
   onSave(): void
@@ -43,8 +45,12 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
   const [deviceId, setDeviceId] = useState<string>("")
   const { farmId = "" } = useParams()
   const [plantId, setPlantId] = useState<string>("")
-  const { data } = useGetPlantsQuery()
+  const { data } = useGetPlantsQuery({
+    page: "1",
+    perPage: "10",
+  })
   const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
+  const dispatch = useAppDispatch()
 
   const plants = React.useMemo(() => {
     return (
@@ -70,6 +76,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
   }
   const onClickAssignDevice = () => {
     doUpdateDevice({ farmId, plantId, id: deviceId })
+    dispatch(closeAsignDevice())
   }
 
   const devices = React.useMemo(() => {

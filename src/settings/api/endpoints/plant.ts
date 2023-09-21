@@ -3,9 +3,9 @@ import { PlantDTO } from "../../../share/models/plant"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getPlants: build.query<PlantDTO[], void>({
-      query: () => ({
-        url: "/plants",
+    getPlants: build.query<PlantDTO[], { page: string; perPage: string }>({
+      query: ({ page, perPage }) => ({
+        url: `/plants?page=${page}&perPage=${perPage}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",

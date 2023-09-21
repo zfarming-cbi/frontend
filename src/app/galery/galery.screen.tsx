@@ -50,7 +50,7 @@ export const GaleryScreen: React.FC = () => {
           comments: comments?.length ?? 0,
           growing_time,
           content,
-          image,
+          image: image ?? "",
         })
       ) ?? []
     )
