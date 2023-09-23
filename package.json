@@ -22,6 +22,7 @@
     "@mui/x-data-grid": "^5.17.25",
     "@mui/x-date-pickers": "^5.0.20",
     "@reduxjs/toolkit": "^1.9.1",
+    "@types/remarkable": "^2.0.3",
     "@uiw/react-md-editor": "^3.23.5",
     "echarts": "^5.4.3",
     "formik": "^2.2.9",
@@ -33,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.2",
+    "remarkable": "^2.0.1",
     "yup": "^1.0.0"
   },
   "devDependencies": {
