@@ -1,7 +1,7 @@
 import * as React from "react"
 import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
-import { Comment, ThumbUp } from "@mui/icons-material"
+import { Comment, ContentCopy, ThumbUp } from "@mui/icons-material"
 import { Typography } from "@mui/material"
 
 interface Props extends React.PropsWithChildren {

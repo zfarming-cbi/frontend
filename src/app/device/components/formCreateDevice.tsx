@@ -46,8 +46,6 @@ export const FormCreateDevice: FC<Props> = (props) => {
 
   const [doCreateDevices, { isLoading, error }] = useCreateDevicesMutation()
 
-  const onSaveDevice = () => {}
-
   return (
     <Grid
       container
@@ -75,10 +73,12 @@ export const FormCreateDevice: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
+          multiline
           label="Descripción"
           variant="outlined"
           name="description"
           id="description"
+          rows={4}
           value={descriptionInputValue}
           disabled={isLoading}
           onChange={handleChange}
@@ -132,5 +132,9 @@ const FormCreateDeviceSchema = Yup.object().shape({
     .min(3)
     .max(50)
     .required("El nombre del dispositivo no es valido."),
+  description: Yup.string()
+    .min(3)
+    .max(250)
+    .required("La descripción no es valida."),
   code: Yup.string().min(3).max(20).required("El código no es válido."),
 })

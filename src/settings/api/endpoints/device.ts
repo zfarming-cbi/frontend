@@ -1,15 +1,22 @@
 import { API } from ".."
-import {
-  DeviceDTO,
-  DeviceInputDTO,
-  UpdateDeviceDTO,
-} from "../../../share/models/device"
+import { DeviceDTO, UpdateDeviceDTO } from "../../../share/models/device"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getDevices: build.query<DeviceDTO[], DeviceInputDTO>({
+    getDevices: build.query<DeviceDTO[], { farmId?: string }>({
       query: ({ farmId }) => ({
         url: `/device/all/${farmId}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Device"],
+    }),
+    getDevicesUnasigned: build.query<DeviceDTO[], void>({
+      query: () => ({
+        url: `/device/unasigned`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +55,7 @@ const extendedApi = API.injectEndpoints({
 
 export const {
   useGetDevicesQuery,
+  useGetDevicesUnasignedQuery,
   useCreateDevicesMutation,
   useUpdateDeviceMutation,
 } = extendedApi

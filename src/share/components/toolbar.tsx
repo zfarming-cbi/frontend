@@ -1,3 +1,4 @@
+import { ArrowBack } from "@mui/icons-material"
 import {
   IconButton,
   Paper,
@@ -6,11 +7,19 @@ import {
 } from "@mui/material"
 import { Box } from "@mui/system"
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
 export const Toolbar: React.FC<Toolbar> = (props) => {
+  const { showButtonReturn } = props
+  const navigate = useNavigate()
   return (
     <Paper variant="outlined" square>
       <MUIToolbar variant="dense">
+        {showButtonReturn && (
+          <IconButton onClick={() => navigate(-1)} sx={{ mr: 4 }}>
+            <ArrowBack />
+          </IconButton>
+        )}
         <Typography variant="h6" color="inherit" component="div">
           {props.title}
         </Typography>
@@ -36,6 +45,7 @@ export const Toolbar: React.FC<Toolbar> = (props) => {
 export interface Toolbar {
   buttons?: ToolbarButton[]
   title?: string
+  showButtonReturn?: boolean
 }
 
 export interface ToolbarButton {

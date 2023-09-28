@@ -14,6 +14,17 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Farm"],
     }),
+    getFarm: build.query<FarmDTO, { farmId?: string }>({
+      query: ({ farmId }) => ({
+        url: `/farms/${farmId}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Farm"],
+    }),
     createFarm: build.mutation<FarmDTO, FarmDTO>({
       query: (body) => ({
         url: "/farms",
@@ -30,4 +41,5 @@ const extendedApi = API.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useGetFarmsQuery, useCreateFarmMutation } = extendedApi
+export const { useGetFarmQuery, useGetFarmsQuery, useCreateFarmMutation } =
+  extendedApi

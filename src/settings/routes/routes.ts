@@ -5,7 +5,6 @@ export enum ROUTE_PATH {
   Dashboard = "/dashboard",
   User = "/dashboard/user",
   PQRS = "/dashboard/pqrs",
-  Farms = "/dashboard/machines",
   Device = "/dashboard/device",
   Profile = "/dashboard/profile",
   Company = "/dashboard/company",
@@ -13,7 +12,7 @@ export enum ROUTE_PATH {
   DeviceMeasuring = "/dashboard/measuring-history/:deviceId",
   Plant = "/dashboard/plant",
   Galery = "/galery",
-  PlantByGalery = "/plant-by-galery",
+  PlantFromGalery = "/plant-from-galery/:plantId",
   ForgotPassword = "/forgot-password",
   RecoverPassword = "/recover-password/:uuid",
 }

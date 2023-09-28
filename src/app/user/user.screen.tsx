@@ -6,9 +6,10 @@ import { UserList, UserListRow } from "./components/userList"
 import { useGetUsersQuery } from "../../settings/api/endpoints/user"
 import { useAppDispatch } from "../../settings/redux/hooks"
 import { showFormCreateUser } from "../../settings/redux/dialogs.slice"
+import jwt_decode from "jwt-decode"
+import { JWTContent } from "../../share/models/appSession"
 
 export const UserScreen = () => {
-  var open = false
   const toolbarButtons: ToolbarButton[] = [
     {
       icon: <AddIcon />,
@@ -28,8 +29,10 @@ export const UserScreen = () => {
   ]
 
   const dispatch = useAppDispatch()
-
-  const { data, isLoading, error } = useGetUsersQuery()
+  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { data, isLoading, error } = useGetUsersQuery({
+    companyId: token.companyId,
+  })
 
   const users = React.useMemo(() => {
     return (

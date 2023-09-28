@@ -3,10 +3,8 @@ export interface DeviceDTO {
   name: string
   description: string
   code: string
-}
-
-export interface DeviceInputDTO {
-  farmId?: string
+  plant?: any
+  measurings?: any
 }
 
 export interface UpdateDeviceDTO {

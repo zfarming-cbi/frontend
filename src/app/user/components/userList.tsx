@@ -1,6 +1,7 @@
 import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
-import { Grid } from "@mui/material"
+import { Box, Grid, IconButton } from "@mui/material"
+import { Delete, Edit } from "@mui/icons-material"
 
 export interface UserListRow {
   id?: string | number
@@ -11,9 +12,44 @@ export interface UserListRow {
 
 const COLUMNS_DEF: GridColDef[] = [
   { field: "id", headerName: "#", width: 70 },
-  { field: "firstname", headerName: "Nombre", flex: 1 },
-  { field: "lastname", headerName: "Apellido", flex: 1 },
-  { field: "email", headerName: "Email", flex: 1 },
+  {
+    field: "firstname",
+    headerName: "Nombre",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "lastname",
+    headerName: "Apellido",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "actions",
+    headerName: "Acciones",
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params) => (
+      <IconButton
+        aria-label="Delete"
+        onClick={() => {
+          console.log(params.row)
+        }}
+      >
+        <Delete />
+      </IconButton>
+    ),
+  },
 ]
 
 export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
@@ -28,6 +64,7 @@ export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
         density="compact"
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         autoPageSize
+        disableSelectionOnClick
       />
     </Grid>
   )

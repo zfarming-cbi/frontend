@@ -1,43 +1,108 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect } from "react"
 import {
   Alert,
-  Avatar,
-  Badge,
   Box,
   Button,
+  ButtonBase,
   DialogActions,
   Divider,
   Grid,
-  IconButton,
   TextField,
   Typography,
   styled,
 } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { BusinessRounded, CloudUpload } from "@mui/icons-material"
+import { Edit } from "@mui/icons-material"
 import {
   useGetCompanyQuery,
   useUpdateCompanyMutation,
 } from "../../../settings/api/endpoints/company"
 
+const image = {
+  url: "src/assets/aguacate.jpg",
+  title: "Breakfast",
+  width: 300,
+}
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: "relative",
+  height: 150,
+  width: 150,
+  borderRadius: "50%",
+  overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    width: "100% !important",
+    height: 100,
+  },
+  "&:hover, &.Mui-focusVisible": {
+    zIndex: 1,
+    "& .MuiSvgIcon-root": {
+      opacity: 1,
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    },
+  },
+  "& .MuiSvgIcon-root": {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    opacity: 0,
+  },
+}))
+
+const ImageSrc = styled("span")({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: "cover",
+  backgroundPosition: "center 40%",
+})
+
+const Image = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.common.white,
+}))
+
+const ImageBackdrop = styled("span")(({ theme }) => ({
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create("opacity"),
+}))
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+})
+
 export const FormCompany: FC = () => {
-  const { data } = useGetCompanyQuery() //@toDo: usar los lazy query y utilizar el useEffect
+  const { data } = useGetCompanyQuery()
   useEffect(() => {
     setFieldValue("name", data?.name)
     setFieldValue("nit", data?.nit)
   }, [data])
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  })
   const {
     handleChange,
     handleBlur,
@@ -86,19 +151,13 @@ export const FormCompany: FC = () => {
           flexDirection: "column",
         }}
       >
-        <Badge
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          badgeContent={
-            <IconButton>
-              <CloudUpload />
-            </IconButton>
-          }
-        >
-          <Avatar sx={{ display: "flex", width: 100, height: 100 }}>
-            <BusinessRounded />
-          </Avatar>
-        </Badge>
+        <ImageButton focusRipple key={image.title}>
+          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+          <ImageBackdrop className="MuiImageBackdrop-root" />
+          <Image>
+            <Edit />
+          </Image>
+        </ImageButton>
       </Box>
       <Grid item xs>
         <TextField

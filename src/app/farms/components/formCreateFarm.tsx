@@ -73,10 +73,12 @@ export const FormCreateFarm: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
+          multiline
           label="Descripción"
           variant="outlined"
           name="description"
           id="description"
+          rows={4}
           value={descriptionInputValue}
           disabled={isLoading}
           onChange={handleChange}

@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom"
 import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import { useLoginMutation } from "../../settings/api/endpoints/authentication"
-import { Login, Yard } from "@mui/icons-material"
+import { Yard } from "@mui/icons-material"
 
 export const LoginScreen: FC = () => {
   const navigate = useNavigate()
@@ -62,7 +62,7 @@ export const LoginScreen: FC = () => {
       height="100vh"
       container
       sx={{
-        backgroundColor: "#D0D0D1", //blue[100],
+        backgroundColor: "#D0D0D1",
       }}
     >
       <Grid item paddingBottom={4} xs={12}>

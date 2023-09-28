@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Card, CardContent, Grid } from "@mui/material"
+import { Box, Card, CardContent, Divider, Grid } from "@mui/material"
 import { Toolbar } from "../../share/components/toolbar"
 import { FormProfile } from "./components/form-profile"
 import { FormCompany } from "./components/form-company"
@@ -9,37 +9,31 @@ export const ProfileScreen: FC = () => {
   return (
     <Grid container flex={1} flexDirection="column">
       <Toolbar title="Configuración" />
-      <Grid
+      <Box
         padding={2}
-        container
-        flex={1}
-        flexDirection="row"
-        alignItems={"center"}
-        xs={12}
-        spacing={2}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flex: 1,
+        }}
       >
-        <Grid item xs={4}>
-          <Card>
+        <Grid item xs={6} padding={1}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <FormProfile />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={4}>
-          <Card>
-            <CardContent>
+              <Divider />
               <FormChangePassword />
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={4}>
-          <Card>
-            <CardContent>
+        <Grid item xs={6} padding={1}>
+          <Card sx={{ height: "100%", display: "flex" }}>
+            <CardContent sx={{ flex: 1 }}>
               <FormCompany />
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
+      </Box>
     </Grid>
   )
 }

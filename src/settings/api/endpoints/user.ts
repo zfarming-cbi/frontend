@@ -3,9 +3,9 @@ import { UserDTO } from "../../../share/models/user"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getUsers: build.query<UserDTO[], void>({
-      query: () => ({
-        url: "/user/all",
+    getUsers: build.query<UserDTO[], { companyId: number }>({
+      query: ({ companyId }) => ({
+        url: `/user/${companyId}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",

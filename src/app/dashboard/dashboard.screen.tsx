@@ -64,13 +64,6 @@ export const DashboardScreen: FC = () => {
         },
       },
       {
-        icon: <AgricultureIcon />,
-        text: "Unidades ZFarmings",
-        action() {
-          navigate(ROUTE_PATH.Farms)
-        },
-      },
-      {
         icon: <SupportAgentIcon />,
         text: "Galería Plantas",
         action() {
@@ -209,7 +202,6 @@ export const DashboardScreen: FC = () => {
         title={"Registro de PQRS"}
         onClose={onClosePQRSForm}
         visible={formPQRS.visible}
-        // visible={true}
       >
         <FormPQRS onCancel={onClosePQRSForm} onSave={onSavePQRSForm} />
       </Dialog>

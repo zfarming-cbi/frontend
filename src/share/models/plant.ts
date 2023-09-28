@@ -7,4 +7,5 @@ export interface PlantDTO {
   image?: string
   likes?: []
   comments?: []
+  devices?: []
 }

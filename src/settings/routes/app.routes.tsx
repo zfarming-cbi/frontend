@@ -10,7 +10,6 @@ import {
 import { ROUTE_PATH } from "./routes"
 import { HomeScreen } from "../../app/home/home.screen"
 import { PQRSScreen } from "../../app/pqrs/pqrs.screen"
-import { FarmScreen } from "../../app/farms/farm.screen"
 import { SignupScreen } from "../../app/signup/signup.screen"
 import { DeviceScreen } from "../../app/device/device.screen"
 import { ProfileScreen } from "../../app/profile/profile.screen"
@@ -20,6 +19,7 @@ import { GaleryScreen } from "../../app/galery/galery.screen"
 import { ForgotPasswordScreen } from "../../app/forgot/forgot.screen"
 import { RecoverPasswordScreen } from "../../app/forgot/resetPassword.screen"
 import { DeviceMeasuringScreen } from "../../app/farms/device.measurings"
+import { PlantFromGalery } from "../../app/galery/plantFromGalery.screen"
 
 export const ROUTER_OPTIONS: RouteObject[] = [
   {
@@ -40,6 +40,10 @@ export const ROUTER_OPTIONS: RouteObject[] = [
   {
     path: ROUTE_PATH.Galery,
     element: <GaleryScreen />,
+  },
+  {
+    path: ROUTE_PATH.PlantFromGalery,
+    element: <PlantFromGalery />,
   },
   {
     path: ROUTE_PATH.ForgotPassword,
@@ -65,10 +69,6 @@ export const ROUTER_OPTIONS: RouteObject[] = [
       {
         path: ROUTE_PATH.PQRS,
         element: <PQRSScreen />,
-      },
-      {
-        path: ROUTE_PATH.Farms,
-        element: <FarmScreen />,
       },
       {
         path: ROUTE_PATH.DeviceByFarm,

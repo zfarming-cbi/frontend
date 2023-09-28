@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { FirstPage, LastPage, Search } from "@mui/icons-material"
+import { ArrowBack, FirstPage, LastPage, Search } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import LOGO_FULL from "../../assets/placeholder.png"
@@ -66,7 +66,11 @@ export const GaleryScreen: React.FC = () => {
       alignItems="center"
     >
       <Grid item xs={12}>
-        <Grid container item xs={12} justifyContent={"end"}>
+        <Grid container item xs={12} justifyContent="space-between">
+          <IconButton onClick={() => navigate(-1)}>
+            <ArrowBack />
+            <Typography paddingLeft={1}>Volver</Typography>
+          </IconButton>
           <Button
             variant="contained"
             color="primary"
@@ -133,7 +137,17 @@ export const GaleryScreen: React.FC = () => {
                   flex: 1,
                 }}
               >
-                <CardActionArea sx={{ display: "flex", flex: 1 }}>
+                <CardActionArea
+                  sx={{ display: "flex", flex: 1 }}
+                  onClick={() =>
+                    navigate(
+                      ROUTE_PATH.PlantFromGalery.replace(
+                        ":plantId",
+                        plant.id?.toString() ?? ""
+                      )
+                    )
+                  }
+                >
                   <Box
                     sx={{
                       display: "flex",
@@ -166,15 +180,6 @@ export const GaleryScreen: React.FC = () => {
                       <div
                         dangerouslySetInnerHTML={{ __html: plant.content }}
                       />
-                      {/* <Typography
-                        fontWeight="ligth"
-                        fontSize={10}
-                        textAlign={"left"}
-                        color={"black"}
-                        paddingRight={1}
-                      >
-                        {plant.content}
-                      </Typography> */}
                       <Typography
                         fontWeight="ligth"
                         fontSize={10}

@@ -15,7 +15,6 @@ import { useGetFarmsQuery } from "../../settings/api/endpoints/farm"
 import { useAppDispatch } from "../../settings/redux/hooks"
 import { showFormCreateFarm } from "../../settings/redux/dialogs.slice"
 import { DateTime } from "luxon"
-import LOGO_FULL from "../../assets/logo-2.png"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 
@@ -25,6 +24,7 @@ export interface FarmListRow {
   description: string
   start_crop_dt: string
   end_crop_dt: string
+  devices: number
 }
 
 export const HomeScreen: React.FC = () => {
@@ -44,17 +44,18 @@ export const HomeScreen: React.FC = () => {
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { data, isLoading, error } = useGetFarmsQuery()
+  const { data } = useGetFarmsQuery()
 
   const farms = React.useMemo(() => {
     return (
       data?.map<FarmListRow>(
-        ({ id, name, description, start_crop_dt, end_crop_dt }) => ({
+        ({ id, name, description, start_crop_dt, end_crop_dt, devices }) => ({
           id,
           name,
           description,
           start_crop_dt,
           end_crop_dt,
+          devices: devices?.length ?? 0,
         })
       ) ?? []
     )
@@ -70,8 +71,8 @@ export const HomeScreen: React.FC = () => {
               sx={{
                 display: "flex",
                 flex: 1,
-                justifyContent: "center",
                 flexDirection: "column",
+                height: "100%",
               }}
               onClick={() =>
                 navigate(
@@ -82,63 +83,52 @@ export const HomeScreen: React.FC = () => {
                 )
               }
             >
-              <CardMedia
-                component="img"
-                image={LOGO_FULL}
-                alt="plant"
-                height={131}
-                width={132}
-                sx={{ objectFit: "contain", alignSelf: "center" }}
-              />
-              <CardContent sx={{ display: "flex", flex: 1, width: "100%" }}>
+              <CardContent
+                sx={{
+                  display: "flex",
+                  flex: 1,
+                  flexDirection: "column",
+                  paddingTop: 0,
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography
+                  fontWeight="ligth"
+                  fontSize={20}
+                  color={"black"}
+                  paddingTop={1}
+                >
+                  {farm.name}
+                </Typography>
+                <Typography
+                  fontWeight="ligth"
+                  fontSize={15}
+                  color={"grey"}
+                  paddingY={1}
+                >
+                  {farm.description}
+                </Typography>
                 <Box
                   sx={{
-                    display: "flex",
-                    flex: 1,
-                    height: "125px",
-                    width: "100%",
                     flexDirection: "column",
+                    display: "flex",
                   }}
                 >
-                  <Typography
-                    fontWeight="ligth"
-                    fontSize={20}
-                    textAlign={"center"}
-                    color={"black"}
-                  >
-                    {farm.name}
+                  <Typography fontWeight="medium" fontSize={10} color={"grey"}>
+                    Dispositivos vinculados : {farm.devices}
                   </Typography>
-                  <Box marginY={2} width={"100%"}>
-                    <Typography
-                      fontWeight="ligth"
-                      fontSize={15}
-                      textAlign={"left"}
-                      color={"grey"}
-                    >
-                      {farm.description}
-                    </Typography>
-                  </Box>
-                  <Box
-                    marginBottom={1}
-                    sx={{
-                      flexDirection: "column",
-                      display: "flex",
-                      width: "100%",
-                    }}
-                  >
-                    <Typography fontWeight="ligth" fontSize={10} color={"grey"}>
-                      Siembra :{" "}
-                      {DateTime.fromISO(farm.start_crop_dt).toLocaleString(
-                        DateTime.DATETIME_MED
-                      )}
-                    </Typography>
-                    <Typography fontWeight="ligth" fontSize={10} color={"grey"}>
-                      Cosecha :{" "}
-                      {DateTime.fromISO(farm.end_crop_dt).toLocaleString(
-                        DateTime.DATETIME_MED
-                      )}
-                    </Typography>
-                  </Box>
+                  <Typography fontWeight="medium" fontSize={10} color={"grey"}>
+                    Siembra :{" "}
+                    {DateTime.fromISO(farm.start_crop_dt).toLocaleString(
+                      DateTime.DATETIME_MED
+                    )}
+                  </Typography>
+                  <Typography fontWeight="medium" fontSize={10} color={"grey"}>
+                    Cosecha :{" "}
+                    {DateTime.fromISO(farm.end_crop_dt).toLocaleString(
+                      DateTime.DATETIME_MED
+                    )}
+                  </Typography>
                 </Box>
               </CardContent>
             </CardActionArea>

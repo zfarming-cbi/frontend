@@ -6,6 +6,7 @@ export interface JWTContent {
   url: string
   tok: string
   exp: number
+  companyId: number
 }
 
 export interface AppSession {

@@ -14,6 +14,17 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Plant"],
     }),
+    getPlant: build.query<PlantDTO, { plantId?: string }>({
+      query: ({ plantId }) => ({
+        url: `/plants/${plantId}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Plant"],
+    }),
     createPlant: build.mutation<PlantDTO, PlantDTO>({
       query: (body) => ({
         url: "/plants",
@@ -45,6 +56,7 @@ const extendedApi = API.injectEndpoints({
 })
 
 export const {
+  useGetPlantQuery,
   useGetPlantsQuery,
   useCreatePlantMutation,
   useGetPlantsForGaleryQuery,
