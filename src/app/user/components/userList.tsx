@@ -16,29 +16,21 @@ const COLUMNS_DEF: GridColDef[] = [
     field: "firstname",
     headerName: "Nombre",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "lastname",
     headerName: "Apellido",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "email",
     headerName: "Email",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "actions",
     headerName: "Acciones",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
     renderCell: (params) => (
       <IconButton
         aria-label="Delete"

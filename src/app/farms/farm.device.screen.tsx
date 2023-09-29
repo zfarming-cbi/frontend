@@ -1,7 +1,6 @@
 import * as React from "react"
 import Grid from "@mui/material/Grid"
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -92,7 +91,7 @@ export const DeviceByFarmScreen: React.FC = () => {
             >
               <CardMedia
                 component="img"
-                image={`http://localhost:3000/api/v1/plants/${device.plant.image}`}
+                image={`http://localhost:3000/api/v1/plants/${device.plant.id}`}
                 alt="plant"
                 height={131}
                 width={132}
@@ -108,13 +107,13 @@ export const DeviceByFarmScreen: React.FC = () => {
                   width: "100%",
                 }}
               >
-                <Typography fontWeight="medium" fontSize={15} color={"grey"}>
+                <Typography variant={"h6"} fontWeight="bold" color={"grey"}>
                   {device.plant.name}
                 </Typography>
-                <Typography fontWeight="medium" fontSize={15} color={"grey"}>
+                <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
                   {device.name}
                 </Typography>
-                <Typography fontWeight="medium" fontSize={15} color={"grey"}>
+                <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
                   {device.code}
                 </Typography>
                 {!device.measurings && (

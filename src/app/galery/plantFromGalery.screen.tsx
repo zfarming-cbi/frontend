@@ -1,9 +1,10 @@
-import { Grid, IconButton, Typography } from "@mui/material"
+import { Card, Grid, IconButton, Typography } from "@mui/material"
 import * as React from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetPlantQuery } from "../../settings/api/endpoints/plant"
 import { ArrowBack } from "@mui/icons-material"
 import LOGO_FULL from "../../assets/placeholder.png"
+import { Comments } from "./components/comments"
 
 export const PlantFromGalery: React.FC = () => {
   const { plantId } = useParams()
@@ -34,24 +35,30 @@ export const PlantFromGalery: React.FC = () => {
             <Typography paddingLeft={1}>Volver</Typography>
           </IconButton>
         </Grid>
-        <Grid container item xs={12} justifyContent={"center"}>
-          <Typography variant="h2" textAlign={"center"}>
+        <Grid
+          container
+          item
+          xs={12}
+          justifyContent={"center"}
+          sx={{ border: "2px solid" }}
+        >
+          <Typography
+            variant="h2"
+            noWrap
+            textAlign={"center"}
+            fontWeight={"bold"}
+          >
             {title}
           </Typography>
-          <Grid />
-          <Grid container item xs={12} justifyContent={"center"}>
-            <img src={LOGO_FULL} width="30%" alt="Agricultura Cero" />
-          </Grid>
-          <Grid container item xs={12} justifyContent={"center"}>
-            <Typography
-              fontWeight="ligth"
-              fontSize={10}
-              textAlign={"left"}
-              color={"black"}
-            >
-              {content}
-            </Typography>
-          </Grid>
+          <Typography
+            fontWeight="ligth"
+            fontSize={20}
+            textAlign={"left"}
+            color={"black"}
+          >
+            {content}
+          </Typography>
+          {/* <Comments comments={data?.comments} /> */}
         </Grid>
       </Grid>
     </Grid>

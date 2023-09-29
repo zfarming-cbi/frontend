@@ -5,7 +5,7 @@ const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query<UserDTO[], { companyId: number }>({
       query: ({ companyId }) => ({
-        url: `/user/${companyId}`,
+        url: `/user/company/${companyId}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -38,11 +38,10 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    getUser: build.query<UserDTO, void>({
-      query: (body) => ({
-        url: "/user",
+    getUser: build.query<UserDTO, { id: string }>({
+      query: ({ id }) => ({
+        url: `/user/${id}`,
         method: "GET",
-        body,
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",

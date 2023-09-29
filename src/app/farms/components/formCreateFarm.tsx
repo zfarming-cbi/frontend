@@ -89,7 +89,7 @@ export const FormCreateFarm: FC<Props> = (props) => {
       <Grid item xs>
         <TextField
           fullWidth
-          label="Fecha inicial"
+          label="Siembra"
           type="date"
           required
           variant="outlined"
@@ -106,7 +106,7 @@ export const FormCreateFarm: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
-          label="Fecha final"
+          label="Cosecha"
           type="date"
           variant="outlined"
           name="end_crop_dt"

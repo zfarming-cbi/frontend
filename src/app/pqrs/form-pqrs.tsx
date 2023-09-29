@@ -1,29 +1,41 @@
 import {
-  Box,
+  Alert,
   Button,
   DialogActions,
   Divider,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
-  useTheme,
 } from "@mui/material"
 import { BadgeOutlined as DocumentIdIcon } from "@mui/icons-material"
 import {
   SelectField,
   SelectFieldValue,
 } from "../../share/components/selectField"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useGetUserQuery } from "../../settings/api/endpoints/user"
+import { JWTContent } from "../../share/models/appSession"
+import jwt_decode from "jwt-decode"
+import * as Yup from "yup"
+import { useFormik } from "formik"
+import { useCreatePqrsMutation } from "../../settings/api/endpoints/pqrs"
 
-interface Props {
-  onSave(): void
-  onCancel(): void
-}
+export const FormPQRS: React.FC = () => {
+  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { data } = useGetUserQuery({
+    id: token.sub,
+  })
 
-interface PQRS { }
+  useEffect(() => {
+    setFieldValue("firstname", data?.firstname)
+    setFieldValue("lastname", data?.lastname)
+    setFieldValue("email", data?.email)
+  }, [data])
 
-export const FormPQRS: React.FC<Props> = (props) => {
-  const { onSave, onCancel } = props
+  const [doCreatePqrs, { isLoading, error }] = useCreatePqrsMutation()
 
   const KindOfPQRS: SelectFieldValue<string>[] = [
     {
@@ -44,9 +56,48 @@ export const FormPQRS: React.FC<Props> = (props) => {
     },
   ]
 
-  const [pqrsForm, setPQRSForm] = useState<PQRS>()
-
-  const onSavePQRS = () => { }
+  const {
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+    errors,
+    values: {
+      firstname: firstnameInputValue,
+      lastname: lastnameInputValue,
+      document: documentInputValue,
+      phone: phoneInputValue,
+      email: emailInputValue,
+      description: descriptionInputValue,
+      type: typeInputValue,
+    },
+  } = useFormik<{
+    firstname: string
+    lastname: string
+    document: string
+    phone: string
+    email: string
+    description: string
+    type: string
+  }>({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      document: "",
+      phone: "",
+      email: "",
+      description: "",
+      type: "",
+    },
+    validateOnMount: false,
+    validateOnBlur: true,
+    validateOnChange: false,
+    validationSchema: FormPqrsSchema,
+    async onSubmit(credentials) {
+      console.log(credentials)
+      // doCreatePqrs(credentials)
+    },
+  })
 
   return (
     <Grid
@@ -54,47 +105,8 @@ export const FormPQRS: React.FC<Props> = (props) => {
       spacing={1}
       component="form"
       flexDirection="column"
-      onSubmit={(e) => {
-        e.preventDefault()
-        onSavePQRS()
-      }}
+      onSubmit={handleSubmit}
     >
-      <Grid item marginBottom={1}>
-        <Typography variant="subtitle1" color="gray">
-          Información Contrato
-        </Typography>
-        <Divider />
-      </Grid>
-
-      <Grid item container spacing={2}>
-        <Grid item xs>
-          <SelectField
-            label="Tipo asociado"
-            name="associateType"
-            id="associateType"
-            itemID="associateType"
-            defaultValue={KindOfPQRS[0].value}
-            values={KindOfPQRS}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs>
-          <TextField
-            fullWidth
-            label="Número de Contrato"
-            name="contractCode"
-            id="contractCode"
-            itemID="contractCode"
-            defaultValue=""
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-            }}
-          />
-        </Grid>
-      </Grid>
-
       <Grid item marginTop={2} marginBottom={1}>
         <Typography variant="subtitle1" color="gray">
           Información Personal
@@ -102,48 +114,19 @@ export const FormPQRS: React.FC<Props> = (props) => {
         <Divider />
       </Grid>
 
-      <Grid item container spacing={2}>
-        <Grid item xs={4}>
-          <SelectField
-            label="Tipo de identificación"
-            name="identificationType"
-            id="identificationType"
-            itemID="identificationType"
-            defaultValue={KindOfPQRS[0].value}
-            values={KindOfPQRS}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs>
-          <TextField
-            fullWidth
-            label="Número de documento"
-            name="documentId"
-            id="documentId"
-            itemID="documentId"
-            defaultValue=""
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-            }}
-          />
-        </Grid>
-      </Grid>
-
-      <Grid item container spacing={2}>
+      <Grid item container spacing={2} flexDirection="column">
         <Grid item xs>
           <TextField
             fullWidth
             label="Nombres"
-            name="firstnames"
-            id="firstnames"
-            itemID="firstnames"
-            defaultValue=""
+            name="firstname"
+            id="firstname"
+            value={firstnameInputValue}
             InputProps={{
               startAdornment: (
                 <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
               ),
+              readOnly: true,
             }}
           />
         </Grid>
@@ -153,8 +136,41 @@ export const FormPQRS: React.FC<Props> = (props) => {
             label="Apellidos"
             name="lastname"
             id="lastname"
-            itemID="lastname"
-            defaultValue=""
+            value={lastnameInputValue}
+            InputProps={{
+              startAdornment: (
+                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
+              ),
+              readOnly: true,
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            fullWidth
+            label="Correo Electrónico"
+            name="email"
+            id="email"
+            value={emailInputValue}
+            InputProps={{
+              startAdornment: (
+                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
+              ),
+              readOnly: true,
+            }}
+          />
+        </Grid>
+
+        <Grid item xs>
+          <TextField
+            fullWidth
+            label="Número de documento"
+            name="document"
+            id="document"
+            disabled={isLoading}
+            value={documentInputValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
             InputProps={{
               startAdornment: (
                 <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
@@ -162,34 +178,23 @@ export const FormPQRS: React.FC<Props> = (props) => {
             }}
           />
         </Grid>
-      </Grid>
-
-      <Grid item>
-        <TextField
-          fullWidth
-          label="Correo Electrónico"
-          name="email"
-          id="email"
-          itemID="email"
-          defaultValue=""
-          InputProps={{
-            startAdornment: <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />,
-          }}
-        />
-      </Grid>
-
-      <Grid item>
-        <TextField
-          fullWidth
-          label="Télefono celular"
-          name="celularPhone"
-          id="celularPhone"
-          itemID="celularPhone"
-          defaultValue=""
-          InputProps={{
-            startAdornment: <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />,
-          }}
-        />
+        <Grid item>
+          <TextField
+            fullWidth
+            label="Télefono celular"
+            name="phone"
+            id="phone"
+            value={phoneInputValue}
+            disabled={isLoading}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            InputProps={{
+              startAdornment: (
+                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
+              ),
+            }}
+          />
+        </Grid>
       </Grid>
 
       <Grid item marginBottom={1} marginTop={2}>
@@ -202,11 +207,13 @@ export const FormPQRS: React.FC<Props> = (props) => {
       <Grid item>
         <SelectField
           label="Tipo Solicitud"
-          name="requestType"
-          id="requestType"
-          itemID="requestType"
-          defaultValue={KindOfPQRS[0].value}
+          name="type"
+          id="type"
+          value={typeInputValue}
           values={KindOfPQRS}
+          onSelect={(selectedValue) => {
+            setFieldValue("type", selectedValue)
+          }}
           fullWidth
         />
       </Grid>
@@ -217,15 +224,32 @@ export const FormPQRS: React.FC<Props> = (props) => {
           label="Descripción del reporte"
           name="description"
           id="description"
-          itemID="description"
+          value={descriptionInputValue}
+          disabled={isLoading}
+          onChange={handleChange}
+          onBlur={handleBlur}
           multiline
           minRows={4}
           maxRows={10}
-          defaultValue=""
         />
       </Grid>
+      {!!error && (
+        <Alert
+          sx={{
+            marginTop: 1,
+            textAlign: "left",
+            fontSize: 10,
+            alignItems: "center",
+          }}
+          severity="error"
+          variant="filled"
+        >
+          lo sentimos en este momento no podemos validar la información
+          {/* {JSON.stringify(error)} */}
+        </Alert>
+      )}
 
-      <DialogActions >
+      <DialogActions>
         <Grid container item xs={12} justifyContent="end" marginTop={1}>
           <Button sx={{ marginInline: 1 }} type="submit">
             Generar PQRS
@@ -235,3 +259,22 @@ export const FormPQRS: React.FC<Props> = (props) => {
     </Grid>
   )
 }
+
+const FormPqrsSchema = Yup.object().shape({
+  firstname: Yup.string().min(3).max(50).required("El nombre no es valido."),
+  lastname: Yup.string().min(3).max(50).required("El apellido no es valido."),
+  email: Yup.string().min(3).max(50).required("El email no es valido."),
+  phone: Yup.string().min(3).max(20).required("El teléfono no es valido."),
+  document: Yup.string()
+    .min(3)
+    .max(50)
+    .required("El numero de documento no es valido."),
+  description: Yup.string()
+    .min(3)
+    .max(250)
+    .required("La descripción no es valida."),
+  type: Yup.string()
+    .min(3)
+    .max(50)
+    .required("El tipo de petición no es valido."),
+})

@@ -16,29 +16,21 @@ const COLUMNS_DEF: GridColDef[] = [
     field: "code",
     headerName: "Código",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "name",
     headerName: "Nombre del dispositivo",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "description",
     headerName: "Descripción",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "actions",
     headerName: "Acciones",
     width: 150,
-    align: "center",
-    headerAlign: "center",
     renderCell: (params) => (
       <Box>
         <IconButton

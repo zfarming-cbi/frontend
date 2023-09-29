@@ -26,7 +26,7 @@ export const LikesComments: React.FC<Props> = (props) => {
         {" "}
         {likes}
       </Typography>
-      <IconButton disabled={disabled}>
+      <IconButton disabled>
         <Comment />
       </IconButton>
       <Typography

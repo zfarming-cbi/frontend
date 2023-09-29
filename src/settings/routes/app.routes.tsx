@@ -25,7 +25,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
   {
     path: ROUTE_PATH.Root,
     element: <RootScreen />,
-    loader: () => redirect(ROUTE_PATH.Login),
+    loader: () => redirect(ROUTE_PATH.Galery),
   },
   {
     path: ROUTE_PATH.Login,

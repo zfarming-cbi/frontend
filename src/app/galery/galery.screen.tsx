@@ -66,8 +66,16 @@ export const GaleryScreen: React.FC = () => {
       alignItems="center"
     >
       <Grid item xs={12}>
-        <Grid container item xs={12} justifyContent="space-between">
-          <IconButton onClick={() => navigate(-1)}>
+        <Grid
+          container
+          item
+          xs={12}
+          justifyContent={!isLogged ? "end" : "space-between"}
+        >
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{ display: !isLogged ? "none" : "flex" }}
+          >
             <ArrowBack />
             <Typography paddingLeft={1}>Volver</Typography>
           </IconButton>

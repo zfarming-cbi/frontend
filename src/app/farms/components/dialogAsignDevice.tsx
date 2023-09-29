@@ -37,25 +37,11 @@ const COLUMNS_DEF_PLANTS: GridColDef[] = [
     headerAlign: "center",
   },
   {
-    field: "devices",
-    headerName: "Dispositivos vinculados",
+    field: "content",
+    headerName: "Contenido",
     flex: 1,
     align: "center",
     headerAlign: "center",
-  },
-  {
-    field: "growing_time",
-    headerName: "Fecha de siembra",
-    flex: 1,
-    align: "center",
-    headerAlign: "center",
-    valueFormatter: (params) => {
-      {
-        return DateTime.fromISO(params.value).toLocaleString(
-          DateTime.DATETIME_MED
-        )
-      }
-    },
   },
 ]
 
@@ -73,10 +59,21 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
   const [deviceId, setDeviceId] = useState<string>("")
   const [plantId, setPlantId] = useState<string>("")
 
-  const { data } = useGetPlantsQuery({
-    page: "1",
+  const [page, setPage] = useState(1)
+
+  const { data, refetch } = useGetPlantsQuery({
+    page: String(page),
     perPage: "10",
   })
+
+  useEffect(() => {
+    refetch()
+  }, [page])
+
+  // const { data } = useGetPlantsQuery({
+  //   page: "1",
+  //   perPage: "10",
+  // })
   const response = useGetDevicesUnasignedQuery()
 
   const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
@@ -141,8 +138,13 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
           autoHeight
           density="compact"
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          autoPageSize
           onRowClick={onClickRowDevice}
+          autoPageSize
+          page={page}
+          onPageChange={(newPage) => {
+            console.log(newPage)
+            setPage(newPage)
+          }}
         />
         <TextField
           fullWidth
@@ -178,38 +180,6 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
               Dispositivo y planta
             </Typography>
             <Divider sx={{ mb: 2 }} />
-            {!!plantName && (
-              <TextField
-                fullWidth
-                required
-                label="Nombre de la planta"
-                variant="outlined"
-                name="namePlant"
-                id="namePlant"
-                value={plantName}
-                disabled={isLoading}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            )}
-            {!!plantContent && (
-              <TextField
-                fullWidth
-                multiline
-                required
-                label="Contenido de la planta"
-                variant="outlined"
-                name="contentPlant"
-                id="contentPlant"
-                rows={7}
-                value={plantContent}
-                disabled={isLoading}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            )}
             {!!deviceName && (
               <TextField
                 fullWidth
@@ -234,6 +204,38 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
                 name="codeDevice"
                 id="codeDevice"
                 value={deviceCode}
+                disabled={isLoading}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            )}
+            {!!plantName && (
+              <TextField
+                fullWidth
+                required
+                label="Nombre de la planta"
+                variant="outlined"
+                name="namePlant"
+                id="namePlant"
+                value={plantName}
+                disabled={isLoading}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            )}
+            {!!plantContent && (
+              <TextField
+                fullWidth
+                multiline
+                required
+                label="Contenido de la planta"
+                variant="outlined"
+                name="contentPlant"
+                id="contentPlant"
+                maxRows={7}
+                value={plantContent}
                 disabled={isLoading}
                 InputProps={{
                   readOnly: true,

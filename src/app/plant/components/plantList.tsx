@@ -16,43 +16,21 @@ const COLUMNS_DEF: GridColDef[] = [
     field: "id",
     headerName: "#",
     width: 70,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "name",
     headerName: "Nombre planta",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "content",
     headerName: "Contenido",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "growing_time",
-    headerName: "Fecha de siembra",
-    flex: 1,
-    align: "center",
-    headerAlign: "center",
-    valueFormatter: (params) => {
-      {
-        return DateTime.fromISO(params.value).toLocaleString(
-          DateTime.DATETIME_MED
-        )
-      }
-    },
   },
   {
     field: "actions",
     headerName: "Acciones",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
     renderCell: (params) => (
       <Box>
         <IconButton

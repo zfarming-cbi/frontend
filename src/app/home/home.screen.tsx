@@ -5,8 +5,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
-  Paper,
+  Divider,
   Typography,
 } from "@mui/material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
@@ -92,28 +91,36 @@ export const HomeScreen: React.FC = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography
-                  fontWeight="ligth"
-                  fontSize={20}
-                  color={"black"}
-                  paddingTop={1}
-                >
-                  {farm.name}
-                </Typography>
-                <Typography
-                  fontWeight="ligth"
-                  fontSize={15}
-                  color={"grey"}
-                  paddingY={1}
-                >
-                  {farm.description}
-                </Typography>
                 <Box
                   sx={{
                     flexDirection: "column",
                     display: "flex",
                   }}
                 >
+                  <Typography
+                    fontWeight="ligth"
+                    fontSize={20}
+                    color={"black"}
+                    paddingTop={1}
+                  >
+                    {farm.name}
+                  </Typography>
+                  <Typography
+                    fontWeight="ligth"
+                    fontSize={12}
+                    color={"grey"}
+                    paddingY={1}
+                  >
+                    {farm.description}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    flexDirection: "column",
+                    display: "flex",
+                  }}
+                >
+                  <Divider sx={{ mb: 1 }} />
                   <Typography fontWeight="medium" fontSize={10} color={"grey"}>
                     Dispositivos vinculados : {farm.devices}
                   </Typography>

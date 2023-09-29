@@ -21,6 +21,7 @@
     "@mui/material": "^5.11.8",
     "@mui/x-data-grid": "^5.17.25",
     "@mui/x-date-pickers": "^5.0.20",
+    "@nestjs/serve-static": "^4.0.0",
     "@reduxjs/toolkit": "^1.9.1",
     "@types/remarkable": "^2.0.3",
     "@uiw/react-md-editor": "^3.23.5",
