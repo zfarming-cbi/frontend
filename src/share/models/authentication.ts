@@ -24,10 +24,6 @@ export interface ChangePasswordDTO {
   newPassword: string
 }
 
-export interface RecoverPasswordScreenDTO {
-  uuid?: string
-}
-
 export interface TokenDTO {
   access_token: string
 }

@@ -1,6 +1,13 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import UnLockIcon from "@mui/icons-material/LockOpen"
-import { Alert, Grid, Paper, TextField, Typography } from "@mui/material"
+import {
+  Alert,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Box } from "@mui/system"
 import { useFormik } from "formik"
@@ -11,6 +18,7 @@ import { useForgotMutation } from "../../settings/api/endpoints/authentication"
 
 export const ForgotPasswordScreen: FC = () => {
   const navigate = useNavigate()
+  const [resend, setResend] = useState<boolean>()
   const {
     handleChange,
     handleBlur,
@@ -27,6 +35,7 @@ export const ForgotPasswordScreen: FC = () => {
     validationSchema: ForgotSchema,
     async onSubmit(credentials) {
       doForgot(credentials)
+      setResend(true)
     },
   })
 
@@ -93,6 +102,28 @@ export const ForgotPasswordScreen: FC = () => {
                 {/* {JSON.stringify(error)} */}
               </Alert>
             )}
+            {!!data && resend && (
+              <Box>
+                <Alert
+                  sx={{
+                    marginTop: 1,
+                    textAlign: "left",
+                    fontSize: 10,
+                    alignItems: "center",
+                  }}
+                  variant="filled"
+                >
+                  {JSON.stringify(data)} //data.message
+                  {/* {JSON.stringify(error)} */}
+                </Alert>
+                <Typography fontSize={12} textAlign={"center"} padding={1}>
+                  ¿no te llego ningun enlace?{" "}
+                  <Button variant={"text"} onClick={() => setResend(false)}>
+                    Intentar de nuevo
+                  </Button>
+                </Typography>
+              </Box>
+            )}
             <Box sx={{ height: 8, width: 1 }} />
             <LoadingButton
               loading={isLoading}
@@ -102,6 +133,7 @@ export const ForgotPasswordScreen: FC = () => {
               variant="contained"
               color="primary"
               type="submit"
+              disabled={!!data && resend}
             >
               Enviar
             </LoadingButton>

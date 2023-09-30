@@ -7,12 +7,19 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import LOGO_FULL from "../../assets/placeholder.png"
 import {
-  useResetPassowrdMutation,
+  useResetPasswordMutation,
   useVerifyUuidQuery,
 } from "../../settings/api/endpoints/authentication"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
+import { ROUTE_PATH } from "../../settings/routes/routes"
 
 export const RecoverPasswordScreen: FC = () => {
+  const navigate = useNavigate()
+  const { uuid } = useParams()
+  const response = useVerifyUuidQuery({
+    uuid,
+  })
   const {
     handleChange,
     handleBlur,
@@ -32,17 +39,21 @@ export const RecoverPasswordScreen: FC = () => {
     validateOnChange: false,
     validationSchema: ResetPasswordSchema,
     async onSubmit(credentials) {
-      doResetPassword({ password: credentials.password })
+      doResetPassword({ password: credentials.password, uuid })
     },
   })
 
-  const { uuid } = useParams()
-  const [response] = useVerifyUuidQuery({
-    uuid,
-  })
-
   const [doResetPassword, { data, isLoading, error }] =
-    useResetPassowrdMutation()
+    useResetPasswordMutation()
+
+  useEffect(() => {
+    const { access_token } = data ?? {}
+    if (!access_token) return
+    const saveIsSuccess = AuthenticationSaveHandler(access_token)
+    console.log({ saveIsSuccess })
+    if (!saveIsSuccess) return
+    navigate(ROUTE_PATH.Dashboard, { replace: true })
+  }, [data])
 
   return (
     <Grid
@@ -71,12 +82,14 @@ export const RecoverPasswordScreen: FC = () => {
               Reestablece tu contraseña
             </Typography>
           </Box>
-          {!!response.error && (
+          {response.error && (
             <Box>
-              <Typography>{JSON.stringify(response.error)}</Typography>
+              <Typography>
+                {JSON.stringify(response.error)} //data.message
+              </Typography>
             </Box>
           )}
-          {response.error && (
+          {!response.error && (
             <Box component="form" onSubmit={handleSubmit}>
               <TextField
                 fullWidth
