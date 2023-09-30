@@ -14,14 +14,14 @@ import { BadgeOutlined as DocumentIdIcon } from "@mui/icons-material"
 import {
   SelectField,
   SelectFieldValue,
-} from "../../share/components/selectField"
+} from "../../../share/components/selectField"
 import React, { useEffect, useState } from "react"
-import { useGetUserQuery } from "../../settings/api/endpoints/user"
-import { JWTContent } from "../../share/models/appSession"
+import { useGetUserQuery } from "../../../settings/api/endpoints/user"
+import { JWTContent } from "../../../share/models/appSession"
 import jwt_decode from "jwt-decode"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { useCreatePqrsMutation } from "../../settings/api/endpoints/pqrs"
+import { useCreatePqrsMutation } from "../../../settings/api/endpoints/pqrs"
 
 export const FormPQRS: React.FC = () => {
   const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")

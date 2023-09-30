@@ -63,7 +63,7 @@ export const CircularChart: FC = () => {
       <div
         id="myChart"
         ref={chartNodeRef}
-        style={{ width: 600, height: 600 }}
+        style={{ width: 500, height: 500 }}
       />
     </Box>
   )

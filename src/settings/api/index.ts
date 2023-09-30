@@ -18,6 +18,15 @@ export const API = createApi({
       return headers
     },
   }),
-  tagTypes: ["Farm", "User", "Device", "Plant", "Pqrs", "Measuring"],
+  tagTypes: [
+    "Farm",
+    "User",
+    "Device",
+    "Plant",
+    "Pqrs",
+    "Measuring",
+    "Comments",
+    "Likes",
+  ],
   endpoints: () => ({}),
 })

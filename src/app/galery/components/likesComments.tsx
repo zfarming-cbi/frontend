@@ -5,16 +5,15 @@ import { Comment, ContentCopy, ThumbUp } from "@mui/icons-material"
 import { Typography } from "@mui/material"
 
 interface Props extends React.PropsWithChildren {
-  likes: number
-  comments: number
-  disabled: boolean
+  likes?: number
+  comments?: number
 }
 
 export const LikesComments: React.FC<Props> = (props) => {
-  const { likes, comments, disabled } = props
+  const { likes, comments } = props
   return (
     <Stack direction="row" spacing={1} sx={{ display: "flex", pl: 1 }}>
-      <IconButton disabled={disabled}>
+      <IconButton disabled>
         <ThumbUp />
       </IconButton>
       <Typography
@@ -24,7 +23,7 @@ export const LikesComments: React.FC<Props> = (props) => {
         alignSelf={"center"}
       >
         {" "}
-        {likes}
+        {likes ?? 0}
       </Typography>
       <IconButton disabled>
         <Comment />
@@ -36,7 +35,7 @@ export const LikesComments: React.FC<Props> = (props) => {
         alignSelf={"center"}
       >
         {" "}
-        {comments}
+        {comments ?? 0}
       </Typography>
     </Stack>
   )

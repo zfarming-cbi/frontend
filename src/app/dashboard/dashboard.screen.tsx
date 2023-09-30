@@ -28,7 +28,7 @@ import {
   Grass,
 } from "@mui/icons-material"
 
-import { FormPQRS } from "../pqrs/form-pqrs"
+import { FormPQRS } from "../pqrs/components/form-pqrs"
 import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
   closeFormCreateDevice,

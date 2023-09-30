@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import React, { FC, useEffect } from "react"
 import {
   Alert,
   Box,
@@ -18,23 +18,16 @@ import {
   useGetCompanyQuery,
   useUpdateCompanyMutation,
 } from "../../../settings/api/endpoints/company"
+import jwt_decode from "jwt-decode"
+import { JWTContent } from "../../../share/models/appSession"
 
-const image = {
-  url: "src/assets/aguacate.jpg",
-  title: "Breakfast",
-  width: 300,
-}
-
-const ImageButton = styled(ButtonBase)(({ theme }) => ({
+const ImageButton = styled(ButtonBase)(() => ({
   position: "relative",
   height: 150,
   width: 150,
   borderRadius: "50%",
   overflow: "hidden",
-  [theme.breakpoints.down("sm")]: {
-    width: "100% !important",
-    height: 100,
-  },
+  cursor: "pointer",
   "&:hover, &.Mui-focusVisible": {
     zIndex: 1,
     "& .MuiSvgIcon-root": {
@@ -81,8 +74,7 @@ const ImageBackdrop = styled("span")(({ theme }) => ({
   top: 0,
   bottom: 0,
   backgroundColor: theme.palette.common.black,
-  opacity: 0.4,
-  transition: theme.transitions.create("opacity"),
+  opacity: 0.2,
 }))
 
 const VisuallyHiddenInput = styled("input")({
@@ -98,7 +90,10 @@ const VisuallyHiddenInput = styled("input")({
 })
 
 export const FormCompany: FC = () => {
-  const { data } = useGetCompanyQuery()
+  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { data } = useGetCompanyQuery({
+    companyId: token.companyId,
+  })
   useEffect(() => {
     setFieldValue("name", data?.name)
     setFieldValue("nit", data?.nit)
@@ -113,6 +108,7 @@ export const FormCompany: FC = () => {
   } = useFormik<{
     name: string
     nit: string
+    logo?: any
   }>({
     initialValues: {
       name: "",
@@ -123,10 +119,29 @@ export const FormCompany: FC = () => {
     validateOnChange: false,
     validationSchema: FormEditCompanySchema,
     async onSubmit(credentials) {
-      doUpdateCompany(credentials)
+      console.log(credentials)
+      doUpdateCompany({ ...credentials, companyId: token.companyId })
     },
   })
   const [doUpdateCompany, { isLoading, error }] = useUpdateCompanyMutation()
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
+
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null)
+
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setFieldValue("logo", file)
+      const imageUrl = URL.createObjectURL(file)
+      setSelectedImage(imageUrl)
+    }
+  }
 
   return (
     <Grid
@@ -151,9 +166,14 @@ export const FormCompany: FC = () => {
           flexDirection: "column",
         }}
       >
-        <ImageButton focusRipple key={image.title}>
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+        <ImageButton focusRipple onClick={handleClick}>
+          <ImageSrc style={{ backgroundImage: `url(${selectedImage})` }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />
+          <VisuallyHiddenInput
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+          />
           <Image>
             <Edit />
           </Image>

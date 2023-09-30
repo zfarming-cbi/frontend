@@ -204,16 +204,17 @@ export const GaleryScreen: React.FC = () => {
                   </Box>
                   <CardMedia
                     component="img"
-                    image={plant.image}
+                    image={`http://localhost:3000/${plant.image}`}
                     alt="plant"
-                    sx={{ width: 175, height: 200, flex: 1 }}
+                    sx={{
+                      width: 175,
+                      height: 200,
+                      flex: 1,
+                      objectFit: "contain",
+                    }}
                   />
                 </CardActionArea>
-                <LikesComments
-                  likes={plant.likes}
-                  comments={plant.comments}
-                  disabled={!isLogged}
-                />
+                <LikesComments likes={plant.likes} comments={plant.comments} />
               </Box>
             </Card>
           )

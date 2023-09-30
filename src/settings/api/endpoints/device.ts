@@ -14,6 +14,17 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Device"],
     }),
+    getDevice: build.query<DeviceDTO, { deviceId?: string }>({
+      query: ({ deviceId }) => ({
+        url: `/device/${deviceId}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Device"],
+    }),
     getDevicesUnasigned: build.query<DeviceDTO[], void>({
       query: () => ({
         url: `/device/unasigned`,
@@ -58,4 +69,5 @@ export const {
   useGetDevicesUnasignedQuery,
   useCreateDevicesMutation,
   useUpdateDeviceMutation,
+  useGetDeviceQuery,
 } = extendedApi

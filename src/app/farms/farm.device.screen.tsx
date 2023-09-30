@@ -91,7 +91,7 @@ export const DeviceByFarmScreen: React.FC = () => {
             >
               <CardMedia
                 component="img"
-                image={`http://localhost:3000/api/v1/plants/${device.plant.id}`}
+                image={`http://localhost:3000/${device.plant.image}`}
                 alt="plant"
                 height={131}
                 width={132}

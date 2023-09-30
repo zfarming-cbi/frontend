@@ -3,9 +3,12 @@ import { CompanyDTO } from "../../../share/models/company"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    updateCompany: build.mutation<CompanyDTO, CompanyDTO>({
-      query: (body) => ({
-        url: "/company",
+    updateCompany: build.mutation<
+      CompanyDTO,
+      CompanyDTO & { companyId: number }
+    >({
+      query: ({ companyId, ...body }) => ({
+        url: `/company/${companyId}`,
         method: "PATCH",
         body,
         headers: {
@@ -14,9 +17,9 @@ const extendedApi = API.injectEndpoints({
         },
       }),
     }),
-    getCompany: build.query<CompanyDTO, void>({
-      query: () => ({
-        url: "/company",
+    getCompany: build.query<CompanyDTO, { companyId: number }>({
+      query: ({ companyId }) => ({
+        url: `/company/${companyId}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
