@@ -5,7 +5,10 @@ import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import { UserList, UserListRow } from "./components/userList"
 import { useGetUsersQuery } from "../../settings/api/endpoints/user"
 import { useAppDispatch } from "../../settings/redux/hooks"
-import { showFormCreateUser } from "../../settings/redux/dialogs.slice"
+import {
+  showFormCreateUser,
+  showFormSearchUser,
+} from "../../settings/redux/dialogs.slice"
 import jwt_decode from "jwt-decode"
 import { JWTContent } from "../../share/models/appSession"
 
@@ -24,7 +27,14 @@ export const UserScreen = () => {
     },
     {
       icon: <FilterIcon />,
-      action() {},
+      action() {
+        dispatch(
+          showFormSearchUser({
+            visible: true,
+            data: {},
+          })
+        )
+      },
     },
   ]
 
@@ -32,6 +42,9 @@ export const UserScreen = () => {
   const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
   const { data, isLoading, error } = useGetUsersQuery({
     companyId: token.companyId,
+    page: "1",
+    perPage: "10",
+    search: "",
   })
 
   const users = React.useMemo(() => {

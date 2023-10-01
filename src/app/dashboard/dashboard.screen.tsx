@@ -38,6 +38,7 @@ import {
   closeFormPQRS,
   selectorDialogs,
   closeAsignDevice,
+  closeFormSearchUser,
 } from "../../settings/redux/dialogs.slice"
 import { Dialog } from "../../share/components/dialog"
 import { FormCreateUser } from "../user/components/formCreateUser"
@@ -45,6 +46,7 @@ import { FormCreateFarm } from "../farms/components/formCreateFarm"
 import { FormCreateDevice } from "../device/components/formCreateDevice"
 import { FormCreatePlant } from "../plant/components/formCreatePlant"
 import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
+import { FormSearchUser } from "../user/components/formSearchUser"
 
 export const DashboardScreen: FC = () => {
   const menuItems: DrawerMenuProps["items"] = [
@@ -54,6 +56,13 @@ export const DashboardScreen: FC = () => {
         text: "Inicio",
         action() {
           navigate(ROUTE_PATH.Dashboard)
+        },
+      },
+      {
+        icon: <AccountCircleIcon />,
+        text: "Perfil de usuario",
+        action() {
+          navigate(ROUTE_PATH.Profile)
         },
       },
       {
@@ -75,13 +84,6 @@ export const DashboardScreen: FC = () => {
         text: "Dispositivos",
         action() {
           navigate(ROUTE_PATH.Device)
-        },
-      },
-      {
-        icon: <AccountCircleIcon />,
-        text: "Perfil de usuario",
-        action() {
-          navigate(ROUTE_PATH.Profile)
         },
       },
       {
@@ -109,6 +111,7 @@ export const DashboardScreen: FC = () => {
     formCreateDevice,
     formCreatePlant,
     assignDevice,
+    formSearchUser,
   } = useAppSelector(selectorDialogs)
   const dispatch = useAppDispatch()
 
@@ -135,6 +138,10 @@ export const DashboardScreen: FC = () => {
     dispatch(closeFormCreateUser())
   }
 
+  const onCloseFormSearchUser = () => {
+    dispatch(closeFormSearchUser())
+  }
+
   const onCloseFormCreateFarm = () => {
     dispatch(closeFormCreateFarm())
   }
@@ -157,6 +164,7 @@ export const DashboardScreen: FC = () => {
   const onSaveFormCreateDevice = () => {}
   const onSaveFormCreatePlant = () => {}
   const onSaveAsignDevice = () => {}
+  const onSaveFormSearchUser = () => {}
 
   return (
     <>
@@ -214,6 +222,17 @@ export const DashboardScreen: FC = () => {
         <FormCreateUser
           onCancel={onCloseFormCreateUser}
           onSave={onSaveFormCreateUser}
+        />
+      </Dialog>
+
+      <Dialog
+        title={"Buscar usuarios"}
+        onClose={onCloseFormSearchUser}
+        visible={formSearchUser.visible}
+      >
+        <FormSearchUser
+          onCancel={onCloseFormSearchUser}
+          onSave={onSaveFormSearchUser}
         />
       </Dialog>
 

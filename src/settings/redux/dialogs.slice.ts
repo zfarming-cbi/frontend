@@ -6,6 +6,10 @@ interface DialogsState {
     visible: boolean
     data?: any
   }
+  formSearchUser: {
+    visible: boolean
+    data?: any
+  }
   formPQRS: {
     visible: boolean
     data?: any
@@ -30,6 +34,10 @@ interface DialogsState {
 
 const initialState: DialogsState = {
   formCreateUser: {
+    visible: false,
+    data: undefined,
+  },
+  formSearchUser: {
     visible: false,
     data: undefined,
   },
@@ -80,6 +88,17 @@ export const dialogsSlice = createSlice({
     closeFormCreateUser: (state) => {
       state.formCreateUser.visible = false
       state.formCreateUser.data = undefined
+    },
+    showFormSearchUser: (
+      state,
+      action: PayloadAction<DialogsState["formSearchUser"]>
+    ) => {
+      state.formSearchUser.visible = action.payload.visible
+      state.formSearchUser.data = action.payload.data
+    },
+    closeFormSearchUser: (state) => {
+      state.formSearchUser.visible = false
+      state.formSearchUser.data = undefined
     },
     showFormCreateFarm: (
       state,
@@ -141,5 +160,7 @@ export const {
   closeFormCreatePlant,
   closeAsignDevice,
   showAsignDevice,
+  closeFormSearchUser,
+  showFormSearchUser,
 } = dialogsSlice.actions
 export const selectorDialogs = (state: RootState) => state.dialogs

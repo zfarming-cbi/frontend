@@ -41,21 +41,24 @@ export interface CommentsListRow {
 export const Comments: React.FC<Props> = (props) => {
   const { plantId } = props
   const isLogged = localStorage.getItem("token") ?? undefined
-  const token: JWTContent = jwt_decode(isLogged ?? "")
   const [liked, setLiked] = React.useState<boolean>()
   const [message, setMessage] = React.useState<string>()
   const { data } = useGetCommentsQuery({ plantId: plantId ?? "" })
-  const isLike = useGetLikeQuery({
-    plantId: plantId ?? "",
-    userId: token.sub,
-  })
+  let token: JWTContent
+  if (isLogged) {
+    const decodeToken: JWTContent = jwt_decode(isLogged ?? "")
+    token = decodeToken
+    const isLike = useGetLikeQuery({
+      plantId: plantId ?? "",
+      userId: token.sub,
+    })
+    React.useEffect(() => {
+      setLiked(!!isLike?.data?.like)
+    }, [isLike])
+  }
   const [doCreateComment, { isLoading, error }] = useCreateCommentMutation()
   const [doCreateLike] = useCreateLikeMutation()
   const navigate = useNavigate()
-  React.useEffect(() => {
-    setLiked(!!isLike?.data?.like)
-    console.log("Like de la base de datos", isLike.data)
-  }, [isLike])
   const comments = React.useMemo(() => {
     return (
       data?.map<CommentsListRow>(({ id, message, date, createdAt, user }) => ({
@@ -109,29 +112,31 @@ export const Comments: React.FC<Props> = (props) => {
           >
             {comments?.length} Comentarios
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              fontWeight="ligth"
-              fontSize={15}
-              color={liked ? "blue" : "grey"}
-              paddingTop={0.5}
+          {!!isLogged && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              {liked ? "Te gusta" : "Me gusta"}
-            </Typography>
-            <IconButton
-              onClick={handleCreateLike}
-              disabled={liked || !isLogged}
-            >
-              <ThumbUp style={{ color: liked ? "blue" : "inherit" }} />
-            </IconButton>
-          </Box>
+              <Typography
+                fontWeight="ligth"
+                fontSize={15}
+                color={liked ? "blue" : "grey"}
+                paddingTop={0.5}
+              >
+                {liked ? "Te gusta" : "Me gusta"}
+              </Typography>
+              <IconButton
+                onClick={handleCreateLike}
+                disabled={liked || !isLogged}
+              >
+                <ThumbUp style={{ color: liked ? "blue" : "inherit" }} />
+              </IconButton>
+            </Box>
+          )}
         </Box>
         <Divider sx={{ marginBottom: "10px" }} />
         {comments?.map((comment, index) => (

@@ -23,7 +23,12 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useCreatePqrsMutation } from "../../../settings/api/endpoints/pqrs"
 
-export const FormPQRS: React.FC = () => {
+interface Props {
+  onSave(): void
+  onCancel(): void
+}
+
+export const FormPQRS: React.FC<Props> = (props) => {
   const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
   const { data } = useGetUserQuery({
     id: token.sub,

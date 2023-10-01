@@ -2,6 +2,7 @@ import * as React from "react"
 import Grid from "@mui/material/Grid"
 import {
   Box,
+  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -138,6 +139,18 @@ export const HomeScreen: React.FC = () => {
                   </Typography>
                 </Box>
               </CardContent>
+              <Box
+                style={{
+                  display: "flex",
+                  flex: 1,
+                  backgroundColor:
+                    DateTime.now() < DateTime.fromISO(farm.end_crop_dt)
+                      ? "green"
+                      : "grey",
+                  width: "100%",
+                  padding: 7,
+                }}
+              />
             </CardActionArea>
           </Card>
         ))}

@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import {
   Alert,
   Box,
@@ -16,12 +16,22 @@ import {
   useGetUserQuery,
   useUpdateUserMutation,
 } from "../../../settings/api/endpoints/user"
+import { JWTContent } from "../../../share/models/appSession"
+import jwt_decode from "jwt-decode"
 
 export const FormProfile: FC = () => {
+  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { data } = useGetUserQuery({ id: token.sub })
+  useEffect(() => {
+    setFieldValue("firstname", data?.firstname)
+    setFieldValue("lastname", data?.lastname)
+    setFieldValue("email", data?.email)
+  }, [data])
   const {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
     errors,
     values: {
       firstname: firstnameInputValue,
@@ -47,7 +57,6 @@ export const FormProfile: FC = () => {
     },
   })
 
-  const { data } = useGetUserQuery()
   const [doUpdateUser, { isLoading, error }] = useUpdateUserMutation()
 
   return (

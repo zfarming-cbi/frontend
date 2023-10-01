@@ -1,9 +1,10 @@
 import { API } from ".."
+import { PaginationDTO } from "../../../share/models/pagination"
 import { PlantDTO } from "../../../share/models/plant"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getPlants: build.query<PlantDTO[], { page: string; perPage: string }>({
+    getPlants: build.query<PlantDTO[], PaginationDTO>({
       query: ({ page, perPage }) => ({
         url: `/plants?page=${page}&perPage=${perPage}`,
         method: "GET",
@@ -37,10 +38,7 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["Plant"],
     }),
-    getPlantsForGalery: build.query<
-      PlantDTO[],
-      { page: string; perPage: string }
-    >({
+    getPlantsForGalery: build.query<PlantDTO[], PaginationDTO>({
       query: ({ page, perPage }) => ({
         url: `/plants/galery?page=${page}&perPage=${perPage}`,
         method: "GET",

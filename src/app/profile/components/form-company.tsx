@@ -167,7 +167,11 @@ export const FormCompany: FC = () => {
         }}
       >
         <ImageButton focusRipple onClick={handleClick}>
-          <ImageSrc style={{ backgroundImage: `url(${selectedImage})` }} />
+          <ImageSrc
+            style={{
+              backgroundImage: `url(http://localhost:3000/${data?.logo})`,
+            }}
+          />
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <VisuallyHiddenInput
             type="file"
