@@ -1,6 +1,4 @@
 export interface MeasuringHistoryDTO {
-  value: string
-  farmId: string
+  value: []
   sensorId: string
-  deviceId: string
 }

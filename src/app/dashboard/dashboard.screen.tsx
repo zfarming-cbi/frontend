@@ -39,6 +39,7 @@ import {
   selectorDialogs,
   closeAsignDevice,
   closeFormSearchUser,
+  closeFormCopyPlant,
 } from "../../settings/redux/dialogs.slice"
 import { Dialog } from "../../share/components/dialog"
 import { FormCreateUser } from "../user/components/formCreateUser"
@@ -47,6 +48,7 @@ import { FormCreateDevice } from "../device/components/formCreateDevice"
 import { FormCreatePlant } from "../plant/components/formCreatePlant"
 import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
 import { FormSearchUser } from "../user/components/formSearchUser"
+import { FormCopyPlant } from "../plant/components/formCopyPlant"
 
 export const DashboardScreen: FC = () => {
   const menuItems: DrawerMenuProps["items"] = [
@@ -112,6 +114,7 @@ export const DashboardScreen: FC = () => {
     formCreatePlant,
     assignDevice,
     formSearchUser,
+    formCopyPlant,
   } = useAppSelector(selectorDialogs)
   const dispatch = useAppDispatch()
 
@@ -158,6 +161,10 @@ export const DashboardScreen: FC = () => {
     dispatch(closeAsignDevice())
   }
 
+  const onCloseFormCopyPlant = () => {
+    dispatch(closeFormCopyPlant())
+  }
+
   const onSavePQRSForm = () => {}
   const onSaveFormCreateUser = () => {}
   const onSaveFormCreateFarm = () => {}
@@ -165,6 +172,7 @@ export const DashboardScreen: FC = () => {
   const onSaveFormCreatePlant = () => {}
   const onSaveAsignDevice = () => {}
   const onSaveFormSearchUser = () => {}
+  const onSaveFormCopyPlant = () => {}
 
   return (
     <>
@@ -277,6 +285,16 @@ export const DashboardScreen: FC = () => {
         <AsigmentDevice
           onCancel={onCloseAsignDevice}
           onSave={onSaveAsignDevice}
+        />
+      </Dialog>
+      <Dialog
+        title={"Copiar formula"}
+        onClose={onCloseFormCopyPlant}
+        visible={formCopyPlant.visible}
+      >
+        <FormCopyPlant
+          onCancel={onCloseFormCopyPlant}
+          onSave={onSaveFormCopyPlant}
         />
       </Dialog>
     </>

@@ -11,7 +11,7 @@ interface Props {
   onCancel(): void
 }
 
-export const FormCreatePlant: FC<Props> = (props) => {
+export const FormCopyPlant: FC<Props> = (props) => {
   const {
     handleChange,
     handleBlur,

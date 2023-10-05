@@ -3,5 +3,5 @@ export interface UserDTO {
   firstname: string
   lastname: string
   email: string
-  rol: string
+  rol: string | number
 }

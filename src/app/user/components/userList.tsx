@@ -9,6 +9,7 @@ export interface UserListRow {
   firstname: string
   lastname: string
   email: string
+  rol: string | number
 }
 
 export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
@@ -29,6 +30,11 @@ export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
     {
       field: "email",
       headerName: "Email",
+      flex: 1,
+    },
+    {
+      field: "rol",
+      headerName: "Rol",
       flex: 1,
     },
     {

@@ -5,6 +5,10 @@ import * as Yup from "yup"
 import { useCreateUserMutation } from "../../../settings/api/endpoints/user"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { closeFormCreateUser } from "../../../settings/redux/dialogs.slice"
+import {
+  SelectField,
+  SelectFieldValue,
+} from "../../../share/components/selectField"
 
 interface Props {
   onSave(): void
@@ -12,10 +16,22 @@ interface Props {
 }
 
 export const FormCreateUser: FC<Props> = (props) => {
+  const KindOfRol: SelectFieldValue<string>[] = [
+    {
+      value: "ADMIN",
+      content: "Administrador",
+    },
+    {
+      value: "BASIC",
+      content: "Colaborador",
+    },
+  ]
+
   const {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
     errors,
     values: {
       password: passwordInputValue,
@@ -29,21 +45,21 @@ export const FormCreateUser: FC<Props> = (props) => {
     password: string
     firstname: string
     lastname: string
-    rol: string
+    rol: string | number
   }>({
     initialValues: {
       email: "",
       password: "",
       firstname: "",
       lastname: "",
-      rol: "",
+      rol: KindOfRol[1].value,
     },
     validateOnMount: false,
     validateOnBlur: true,
     validateOnChange: false,
     validationSchema: FormCreateUserSchema,
-    async onSubmit(credentials) {
-      doCreateUsers(credentials)
+    async onSubmit(data) {
+      doCreateUsers(data)
       dispatch(closeFormCreateUser())
     },
   })
@@ -105,19 +121,18 @@ export const FormCreateUser: FC<Props> = (props) => {
           error={!!errors.lastname}
         />
       </Grid>
-      <Grid item xs>
-        <TextField
-          fullWidth
-          required
+      <Grid item>
+        <SelectField
           label="Rol"
-          variant="outlined"
           name="rol"
           id="rol"
+          defaultValue={KindOfRol[0].value}
           value={rolInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.rol}
+          values={KindOfRol}
+          onSelect={(selectedValue) => {
+            setFieldValue("rol", selectedValue)
+          }}
+          fullWidth
         />
       </Grid>
       <Grid item xs>

@@ -12,7 +12,7 @@ export const CircularChart: FC = () => {
     const option: EChartsCoreOption = {
       title: [
         {
-          text: "Cultivo Tomate 1, Granja Ref: 0023",
+          text: "Cultivo Lechuga 1, Granja Ref: 0023",
         },
       ],
       polar: {

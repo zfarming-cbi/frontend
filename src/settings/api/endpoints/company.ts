@@ -11,23 +11,12 @@ const extendedApi = API.injectEndpoints({
         const formData = new FormData()
         formData.append("name", name)
         formData.append("nit", nit)
-        console.log(">>>Logo desde el rkt", logo)
-
         logo && formData.append("files", logo)
-        console.log("FORMDATA desde el rtk", formData)
         return {
           url: `/company/${companyId}`,
           method: "POST",
           body: formData,
         }
-
-        // url: `/company/${companyId}`,
-        // method: "PATCH",
-        // body,
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   accept: "application/json",
-        // },
       },
     }),
     getCompany: build.query<CompanyDTO, { companyId: number }>({

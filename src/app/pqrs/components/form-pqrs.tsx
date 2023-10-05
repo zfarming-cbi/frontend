@@ -100,7 +100,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
     validationSchema: FormPqrsSchema,
     async onSubmit(credentials) {
       console.log(credentials)
-      // doCreatePqrs(credentials)
+      doCreatePqrs(credentials)
     },
   })
 

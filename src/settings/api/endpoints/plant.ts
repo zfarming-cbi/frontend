@@ -1,6 +1,6 @@
 import { API } from ".."
 import { PaginationDTO } from "../../../share/models/pagination"
-import { PlantDTO } from "../../../share/models/plant"
+import { CopyPlantDTO, PlantDTO } from "../../../share/models/plant"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
@@ -27,6 +27,22 @@ const extendedApi = API.injectEndpoints({
       providesTags: ["Plant"],
     }),
     createPlant: build.mutation<PlantDTO, PlantDTO>({
+      query: ({ name, content, growing_time, public: isPublic, image }) => {
+        const formData = new FormData()
+        formData.append("name", name)
+        formData.append("content", content)
+        formData.append("growing_time", growing_time)
+        formData.append("public", JSON.stringify(isPublic))
+        image && formData.append("files", image)
+        return {
+          url: "/plants",
+          method: "POST",
+          body: formData,
+        }
+      },
+      invalidatesTags: ["Plant"],
+    }),
+    copyPlant: build.mutation<PlantDTO, CopyPlantDTO>({
       query: (body) => ({
         url: "/plants",
         method: "POST",
@@ -58,4 +74,5 @@ export const {
   useGetPlantsQuery,
   useCreatePlantMutation,
   useGetPlantsForGaleryQuery,
+  useCopyPlantMutation,
 } = extendedApi

@@ -72,12 +72,6 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
     refetch()
   }, [page])
 
-  // const { data } = useGetPlantsQuery({
-  //   page: "1",
-  //   perPage: "10",
-  // })
-  console.log("DISPOSITIVOS SIN ASIGNAR", dataDevices)
-
   const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
   const dispatch = useAppDispatch()
 

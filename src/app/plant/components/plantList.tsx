@@ -2,13 +2,23 @@ import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
 import { Box, Grid, IconButton } from "@mui/material"
 import { Delete, Edit } from "@mui/icons-material"
+import { Remarkable } from "remarkable"
 import { DateTime } from "luxon"
+import Editor from "@uiw/react-md-editor/lib/Editor"
 
 export interface PlantListRow {
   id?: string | number
   name: string
   content: string
   growing_time: string
+}
+
+const truncateContent = (content: string) => {
+  if (content.length > 100) {
+    return content.substring(0, 100) + "..."
+  } else {
+    return content
+  }
 }
 
 const COLUMNS_DEF: GridColDef[] = [
@@ -26,6 +36,7 @@ const COLUMNS_DEF: GridColDef[] = [
     field: "content",
     headerName: "Contenido",
     flex: 1,
+    renderCell: (params) => truncateContent(params.row.content),
   },
   {
     field: "actions",

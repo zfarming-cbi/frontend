@@ -120,7 +120,6 @@ export const FormCompany: FC = () => {
     validateOnChange: false,
     validationSchema: FormEditCompanySchema,
     async onSubmit(data) {
-      console.log("***data before update", data)
       doUpdateCompany({ ...data, companyId: token.companyId, logo: image })
     },
   })
@@ -142,9 +141,6 @@ export const FormCompany: FC = () => {
       return
     }
     const imageUrl = URL.createObjectURL(file)
-    // setFieldValue("logo", file)
-    console.log(">>>>>file desde handleupload", file)
-    console.log(">>>imageURL", imageUrl)
     setImage(file)
     setSelectedImage(imageUrl)
   }

@@ -58,6 +58,14 @@ export const GaleryScreen: React.FC = () => {
     )
   }, [data])
 
+  const truncateContent = (content: string) => {
+    if (content.length > 100) {
+      return content.substring(0, 100) + "..."
+    } else {
+      return content
+    }
+  }
+
   return (
     <Grid
       padding={4}
@@ -190,7 +198,7 @@ export const GaleryScreen: React.FC = () => {
                       <Typography data-color-mode="light">
                         <MDEditor.Markdown
                           data-color-mode="light"
-                          source={plant.content}
+                          source={truncateContent(plant.content)}
                         />
                       </Typography>
                       <Typography

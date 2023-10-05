@@ -49,11 +49,12 @@ export const UserScreen = () => {
 
   const users = React.useMemo(() => {
     return (
-      data?.map<UserListRow>(({ id, firstname, lastname, email }) => ({
+      data?.map<UserListRow>(({ id, firstname, lastname, email, rol }) => ({
         id,
         firstname,
         lastname,
         email,
+        rol: rol == "ADMIN" ? "Administrador" : "Colaborador",
       })) ?? []
     )
   }, [data])
