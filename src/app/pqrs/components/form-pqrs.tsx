@@ -44,19 +44,19 @@ export const FormPQRS: React.FC<Props> = (props) => {
 
   const KindOfPQRS: SelectFieldValue<string>[] = [
     {
-      value: 0,
+      value: "peticion",
       content: "Petición",
     },
     {
-      value: 1,
+      value: "queja",
       content: "Queja",
     },
     {
-      value: 2,
+      value: "reclamo",
       content: "Reclamo",
     },
     {
-      value: 3,
+      value: "solicitud",
       content: "Solicitúd",
     },
   ]
@@ -83,7 +83,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
     phone: string
     email: string
     description: string
-    type: string
+    type: string | number
   }>({
     initialValues: {
       firstname: "",
@@ -92,7 +92,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
       phone: "",
       email: "",
       description: "",
-      type: "",
+      type: KindOfPQRS[0].value,
     },
     validateOnMount: false,
     validateOnBlur: true,
@@ -214,6 +214,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
           label="Tipo Solicitud"
           name="type"
           id="type"
+          defaultValue={KindOfPQRS[0].value}
           value={typeInputValue}
           values={KindOfPQRS}
           onSelect={(selectedValue) => {
@@ -278,8 +279,4 @@ const FormPqrsSchema = Yup.object().shape({
     .min(3)
     .max(250)
     .required("La descripción no es valida."),
-  type: Yup.string()
-    .min(3)
-    .max(50)
-    .required("El tipo de petición no es valido."),
 })

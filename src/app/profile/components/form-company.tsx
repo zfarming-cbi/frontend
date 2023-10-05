@@ -20,6 +20,7 @@ import {
 } from "../../../settings/api/endpoints/company"
 import jwt_decode from "jwt-decode"
 import { JWTContent } from "../../../share/models/appSession"
+import { AppEnvVars } from "../../../settings/env/environment"
 
 const ImageButton = styled(ButtonBase)(() => ({
   position: "relative",
@@ -97,6 +98,7 @@ export const FormCompany: FC = () => {
   useEffect(() => {
     setFieldValue("name", data?.name)
     setFieldValue("nit", data?.nit)
+    setSelectedImage(`${AppEnvVars.IMAGE_URL}${data?.logo}`)
   }, [data])
   const {
     handleChange,
@@ -108,7 +110,6 @@ export const FormCompany: FC = () => {
   } = useFormik<{
     name: string
     nit: string
-    logo?: any
   }>({
     initialValues: {
       name: "",
@@ -118,13 +119,14 @@ export const FormCompany: FC = () => {
     validateOnBlur: true,
     validateOnChange: false,
     validationSchema: FormEditCompanySchema,
-    async onSubmit(credentials) {
-      console.log(credentials)
-      doUpdateCompany({ ...credentials, companyId: token.companyId })
+    async onSubmit(data) {
+      console.log("***data before update", data)
+      doUpdateCompany({ ...data, companyId: token.companyId, logo: image })
     },
   })
   const [doUpdateCompany, { isLoading, error }] = useUpdateCompanyMutation()
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
+  const [image, setImage] = React.useState<Blob>()
 
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
 
@@ -136,11 +138,15 @@ export const FormCompany: FC = () => {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file) {
-      setFieldValue("logo", file)
-      const imageUrl = URL.createObjectURL(file)
-      setSelectedImage(imageUrl)
+    if (!file) {
+      return
     }
+    const imageUrl = URL.createObjectURL(file)
+    // setFieldValue("logo", file)
+    console.log(">>>>>file desde handleupload", file)
+    console.log(">>>imageURL", imageUrl)
+    setImage(file)
+    setSelectedImage(imageUrl)
   }
 
   return (
@@ -169,7 +175,7 @@ export const FormCompany: FC = () => {
         <ImageButton focusRipple onClick={handleClick}>
           <ImageSrc
             style={{
-              backgroundImage: `url(http://localhost:3000/${data?.logo})`,
+              backgroundImage: `url(${selectedImage})`,
             }}
           />
           <ImageBackdrop className="MuiImageBackdrop-root" />

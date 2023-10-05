@@ -14,6 +14,8 @@ import { useGetDeviceQuery } from "../../settings/api/endpoints/device"
 import { useParams } from "react-router-dom"
 import { Toolbar } from "../../share/components/toolbar"
 import { CircularChart } from "../home/components/circularChart"
+import { AppEnvVars } from "../../settings/env/environment"
+import MDEditor from "@uiw/react-md-editor"
 
 export const BarChart: React.FC = () => {
   const chartNodeRef = React.useRef<HTMLDivElement>(null)
@@ -84,7 +86,7 @@ export const DeviceMeasuringScreen: React.FC = () => {
             <CardMedia
               component="img"
               height={300}
-              image={`http://localhost:3000/${data?.plant.image}`}
+              image={`${AppEnvVars.IMAGE_URL}${data?.plant.image}`}
               alt={data?.plant.name}
               sx={{
                 objectFit: "contain",
@@ -100,14 +102,11 @@ export const DeviceMeasuringScreen: React.FC = () => {
               >
                 {data?.plant.name}
               </Typography>
-              <Typography
-                fontWeight="ligth"
-                fontSize={20}
-                textAlign={"justify"}
-                color={"black"}
-                paddingY={2}
-              >
-                {data?.plant.content}
+              <Typography data-color-mode="light" paddingY={2} marginY={3}>
+                <MDEditor.Markdown
+                  data-color-mode="light"
+                  source={data?.plant.content}
+                />
               </Typography>
             </CardContent>
             <CardActions

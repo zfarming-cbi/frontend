@@ -1,19 +1,10 @@
 import React, { FC } from "react"
-import {
-  Alert,
-  Button,
-  Checkbox,
-  DialogActions,
-  FormControlLabel,
-  Grid,
-  TextField,
-} from "@mui/material"
+import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
 import { closeFormCreatePlant } from "../../../settings/redux/dialogs.slice"
-import MDEditor, { commands } from "@uiw/react-md-editor"
 
 interface Props {
   onSave(): void
@@ -26,12 +17,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
     handleBlur,
     handleSubmit,
     errors,
-    values: {
-      name: nameInputValue,
-      content: contentInputValue,
-      growing_time: growing_timeInputValue,
-      public: publicInputValue,
-    },
+    values: { name: nameInputValue },
   } = useFormik<{
     name: string
     content: string
@@ -60,13 +46,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
   const [value, setValue] = React.useState<string>()
   const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
 
-  const codePreview = {
-    name: "preview",
-    keyCommand: "preview",
-    value: "preview",
-    icon: <Button />,
-  }
-
   return (
     <Grid
       container
@@ -90,57 +69,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
           error={!!errors.name}
         />
       </Grid>
-      <Grid item xs>
-        <MDEditor
-          data-color-mode="light"
-          value={value}
-          onChange={setValue}
-          extraCommands={[codePreview, commands.fullscreen]}
-        />
-      </Grid>
-      {contentEmpty && (
-        <Alert
-          sx={{
-            marginTop: 1,
-            textAlign: "left",
-            fontSize: 10,
-            alignItems: "center",
-          }}
-          severity="error"
-          variant="filled"
-        >
-          Es necesario agregar una descripción o contenido.
-        </Alert>
-      )}
-      <Grid item xs>
-        <TextField
-          fullWidth
-          label="Fecha de siembra"
-          type="date"
-          required
-          variant="outlined"
-          name="growing_time"
-          id="growing_time"
-          value={growing_timeInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.growing_time}
-        />
-      </Grid>
-      <Grid item xs>
-        <FormControlLabel
-          disabled={isLoading}
-          control={
-            <Checkbox
-              value={publicInputValue}
-              onChange={handleChange}
-              name="public"
-            />
-          }
-          label="Pública"
-        />
-      </Grid>
       {!!error && (
         <Alert
           sx={{
@@ -159,7 +87,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
       <DialogActions>
         <Grid container item xs={12} justifyContent="end" marginTop={1}>
           <Button sx={{ marginInline: 1 }} type="submit">
-            Guardar
+            Copiar
           </Button>
         </Grid>
       </DialogActions>

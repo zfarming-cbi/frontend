@@ -49,6 +49,16 @@ const extendedApi = API.injectEndpoints({
         },
       }),
     }),
+    deleteUser: build.query<UserDTO, { id: string }>({
+      query: ({ id }) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 })
@@ -59,4 +69,5 @@ export const {
   useCreateUserMutation,
   useUpdateUserMutation,
   useLazyGetUsersQuery,
+  useLazyDeleteUserQuery,
 } = extendedApi

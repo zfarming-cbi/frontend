@@ -21,7 +21,6 @@ import { DataGrid, GridColDef, GridEventListener, esES } from "@mui/x-data-grid"
 import { useParams } from "react-router-dom"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { closeAsignDevice } from "../../../settings/redux/dialogs.slice"
-import { DateTime } from "luxon"
 
 interface Props {
   onSave(): void
@@ -61,12 +60,15 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
 
   const [page, setPage] = useState(1)
 
+  const { data: dataDevices, refetch: refetchDevices } =
+    useGetDevicesUnasignedQuery()
   const { data, refetch } = useGetPlantsQuery({
     page: String(page),
     perPage: "10",
   })
 
   useEffect(() => {
+    refetchDevices()
     refetch()
   }, [page])
 
@@ -74,7 +76,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
   //   page: "1",
   //   perPage: "10",
   // })
-  const response = useGetDevicesUnasignedQuery()
+  console.log("DISPOSITIVOS SIN ASIGNAR", dataDevices)
 
   const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
   const dispatch = useAppDispatch()
@@ -95,7 +97,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
 
   const devices = React.useMemo(() => {
     return (
-      response.data?.map<DeviceListRow>(({ id, name, description, code }) => ({
+      dataDevices?.map<DeviceListRow>(({ id, name, description, code }) => ({
         id,
         name,
         description,

@@ -22,18 +22,21 @@ export const FormCreateUser: FC<Props> = (props) => {
       email: emailInputValue,
       firstname: firstnameInputValue,
       lastname: lastnameInputValue,
+      rol: rolInputValue,
     },
   } = useFormik<{
     email: string
     password: string
     firstname: string
     lastname: string
+    rol: string
   }>({
     initialValues: {
       email: "",
       password: "",
       firstname: "",
       lastname: "",
+      rol: "",
     },
     validateOnMount: false,
     validateOnBlur: true,
@@ -100,6 +103,21 @@ export const FormCreateUser: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.lastname}
+        />
+      </Grid>
+      <Grid item xs>
+        <TextField
+          fullWidth
+          required
+          label="Rol"
+          variant="outlined"
+          name="rol"
+          id="rol"
+          value={rolInputValue}
+          disabled={isLoading}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={!!errors.rol}
         />
       </Grid>
       <Grid item xs>

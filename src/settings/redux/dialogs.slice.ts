@@ -30,6 +30,10 @@ interface DialogsState {
     visible: boolean
     data?: any
   }
+  formCopyPlant: {
+    visible: boolean
+    data?: any
+  }
 }
 
 const initialState: DialogsState = {
@@ -58,6 +62,10 @@ const initialState: DialogsState = {
     data: undefined,
   },
   assignDevice: {
+    visible: false,
+    data: undefined,
+  },
+  formCopyPlant: {
     visible: false,
     data: undefined,
   },
@@ -144,6 +152,17 @@ export const dialogsSlice = createSlice({
       state.assignDevice.visible = false
       state.assignDevice.data = undefined
     },
+    showFormCopyPlant: (
+      state,
+      action: PayloadAction<DialogsState["formCopyPlant"]>
+    ) => {
+      state.formCopyPlant.visible = action.payload.visible
+      state.formCopyPlant.data = action.payload.data
+    },
+    closeFormCopyPlant: (state) => {
+      state.formCopyPlant.visible = false
+      state.formCopyPlant.data = undefined
+    },
   },
 })
 
@@ -162,5 +181,7 @@ export const {
   showAsignDevice,
   closeFormSearchUser,
   showFormSearchUser,
+  showFormCopyPlant,
+  closeFormCopyPlant,
 } = dialogsSlice.actions
 export const selectorDialogs = (state: RootState) => state.dialogs

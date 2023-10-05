@@ -19,6 +19,8 @@ import { useGetPlantsForGaleryQuery } from "../../settings/api/endpoints/plant"
 import { LikesComments } from "./components/likesComments"
 import { DateTime } from "luxon"
 import { Remarkable } from "remarkable"
+import { AppEnvVars } from "../../settings/env/environment"
+import MDEditor from "@uiw/react-md-editor"
 
 export interface PlantListRow {
   id?: string | number
@@ -49,7 +51,7 @@ export const GaleryScreen: React.FC = () => {
           likes: likes?.length ?? 0,
           comments: comments?.length ?? 0,
           growing_time,
-          content: remarkable.render(content),
+          content: content,
           image: image ?? "",
         })
       ) ?? []
@@ -185,9 +187,12 @@ export const GaleryScreen: React.FC = () => {
                       >
                         {plant.name}
                       </Typography>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: plant.content }}
-                      />
+                      <Typography data-color-mode="light">
+                        <MDEditor.Markdown
+                          data-color-mode="light"
+                          source={plant.content}
+                        />
+                      </Typography>
                       <Typography
                         fontWeight="ligth"
                         fontSize={10}
@@ -204,7 +209,7 @@ export const GaleryScreen: React.FC = () => {
                   </Box>
                   <CardMedia
                     component="img"
-                    image={`http://localhost:3000/${plant.image}`}
+                    image={`${AppEnvVars.IMAGE_URL}${plant.image}`}
                     alt="plant"
                     sx={{
                       width: 175,

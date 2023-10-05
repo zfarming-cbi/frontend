@@ -124,7 +124,7 @@ export const Comments: React.FC<Props> = (props) => {
               <Typography
                 fontWeight="ligth"
                 fontSize={15}
-                color={liked ? "blue" : "grey"}
+                color={liked ? "primary" : "disabled"}
                 paddingTop={0.5}
               >
                 {liked ? "Te gusta" : "Me gusta"}
@@ -133,14 +133,14 @@ export const Comments: React.FC<Props> = (props) => {
                 onClick={handleCreateLike}
                 disabled={liked || !isLogged}
               >
-                <ThumbUp style={{ color: liked ? "blue" : "inherit" }} />
+                <ThumbUp color={liked ? "primary" : "disabled"} />
               </IconButton>
             </Box>
           )}
         </Box>
-        <Divider sx={{ marginBottom: "10px" }} />
+        <Divider sx={{ marginBottom: 5 }} />
         {comments?.map((comment, index) => (
-          <Card key={index}>
+          <Card key={index} sx={{ margin: 2 }}>
             <CardContent>
               <Box
                 sx={{

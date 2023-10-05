@@ -6,6 +6,8 @@ import { ArrowBack } from "@mui/icons-material"
 import { Comments } from "./components/comments"
 import { DateTime } from "luxon"
 import { LikesComments } from "./components/likesComments"
+import { AppEnvVars } from "../../settings/env/environment"
+import MDEditor from "@uiw/react-md-editor"
 
 export const PlantFromGalery: React.FC = () => {
   const { plantId } = useParams()
@@ -92,16 +94,10 @@ export const PlantFromGalery: React.FC = () => {
                 width: 300,
                 margin: "20px auto",
               }}
-              src={`http://localhost:3000/${image}`}
+              src={`${AppEnvVars.IMAGE_URL}${image}`}
             />
-            <Typography
-              fontWeight="ligth"
-              fontSize={20}
-              textAlign={"justify"}
-              color={"black"}
-              paddingY={2}
-            >
-              {content}
+            <Typography data-color-mode="light" paddingY={2} marginY={3}>
+              <MDEditor.Markdown data-color-mode="light" source={content} />
             </Typography>
             <Comments plantId={plantId} />
           </Box>

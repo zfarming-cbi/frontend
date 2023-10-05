@@ -27,7 +27,7 @@ const extendedApi = API.injectEndpoints({
     }),
     getDevicesUnasigned: build.query<DeviceDTO[], void>({
       query: () => ({
-        url: `/device/unasigned`,
+        url: `/device`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",

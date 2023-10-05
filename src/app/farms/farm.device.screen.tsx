@@ -1,6 +1,7 @@
 import * as React from "react"
 import Grid from "@mui/material/Grid"
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -16,6 +17,7 @@ import { useAppDispatch } from "../../settings/redux/hooks"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import { useGetFarmQuery } from "../../settings/api/endpoints/farm"
 import { DateTime } from "luxon"
+import { AppEnvVars } from "../../settings/env/environment"
 
 export interface DeviceByFarmListRow {
   id?: string | number
@@ -91,7 +93,7 @@ export const DeviceByFarmScreen: React.FC = () => {
             >
               <CardMedia
                 component="img"
-                image={`http://localhost:3000/${device.plant.image}`}
+                image={`${AppEnvVars.IMAGE_URL}${device.plant.image}`}
                 alt="plant"
                 height={131}
                 width={132}
@@ -107,15 +109,17 @@ export const DeviceByFarmScreen: React.FC = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant={"h6"} fontWeight="bold" color={"grey"}>
-                  {device.plant.name}
-                </Typography>
-                <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
-                  {device.name}
-                </Typography>
-                <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
+                <Box sx={{ display: "flex", py: 2, flexDirection: "column" }}>
+                  <Typography variant={"h6"} fontWeight="bold" color={"grey"}>
+                    {device.plant.name}
+                  </Typography>
+                  <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
+                    {device.name}
+                  </Typography>
+                </Box>
+                {/* <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
                   {device.code}
-                </Typography>
+                </Typography> */}
                 {!device.measurings && (
                   <Typography
                     fontWeight="ligth"
