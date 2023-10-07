@@ -42,6 +42,21 @@ export const BarChart: React.FC = () => {
           stack: "x",
           data: [23, 24, 18, 25, 27, 28, 25],
         },
+        {
+          data: [5, 4, 3, 5, 10],
+          type: "line",
+          stack: "x",
+        },
+        {
+          data: [16, 12, 8, 11, 7],
+          type: "line",
+          stack: "x",
+        },
+        {
+          data: [15, 2, 6, 9, 17],
+          type: "line",
+          stack: "x",
+        },
       ],
     }
     chart.setOption(option)

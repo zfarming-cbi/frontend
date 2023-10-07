@@ -65,6 +65,7 @@ export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         autoPageSize
         disableSelectionOnClick
+        // onFilterModelChange={}
       />
     </Grid>
   )

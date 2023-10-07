@@ -21,8 +21,7 @@ import MDEditor, { commands } from "@uiw/react-md-editor"
 import { Edit } from "@mui/icons-material"
 
 interface Props {
-  onSave(): void
-  onCancel(): void
+  dataPlant: any
 }
 
 const ImageButton = styled(ButtonBase)(() => ({
@@ -91,14 +90,15 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 })
 
-export const FormCreatePlant: FC<Props> = (props) => {
+export const FormUpdatePlant: FC<Props> = (props) => {
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
   const [image, setImage] = React.useState<Blob>()
-  const dispatch = useAppDispatch()
   const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
   const [value, setValue] = React.useState<string>()
   const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
+  const { dataPlant } = props
+  console.log("****dataPlant desde el formulario", dataPlant)
   const {
     handleChange,
     handleBlur,
@@ -106,7 +106,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
     errors,
     values: {
       name: nameInputValue,
-      content: contentInputValue,
       growing_time: growing_timeInputValue,
       public: publicInputValue,
     },
@@ -122,14 +121,12 @@ export const FormCreatePlant: FC<Props> = (props) => {
       growing_time: new Date().toString(),
       public: false,
     },
-    validationSchema: FormCreatePlantSchema,
+    validationSchema: FormUpdatePlantSchema,
     async onSubmit(data) {
       if (!value) {
         setContentEmpty(true)
         return
       }
-      doCreatePlant({ ...data, content: value ?? "", image: image })
-      dispatch(closeFormCreatePlant())
     },
   })
 
@@ -294,6 +291,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
   )
 }
 
-const FormCreatePlantSchema = Yup.object().shape({
+const FormUpdatePlantSchema = Yup.object().shape({
   name: Yup.string().min(3).max(50).required("El nombre no es valido."),
 })

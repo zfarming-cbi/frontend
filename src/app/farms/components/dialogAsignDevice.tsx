@@ -26,21 +26,25 @@ interface Props {
   onSave(): void
   onCancel(): void
 }
-
+const truncateContent = (content: string) => {
+  const textPlane = content.replace(/[*#\\]/g, "")
+  if (textPlane.length > 100) {
+    return textPlane.substring(0, 100) + "..."
+  } else {
+    return textPlane
+  }
+}
 const COLUMNS_DEF_PLANTS: GridColDef[] = [
   {
     field: "name",
     headerName: "Planta",
     width: 125,
-    align: "center",
-    headerAlign: "center",
   },
   {
     field: "content",
     headerName: "Contenido",
     flex: 1,
-    align: "center",
-    headerAlign: "center",
+    renderCell: (params) => truncateContent(params.row.content),
   },
 ]
 
@@ -74,6 +78,10 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
 
   const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
   const dispatch = useAppDispatch()
+  const removeMd = (content: string) => {
+    const textPlane = content.replace(/[*#\\]/g, "")
+    return textPlane
+  }
 
   const plants = React.useMemo(() => {
     return (
@@ -231,7 +239,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
                 name="contentPlant"
                 id="contentPlant"
                 maxRows={7}
-                value={plantContent}
+                value={removeMd(plantContent)}
                 disabled={isLoading}
                 InputProps={{
                   readOnly: true,

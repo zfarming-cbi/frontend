@@ -17,17 +17,17 @@ interface Props {
 export const FormSearchUser: FC<Props> = (props) => {
   const [search, setSearch] = useState<string>()
   const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
-  const { refetch, isLoading, error } = useGetUsersQuery({
-    companyId: token.companyId,
-    perPage: "10",
-    page: "1",
-    search: search,
-  })
+  const [doGetUsers, { isLoading, error }] = useLazyGetUsersQuery()
 
   const dispatch = useAppDispatch()
 
   const handleSubmit = () => {
-    refetch()
+    doGetUsers({
+      companyId: token.companyId,
+      perPage: "10",
+      page: "1",
+      search: search,
+    })
     dispatch(closeFormSearchUser())
   }
 

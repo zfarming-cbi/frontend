@@ -42,6 +42,22 @@ const extendedApi = API.injectEndpoints({
       },
       invalidatesTags: ["Plant"],
     }),
+    updatePlant: build.mutation<PlantDTO, PlantDTO & { id: string }>({
+      query: ({ id, name, content, growing_time, public: isPublic, image }) => {
+        const formData = new FormData()
+        formData.append("name", name)
+        formData.append("content", content)
+        formData.append("growing_time", growing_time)
+        formData.append("public", JSON.stringify(isPublic))
+        image && formData.append("files", image)
+        return {
+          url: `/plants/${id}`,
+          method: "POST",
+          body: formData,
+        }
+      },
+      invalidatesTags: ["Plant"],
+    }),
     copyPlant: build.mutation<PlantDTO, CopyPlantDTO>({
       query: (body) => ({
         url: "/plants",
@@ -73,6 +89,7 @@ export const {
   useGetPlantQuery,
   useGetPlantsQuery,
   useCreatePlantMutation,
+  useUpdatePlantMutation,
   useGetPlantsForGaleryQuery,
   useCopyPlantMutation,
 } = extendedApi
