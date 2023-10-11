@@ -27,7 +27,7 @@ export const PQRSScreen: FC = () => {
   ]
 
   const dispatch = useAppDispatch()
-  const { data, isLoading, error } = useGetTicketsQuery({
+  const { data } = useGetTicketsQuery({
     page: "1",
     perPage: "10",
   })

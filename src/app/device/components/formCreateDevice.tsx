@@ -73,6 +73,21 @@ export const FormCreateDevice: FC<Props> = (props) => {
         <TextField
           fullWidth
           required
+          label="Código"
+          variant="outlined"
+          name="code"
+          id="code"
+          value={codeInputValue}
+          disabled={isLoading}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={!!errors.code}
+        />
+      </Grid>
+      <Grid item xs>
+        <TextField
+          fullWidth
+          required
           multiline
           label="Descripción"
           variant="outlined"
@@ -84,21 +99,6 @@ export const FormCreateDevice: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.description}
-        />
-      </Grid>
-      <Grid item xs>
-        <TextField
-          fullWidth
-          required
-          label="Código"
-          variant="outlined"
-          name="code"
-          id="code"
-          value={codeInputValue}
-          disabled={isLoading}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={!!errors.code}
         />
       </Grid>
       {!!error && (

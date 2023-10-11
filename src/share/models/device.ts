@@ -8,6 +8,9 @@ export interface DeviceDTO {
 }
 
 export interface UpdateDeviceDTO {
-  farmId: string
-  plantId: string
+  name?: string
+  description?: string
+  code?: string
+  farmId?: string
+  plantId?: string
 }

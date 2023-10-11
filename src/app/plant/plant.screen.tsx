@@ -35,12 +35,16 @@ export const PlantScreen = () => {
 
   const plants = React.useMemo(() => {
     return (
-      data?.map<PlantListRow>(({ id, name, content, growing_time }) => ({
-        id,
-        name,
-        content,
-        growing_time,
-      })) ?? []
+      data?.map<PlantListRow>(
+        ({ id, name, content, growing_time, public: isPublic, image }) => ({
+          id,
+          name,
+          content,
+          growing_time,
+          public: isPublic,
+          image,
+        })
+      ) ?? []
     )
   }, [data])
 

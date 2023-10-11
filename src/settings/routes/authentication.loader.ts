@@ -41,6 +41,17 @@ export const AuthenticationRouteLoader = () => {
   return null
 }
 
+export const RolesRouteLoader = () => {
+  const token = localStorage.getItem("token") ?? ""
+  const tokenInfo = JWT<JWTContent>(token)
+
+  if (tokenInfo && tokenInfo.rol != "ADMIN") {
+    return redirect(ROUTE_PATH.Dashboard)
+  }
+
+  return null
+}
+
 export const AuthenticationSaveHandler = (token: string): boolean => {
   try {
     const tokenInfo = JWT<JWTContent>(token)

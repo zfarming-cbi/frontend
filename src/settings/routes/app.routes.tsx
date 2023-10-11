@@ -6,6 +6,7 @@ import { RootScreen } from "../../app/root/root.screen"
 import {
   AuthenticationLessRouteLoader,
   AuthenticationRouteLoader,
+  RolesRouteLoader,
 } from "./authentication.loader"
 import { ROUTE_PATH } from "./routes"
 import { HomeScreen } from "../../app/home/home.screen"
@@ -65,6 +66,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
       {
         path: ROUTE_PATH.User,
         element: <UserScreen />,
+        loader: RolesRouteLoader,
       },
       {
         path: ROUTE_PATH.PQRS,

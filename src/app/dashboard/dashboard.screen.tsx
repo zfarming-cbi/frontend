@@ -49,8 +49,15 @@ import { FormCreatePlant } from "../plant/components/formCreatePlant"
 import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
 import { FormSearchUser } from "../user/components/formSearchUser"
 import { FormCopyPlant } from "../plant/components/formCopyPlant"
+import { useGetUserQuery } from "../../settings/api/endpoints/user"
+import jwt_decode from "jwt-decode"
+import { JWTContent } from "../../share/models/appSession"
 
 export const DashboardScreen: FC = () => {
+  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { data: dataUser } = useGetUserQuery({
+    id: token?.sub,
+  })
   const menuItems: DrawerMenuProps["items"] = [
     [
       {
@@ -104,6 +111,12 @@ export const DashboardScreen: FC = () => {
       },
     ],
   ]
+
+  if (token && token.rol != "ADMIN") {
+    menuItems[0] = menuItems[0].filter((item) => {
+      return item.text !== "Usuarios"
+    })
+  }
 
   const navigate = useNavigate()
   const {
@@ -219,7 +232,11 @@ export const DashboardScreen: FC = () => {
         onClose={onClosePQRSForm}
         visible={formPQRS.visible}
       >
-        <FormPQRS onCancel={onClosePQRSForm} onSave={onSavePQRSForm} />
+        <FormPQRS
+          onCancel={onClosePQRSForm}
+          onSave={onSavePQRSForm}
+          dataUser={dataUser}
+        />
       </Dialog>
 
       <Dialog

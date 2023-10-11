@@ -28,8 +28,8 @@ const extendedApi = API.injectEndpoints({
       invalidatesTags: ["User"],
     }),
     updateUser: build.mutation<UserDTO, UserDTO>({
-      query: (body) => ({
-        url: "/user",
+      query: ({ id, ...body }) => ({
+        url: `/user/${id}`,
         method: "PATCH",
         body,
         headers: {
@@ -49,7 +49,7 @@ const extendedApi = API.injectEndpoints({
         },
       }),
     }),
-    deleteUser: build.query<UserDTO, { id: string }>({
+    deleteUser: build.mutation<UserDTO, { id?: string }>({
       query: ({ id }) => ({
         url: `/user/${id}`,
         method: "DELETE",
@@ -58,6 +58,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
+      invalidatesTags: ["User"],
     }),
   }),
   overrideExisting: false,
@@ -69,5 +70,5 @@ export const {
   useCreateUserMutation,
   useUpdateUserMutation,
   useLazyGetUsersQuery,
-  useLazyDeleteUserQuery,
+  useDeleteUserMutation,
 } = extendedApi

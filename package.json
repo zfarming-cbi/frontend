@@ -25,6 +25,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@types/remarkable": "^2.0.3",
     "@uiw/react-md-editor": "^3.23.5",
+    "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
     "formik": "^2.2.9",
     "full-icu": "^1.5.0",

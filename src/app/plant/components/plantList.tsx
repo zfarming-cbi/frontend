@@ -10,10 +10,6 @@ import {
   Typography,
 } from "@mui/material"
 import { Close, Delete, Edit } from "@mui/icons-material"
-import { Remarkable } from "remarkable"
-import { DateTime } from "luxon"
-import Editor from "@uiw/react-md-editor/lib/Editor"
-import { FormCreatePlant } from "./formCreatePlant"
 import { FormUpdatePlant } from "./formUpdatePlant"
 
 export interface PlantListRow {
@@ -21,6 +17,8 @@ export interface PlantListRow {
   name: string
   content: string
   growing_time: string
+  public?: boolean
+  image?: string | Blob
 }
 
 const truncateContent = (content: string) => {
@@ -63,7 +61,6 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
             onClick={() => {
               setDataPlant(params.row)
               setOpen(true)
-              console.log(params.row)
             }}
           >
             <Edit />
@@ -110,7 +107,6 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
         closeAfterTransition
         fullWidth
         maxWidth="lg"
-        title={"Actualizar Planta"}
         onClose={updatePlant}
         open={open}
       >
@@ -138,38 +134,3 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
     </Grid>
   )
 }
-
-{
-  /* <DialogTitle>Actualizar planta</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            required
-            label="Nombre"
-            variant="outlined"
-            name="name"
-            id="name"
-            value={name}
-            disabled={isLoading}
-            onChange={(e) => setName(e.target.value)}
-          />
-          {!!error && (
-            <Alert
-              sx={{
-                marginTop: 1,
-                textAlign: "left",
-                fontSize: 10,
-                alignItems: "center",
-              }}
-              severity="error"
-              variant="filled"
-            >
-              lo sentimos en este momento no podemos validar la información
-              {/* {JSON.stringify(error)} */
-}
-//     </Alert>
-//   )}
-// </DialogContent>
-// <DialogActions>
-//   <Button onClick={copyPlant}>Copiar</Button>
-// </DialogActions> */}

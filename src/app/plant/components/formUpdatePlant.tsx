@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import {
   Alert,
   Box,
@@ -14,11 +14,10 @@ import {
 } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useAppDispatch } from "../../../settings/redux/hooks"
 import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
-import { closeFormCreatePlant } from "../../../settings/redux/dialogs.slice"
 import MDEditor, { commands } from "@uiw/react-md-editor"
 import { Edit } from "@mui/icons-material"
+import { AppEnvVars } from "../../../settings/env/environment"
 
 interface Props {
   dataPlant: any
@@ -91,18 +90,23 @@ const VisuallyHiddenInput = styled("input")({
 })
 
 export const FormUpdatePlant: FC<Props> = (props) => {
-  const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
-  const [image, setImage] = React.useState<Blob>()
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [image, setImage] = useState<Blob>()
   const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
   const [value, setValue] = React.useState<string>()
+  const [growing_time, setGrowing_time] = useState<
+    HTMLInputElement | HTMLTextAreaElement
+  >()
+  React.useState<HTMLTextAreaElement | null>()
   const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
   const { dataPlant } = props
-  console.log("****dataPlant desde el formulario", dataPlant)
+
   const {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
     errors,
     values: {
       name: nameInputValue,
@@ -118,7 +122,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     initialValues: {
       name: "",
       content: "",
-      growing_time: new Date().toString(),
+      growing_time: "",
       public: false,
     },
     validationSchema: FormUpdatePlantSchema,
@@ -129,7 +133,14 @@ export const FormUpdatePlant: FC<Props> = (props) => {
       }
     },
   })
-
+  useEffect(() => {
+    setFieldValue("name", dataPlant.name)
+    setFieldValue("growing_time", dataPlant.growing_time)
+    setFieldValue("public", !!dataPlant.public)
+    setValue(dataPlant.content)
+    setSelectedImage(`${AppEnvVars.IMAGE_URL}${dataPlant.image}`)
+    console.log("dataplant from form update", dataPlant)
+  }, [dataPlant])
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click()
@@ -202,13 +213,13 @@ export const FormUpdatePlant: FC<Props> = (props) => {
         <Grid item xs>
           <TextField
             fullWidth
+            required
             label="Fecha de siembra"
             type="date"
-            required
             variant="outlined"
             name="growing_time"
             id="growing_time"
-            value={growing_timeInputValue}
+            value={growing_time}
             disabled={isLoading}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -221,6 +232,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
             control={
               <Checkbox
                 value={publicInputValue}
+                checked={publicInputValue}
                 onChange={handleChange}
                 name="public"
               />

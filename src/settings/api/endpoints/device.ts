@@ -60,6 +60,17 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["Device"],
     }),
+    deleteDevice: build.mutation<DeviceDTO, { id?: string }>({
+      query: ({ id }) => ({
+        url: `/device/${id}`,
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: ["Device"],
+    }),
   }),
   overrideExisting: false,
 })
@@ -70,4 +81,5 @@ export const {
   useCreateDevicesMutation,
   useUpdateDeviceMutation,
   useGetDeviceQuery,
+  useDeleteDeviceMutation,
 } = extendedApi

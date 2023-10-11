@@ -4,15 +4,21 @@ import { Add as AddIcon, Search as FilterIcon } from "@mui/icons-material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import { UserList, UserListRow } from "./components/userList"
 import { useGetUsersQuery } from "../../settings/api/endpoints/user"
-import { useAppDispatch } from "../../settings/redux/hooks"
+import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
   showFormCreateUser,
   showFormSearchUser,
 } from "../../settings/redux/dialogs.slice"
 import jwt_decode from "jwt-decode"
 import { JWTContent } from "../../share/models/appSession"
+import {
+  selectorDataFilter,
+  setDataUser,
+} from "../../settings/redux/dataFilter.slice"
 
 export const UserScreen = () => {
+  const dispatch = useAppDispatch()
+
   const toolbarButtons: ToolbarButton[] = [
     {
       icon: <AddIcon />,
@@ -38,14 +44,19 @@ export const UserScreen = () => {
     },
   ]
 
-  const dispatch = useAppDispatch()
   const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
-  const { data, isLoading, error } = useGetUsersQuery({
+  const { data } = useGetUsersQuery({
     companyId: token.companyId,
     page: "1",
     perPage: "10",
     search: "",
   })
+  React.useEffect(() => {
+    dispatch(setDataUser(data))
+  }, [data])
+
+  const filteredData = useAppSelector(selectorDataFilter)
+  console.log("Filtered Data", filteredData)
 
   const users = React.useMemo(() => {
     return (

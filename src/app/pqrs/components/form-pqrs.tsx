@@ -4,9 +4,6 @@ import {
   DialogActions,
   Divider,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material"
@@ -15,10 +12,7 @@ import {
   SelectField,
   SelectFieldValue,
 } from "../../../share/components/selectField"
-import React, { useEffect, useState } from "react"
-import { useGetUserQuery } from "../../../settings/api/endpoints/user"
-import { JWTContent } from "../../../share/models/appSession"
-import jwt_decode from "jwt-decode"
+import React, { useState } from "react"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useCreatePqrsMutation } from "../../../settings/api/endpoints/pqrs"
@@ -26,20 +20,11 @@ import { useCreatePqrsMutation } from "../../../settings/api/endpoints/pqrs"
 interface Props {
   onSave(): void
   onCancel(): void
+  dataUser: any
 }
 
 export const FormPQRS: React.FC<Props> = (props) => {
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
-  const { data } = useGetUserQuery({
-    id: token.sub,
-  })
-
-  useEffect(() => {
-    setFieldValue("firstname", data?.firstname)
-    setFieldValue("lastname", data?.lastname)
-    setFieldValue("email", data?.email)
-  }, [data])
-
+  const { dataUser } = props
   const [doCreatePqrs, { isLoading, error }] = useCreatePqrsMutation()
 
   const KindOfPQRS: SelectFieldValue<string>[] = [
@@ -68,29 +53,20 @@ export const FormPQRS: React.FC<Props> = (props) => {
     setFieldValue,
     errors,
     values: {
-      firstname: firstnameInputValue,
-      lastname: lastnameInputValue,
       document: documentInputValue,
       phone: phoneInputValue,
-      email: emailInputValue,
       description: descriptionInputValue,
       type: typeInputValue,
     },
   } = useFormik<{
-    firstname: string
-    lastname: string
     document: string
     phone: string
-    email: string
     description: string
     type: string | number
   }>({
     initialValues: {
-      firstname: "",
-      lastname: "",
       document: "",
       phone: "",
-      email: "",
       description: "",
       type: KindOfPQRS[0].value,
     },
@@ -98,9 +74,8 @@ export const FormPQRS: React.FC<Props> = (props) => {
     validateOnBlur: true,
     validateOnChange: false,
     validationSchema: FormPqrsSchema,
-    async onSubmit(credentials) {
-      console.log(credentials)
-      doCreatePqrs(credentials)
+    async onSubmit(data) {
+      doCreatePqrs(data)
     },
   })
 
@@ -126,7 +101,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
             label="Nombres"
             name="firstname"
             id="firstname"
-            value={firstnameInputValue}
+            value={dataUser.firstname}
             InputProps={{
               startAdornment: (
                 <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
@@ -141,7 +116,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
             label="Apellidos"
             name="lastname"
             id="lastname"
-            value={lastnameInputValue}
+            value={dataUser.lastname}
             InputProps={{
               startAdornment: (
                 <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
@@ -156,7 +131,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
             label="Correo Electrónico"
             name="email"
             id="email"
-            value={emailInputValue}
+            value={dataUser.email}
             InputProps={{
               startAdornment: (
                 <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
@@ -267,9 +242,6 @@ export const FormPQRS: React.FC<Props> = (props) => {
 }
 
 const FormPqrsSchema = Yup.object().shape({
-  firstname: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  lastname: Yup.string().min(3).max(50).required("El apellido no es valido."),
-  email: Yup.string().min(3).max(50).required("El email no es valido."),
   phone: Yup.string().min(3).max(20).required("El teléfono no es valido."),
   document: Yup.string()
     .min(3)

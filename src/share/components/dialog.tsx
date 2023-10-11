@@ -27,7 +27,7 @@ export const Dialog: FC<Props> = (props) => {
       maxWidth="lg"
     >
       <DialogTitle>
-        <Typography variant="h5">{title}</Typography>
+        {title}
         {!!onClose && (
           <IconButton
             aria-label="close"

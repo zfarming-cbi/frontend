@@ -6,11 +6,11 @@ import { DateTime } from "luxon"
 
 export interface PqrsListRow {
   id?: string | number
-  type: string
-  description: string
-  document: string
-  phone: string
-  createdAt: string
+  type?: string | number
+  description?: string
+  document?: string
+  phone?: string
+  createdAt?: string
   user?: any
 }
 
