@@ -56,19 +56,20 @@ export const UserScreen = () => {
   }, [data])
 
   const filteredData = useAppSelector(selectorDataFilter)
-  console.log("Filtered Data", filteredData)
 
   const users = React.useMemo(() => {
     return (
-      data?.map<UserListRow>(({ id, firstname, lastname, email, rol }) => ({
-        id,
-        firstname,
-        lastname,
-        email,
-        rol: rol == "ADMIN" ? "Administrador" : "Colaborador",
-      })) ?? []
+      filteredData.dataUserFilter?.map<UserListRow>(
+        ({ id, firstname, lastname, email, rol }) => ({
+          id,
+          firstname,
+          lastname,
+          email,
+          rol: rol == "ADMIN" ? "Administrador" : "Colaborador",
+        })
+      ) ?? []
     )
-  }, [data])
+  }, [filteredData])
 
   return (
     <Grid container flex={1} flexDirection="column">

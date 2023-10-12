@@ -1,19 +1,14 @@
 import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
 import {
-  Box,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   IconButton,
 } from "@mui/material"
-import { Close, Delete, Edit } from "@mui/icons-material"
+import { Close, Edit } from "@mui/icons-material"
 import { FormUpdateDevice } from "./formUpdateDevice"
-import { useDeleteDeviceMutation } from "../../../settings/api/endpoints/device"
 
 export interface DeviceListRow {
   id?: string | number
@@ -24,10 +19,7 @@ export interface DeviceListRow {
 
 export const DeviceList: React.FC<{ rows: DeviceListRow[] }> = (props) => {
   const [open, setOpen] = React.useState<boolean>(false)
-  const [openDialogDelete, setOpenDialogDelete] = React.useState<boolean>(false)
-  const [idDevice, setIdDevice] = React.useState<string>()
   const [dataDevice, setDataDevice] = React.useState<any>()
-  const [doDelete, { error }] = useDeleteDeviceMutation()
 
   const COLUMNS_DEF: GridColDef[] = [
     { field: "id", headerName: "#", width: 50 },
@@ -51,39 +43,21 @@ export const DeviceList: React.FC<{ rows: DeviceListRow[] }> = (props) => {
       headerName: "Acciones",
       width: 150,
       renderCell: (params) => (
-        <Box>
-          <IconButton
-            aria-label="Edit"
-            onClick={() => {
-              setDataDevice(params.row)
-              setOpen(true)
-            }}
-          >
-            <Edit />
-          </IconButton>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => {
-              setIdDevice(params.row.id)
-              setOpenDialogDelete(true)
-            }}
-          >
-            <Delete />
-          </IconButton>
-        </Box>
+        <IconButton
+          aria-label="Edit"
+          onClick={() => {
+            setDataDevice(params.row)
+            setOpen(true)
+          }}
+        >
+          <Edit />
+        </IconButton>
       ),
     },
   ]
 
   const handleClose = () => {
     setOpen(false)
-  }
-  const onCloseDialogDelete = () => {
-    setOpenDialogDelete(false)
-  }
-  const doDeleteDevice = () => {
-    doDelete({ id: idDevice })
-    onCloseDialogDelete()
   }
 
   return (
@@ -118,34 +92,6 @@ export const DeviceList: React.FC<{ rows: DeviceListRow[] }> = (props) => {
         <DialogContent>
           <FormUpdateDevice dataDevice={dataDevice} onClose={handleClose} />
         </DialogContent>
-      </Dialog>
-      <Dialog open={openDialogDelete}>
-        <DialogTitle>
-          Eliminar dispositivo
-          <IconButton
-            aria-label="close"
-            onClick={onCloseDialogDelete}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            ¿Desea borrar el dispositivo?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onCloseDialogDelete} color={"inherit"}>
-            Cancelar
-          </Button>
-          <Button onClick={doDeleteDevice}>Aceptar</Button>
-        </DialogActions>
       </Dialog>
     </Grid>
   )

@@ -22,7 +22,7 @@ interface DialogsState {
     visible: boolean
     data?: any
   }
-  formCreatePlant: {
+  formSearchDevice: {
     visible: boolean
     data?: any
   }
@@ -30,6 +30,15 @@ interface DialogsState {
     visible: boolean
     data?: any
   }
+  formCreatePlant: {
+    visible: boolean
+    data?: any
+  }
+  formSearchPlant: {
+    visible: boolean
+    data?: any
+  }
+
   formCopyPlant: {
     visible: boolean
     data?: any
@@ -45,6 +54,7 @@ const initialState: DialogsState = {
     visible: false,
     data: undefined,
   },
+
   formPQRS: {
     visible: false,
     data: undefined,
@@ -57,11 +67,19 @@ const initialState: DialogsState = {
     visible: false,
     data: undefined,
   },
-  formCreatePlant: {
+  formSearchDevice: {
     visible: false,
     data: undefined,
   },
   assignDevice: {
+    visible: false,
+    data: undefined,
+  },
+  formCreatePlant: {
+    visible: false,
+    data: undefined,
+  },
+  formSearchPlant: {
     visible: false,
     data: undefined,
   },
@@ -108,6 +126,7 @@ export const dialogsSlice = createSlice({
       state.formSearchUser.visible = false
       state.formSearchUser.data = undefined
     },
+
     showFormCreateFarm: (
       state,
       action: PayloadAction<DialogsState["formCreateFarm"]>
@@ -130,16 +149,16 @@ export const dialogsSlice = createSlice({
       state.formCreateDevice.visible = false
       state.formCreateDevice.data = undefined
     },
-    showFormCreatePlant: (
+    showFormSearchDevice: (
       state,
-      action: PayloadAction<DialogsState["formCreatePlant"]>
+      action: PayloadAction<DialogsState["formSearchDevice"]>
     ) => {
-      state.formCreatePlant.visible = action.payload.visible
-      state.formCreatePlant.data = action.payload.data
+      state.formSearchDevice.visible = action.payload.visible
+      state.formSearchDevice.data = action.payload.data
     },
-    closeFormCreatePlant: (state) => {
-      state.formCreatePlant.visible = false
-      state.formCreatePlant.data = undefined
+    closeFormSearchDevice: (state) => {
+      state.formSearchDevice.visible = false
+      state.formSearchDevice.data = undefined
     },
     showAsignDevice: (
       state,
@@ -152,6 +171,29 @@ export const dialogsSlice = createSlice({
       state.assignDevice.visible = false
       state.assignDevice.data = undefined
     },
+    showFormCreatePlant: (
+      state,
+      action: PayloadAction<DialogsState["formCreatePlant"]>
+    ) => {
+      state.formCreatePlant.visible = action.payload.visible
+      state.formCreatePlant.data = action.payload.data
+    },
+    closeFormCreatePlant: (state) => {
+      state.formCreatePlant.visible = false
+      state.formCreatePlant.data = undefined
+    },
+    showFormSearchPlant: (
+      state,
+      action: PayloadAction<DialogsState["formSearchPlant"]>
+    ) => {
+      state.formSearchPlant.visible = action.payload.visible
+      state.formSearchPlant.data = action.payload.data
+    },
+    closeFormSearchPlant: (state) => {
+      state.formSearchPlant.visible = false
+      state.formSearchPlant.data = undefined
+    },
+
     showFormCopyPlant: (
       state,
       action: PayloadAction<DialogsState["formCopyPlant"]>
@@ -183,5 +225,9 @@ export const {
   showFormSearchUser,
   showFormCopyPlant,
   closeFormCopyPlant,
+  showFormSearchDevice,
+  closeFormSearchDevice,
+  showFormSearchPlant,
+  closeFormSearchPlant,
 } = dialogsSlice.actions
 export const selectorDialogs = (state: RootState) => state.dialogs

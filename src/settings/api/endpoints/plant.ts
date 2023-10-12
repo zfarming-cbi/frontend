@@ -5,8 +5,8 @@ import { CopyPlantDTO, PlantDTO } from "../../../share/models/plant"
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
     getPlants: build.query<PlantDTO[], PaginationDTO>({
-      query: ({ page, perPage }) => ({
-        url: `/plants?page=${page}&perPage=${perPage}`,
+      query: ({ page, perPage, search }) => ({
+        url: `/plants?search=${search}&page=${page}&perPage=${perPage}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -92,4 +92,5 @@ export const {
   useUpdatePlantMutation,
   useGetPlantsForGaleryQuery,
   useCopyPlantMutation,
+  useLazyGetPlantsQuery,
 } = extendedApi

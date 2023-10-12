@@ -11,8 +11,11 @@ import {
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useChangePassowrdMutation } from "../../../settings/api/endpoints/authentication"
+import jwt_decode from "jwt-decode"
+import { JWTContent } from "../../../share/models/appSession"
 
 export const FormChangePassword: FC = () => {
+  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
   const {
     handleChange,
     handleBlur,
@@ -35,7 +38,7 @@ export const FormChangePassword: FC = () => {
     validateOnChange: false,
     validationSchema: FormChangePasswordSchema,
     async onSubmit(credentials) {
-      doChangePassword(credentials)
+      doChangePassword({ ...credentials, id: token.sub })
     },
   })
 
@@ -123,5 +126,4 @@ const FormChangePasswordSchema = Yup.object().shape({
     .min(8)
     .max(20)
     .required("La contraseña no es valida."),
-  email: Yup.string().min(3).max(50).required("El email no es valido."),
 })

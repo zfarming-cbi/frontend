@@ -1,11 +1,12 @@
 import { API } from ".."
 import { DeviceDTO, UpdateDeviceDTO } from "../../../share/models/device"
+import { PaginationDTO } from "../../../share/models/pagination"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getDevices: build.query<DeviceDTO[], { farmId?: string }>({
-      query: ({ farmId }) => ({
-        url: `/device/all/${farmId}`,
+    getDevices: build.query<DeviceDTO[], PaginationDTO>({
+      query: ({ page, perPage, search }) => ({
+        url: `/device/all?search=${search}&page=${page}&perPage=${perPage}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -14,6 +15,19 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Device"],
     }),
+
+    getDevicesByFarm: build.query<DeviceDTO[], { farmId?: string }>({
+      query: ({ farmId }) => ({
+        url: `/device/by-farm/${farmId}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Device"],
+    }),
+
     getDevice: build.query<DeviceDTO, { deviceId?: string }>({
       query: ({ deviceId }) => ({
         url: `/device/${deviceId}`,
@@ -77,9 +91,11 @@ const extendedApi = API.injectEndpoints({
 
 export const {
   useGetDevicesQuery,
+  useLazyGetDevicesQuery,
   useGetDevicesUnasignedQuery,
   useCreateDevicesMutation,
   useUpdateDeviceMutation,
   useGetDeviceQuery,
   useDeleteDeviceMutation,
+  useGetDevicesByFarmQuery,
 } = extendedApi

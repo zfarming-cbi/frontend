@@ -2,10 +2,17 @@ import * as React from "react"
 import { Grid } from "@mui/material"
 import { Add as AddIcon, Search as FilterIcon } from "@mui/icons-material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
-import { useAppDispatch } from "../../settings/redux/hooks"
-import { showFormCreatePlant } from "../../settings/redux/dialogs.slice"
+import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
+import {
+  showFormCreatePlant,
+  showFormSearchPlant,
+} from "../../settings/redux/dialogs.slice"
 import { useGetPlantsQuery } from "../../settings/api/endpoints/plant"
 import { PlantListRow, PlantsList } from "./components/plantList"
+import {
+  selectorDataFilter,
+  setDataPlant,
+} from "../../settings/redux/dataFilter.slice"
 
 export const PlantScreen = () => {
   const toolbarButtons: ToolbarButton[] = [
@@ -22,20 +29,34 @@ export const PlantScreen = () => {
     },
     {
       icon: <FilterIcon />,
-      action() {},
+      action() {
+        dispatch(
+          showFormSearchPlant({
+            visible: true,
+            data: {},
+          })
+        )
+      },
     },
   ]
 
   const dispatch = useAppDispatch()
 
-  const { data, isLoading, error } = useGetPlantsQuery({
+  const { data } = useGetPlantsQuery({
     page: "1",
     perPage: "10",
+    search: "",
   })
+
+  React.useEffect(() => {
+    dispatch(setDataPlant(data))
+  }, [data])
+
+  const filteredData = useAppSelector(selectorDataFilter)
 
   const plants = React.useMemo(() => {
     return (
-      data?.map<PlantListRow>(
+      filteredData.dataPlantFilter?.map<PlantListRow>(
         ({ id, name, content, growing_time, public: isPublic, image }) => ({
           id,
           name,
@@ -46,7 +67,7 @@ export const PlantScreen = () => {
         })
       ) ?? []
     )
-  }, [data])
+  }, [filteredData])
 
   return (
     <Grid container flex={1} flexDirection="column">

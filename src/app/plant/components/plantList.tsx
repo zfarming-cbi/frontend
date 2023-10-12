@@ -55,41 +55,23 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
       headerName: "Acciones",
       flex: 1,
       renderCell: (params) => (
-        <Box>
-          <IconButton
-            aria-label="Edit"
-            onClick={() => {
-              setDataPlant(params.row)
-              setOpen(true)
-            }}
-          >
-            <Edit />
-          </IconButton>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => {
-              console.log(params.row)
-            }}
-          >
-            <Delete />
-          </IconButton>
-        </Box>
+        <IconButton
+          aria-label="Edit"
+          onClick={() => {
+            setDataPlant(params.row)
+            setOpen(true)
+          }}
+        >
+          <Edit />
+        </IconButton>
       ),
     },
   ]
 
   const updatePlant = () => {
     setOpen(false)
-    //   name,
-    //   content,
-    //   growing_time,
-    //   public: isPublic,
-    //   image,
-    // }
-    // doCreatePlant(data)
   }
 
-  const onSaveFormUpdatePlant = () => {}
   return (
     <Grid container p={1}>
       <DataGrid
@@ -111,7 +93,7 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
         open={open}
       >
         <DialogTitle>
-          <Typography variant="h5">{"Actualizar planta"}</Typography>
+          Actualizar planta
           {!!updatePlant && (
             <IconButton
               aria-label="close"

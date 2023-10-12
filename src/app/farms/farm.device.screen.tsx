@@ -10,7 +10,7 @@ import {
 } from "@mui/material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import { useNavigate, useParams } from "react-router-dom"
-import { useGetDevicesQuery } from "../../settings/api/endpoints/device"
+import { useGetDevicesByFarmQuery } from "../../settings/api/endpoints/device"
 import { Add as AddIcon } from "@mui/icons-material"
 import { showAsignDevice } from "../../settings/redux/dialogs.slice"
 import { useAppDispatch } from "../../settings/redux/hooks"
@@ -34,7 +34,7 @@ export const DeviceByFarmScreen: React.FC = () => {
   const { farmId } = useParams()
 
   const farm = useGetFarmQuery({ farmId })
-  const devicesData = useGetDevicesQuery({ farmId })
+  const devicesData = useGetDevicesByFarmQuery({ farmId })
 
   React.useEffect(() => {
     setTitle(farm?.data?.name)
@@ -97,7 +97,7 @@ export const DeviceByFarmScreen: React.FC = () => {
                 alt="plant"
                 height={131}
                 width={132}
-                sx={{ objectFit: "contain", alignSelf: "center" }}
+                sx={{ objectFit: "cover", alignSelf: "center" }}
               />
               <CardContent
                 sx={{
@@ -117,9 +117,6 @@ export const DeviceByFarmScreen: React.FC = () => {
                     {device.name}
                   </Typography>
                 </Box>
-                {/* <Typography fontWeight="ligth" fontSize={12} color={"grey"}>
-                  {device.code}
-                </Typography> */}
                 {!device.measurings && (
                   <Typography
                     fontWeight="ligth"

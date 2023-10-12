@@ -3,10 +3,16 @@ import { ECharts, EChartsCoreOption, init } from "echarts"
 import { FC, useEffect, useRef } from "react"
 import { useGetMeasuringsQuery } from "../../../settings/api/endpoints/measuringHistory"
 
-export const CircularChart: FC = () => {
+interface Props {
+  measurings: any
+}
+
+export const CircularChart: FC<Props> = (props) => {
+  const { measurings } = props
   const chartNodeRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<ECharts>()
   useEffect(() => {
+    console.log("Aqui tengo a measurings", measurings)
     const chart = init(chartNodeRef.current)
 
     const option: EChartsCoreOption = {
@@ -30,24 +36,24 @@ export const CircularChart: FC = () => {
       series: [
         {
           type: "bar",
-          data: [2, 1.2, 2.4, 3.6],
+          data: ["2", 1.2, 2.4, 3.6],
           coordinateSystem: "polar",
           itemStyle: {
             // Estilo para todos los elementos (barras) en la serie
-            color: function (params) {
+            color: function (params: any) {
               var colors = ["red", "blue", "green", "orange", "purple"]
               return colors[params.dataIndex]
             },
           },
           showBackground: false, // Desactivar la visualización del nombre en el fondo
-          label: {
-            show: false,
-            formatter: function (params) {
-              return ""
-            },
-            //   position: "middle",
-            //   formatter: "{b}: {c}",
-          },
+          // label: {
+          //   show: false,
+          //   formatter: function (params) {
+          //     return ""
+          //   },
+          //   //   position: "middle",
+          //   //   formatter: "{b}: {c}",
+          // },
         },
       ],
       legend: {

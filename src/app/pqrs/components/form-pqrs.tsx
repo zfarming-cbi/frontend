@@ -20,11 +20,9 @@ import { useCreatePqrsMutation } from "../../../settings/api/endpoints/pqrs"
 interface Props {
   onSave(): void
   onCancel(): void
-  dataUser: any
 }
 
 export const FormPQRS: React.FC<Props> = (props) => {
-  const { dataUser } = props
   const [doCreatePqrs, { isLoading, error }] = useCreatePqrsMutation()
 
   const KindOfPQRS: SelectFieldValue<string>[] = [
@@ -52,12 +50,7 @@ export const FormPQRS: React.FC<Props> = (props) => {
     handleSubmit,
     setFieldValue,
     errors,
-    values: {
-      document: documentInputValue,
-      phone: phoneInputValue,
-      description: descriptionInputValue,
-      type: typeInputValue,
-    },
+    values: { description: descriptionInputValue, type: typeInputValue },
   } = useFormik<{
     document: string
     phone: string
@@ -87,96 +80,6 @@ export const FormPQRS: React.FC<Props> = (props) => {
       flexDirection="column"
       onSubmit={handleSubmit}
     >
-      <Grid item marginTop={2} marginBottom={1}>
-        <Typography variant="subtitle1" color="gray">
-          Información Personal
-        </Typography>
-        <Divider />
-      </Grid>
-
-      <Grid item container spacing={2} flexDirection="column">
-        <Grid item xs>
-          <TextField
-            fullWidth
-            label="Nombres"
-            name="firstname"
-            id="firstname"
-            value={dataUser.firstname}
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-              readOnly: true,
-            }}
-          />
-        </Grid>
-        <Grid item xs>
-          <TextField
-            fullWidth
-            label="Apellidos"
-            name="lastname"
-            id="lastname"
-            value={dataUser.lastname}
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-              readOnly: true,
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            fullWidth
-            label="Correo Electrónico"
-            name="email"
-            id="email"
-            value={dataUser.email}
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-              readOnly: true,
-            }}
-          />
-        </Grid>
-
-        <Grid item xs>
-          <TextField
-            fullWidth
-            label="Número de documento"
-            name="document"
-            id="document"
-            disabled={isLoading}
-            value={documentInputValue}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            fullWidth
-            label="Télefono celular"
-            name="phone"
-            id="phone"
-            value={phoneInputValue}
-            disabled={isLoading}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            InputProps={{
-              startAdornment: (
-                <DocumentIdIcon sx={{ mr: 1 }} color="disabled" />
-              ),
-            }}
-          />
-        </Grid>
-      </Grid>
-
       <Grid item marginBottom={1} marginTop={2}>
         <Typography variant="subtitle1" color="gray">
           Información PQRS

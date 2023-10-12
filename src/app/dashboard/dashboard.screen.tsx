@@ -19,7 +19,6 @@ import {
   Menu as MenuIcon,
   Home as HomeIcon,
   People as PeopleIcon,
-  Agriculture as AgricultureIcon,
   SupportAgent as SupportAgentIcon,
   Logout as LogoutIcon,
   Devices as DeviceIcon,
@@ -40,6 +39,8 @@ import {
   closeAsignDevice,
   closeFormSearchUser,
   closeFormCopyPlant,
+  closeFormSearchDevice,
+  closeFormSearchPlant,
 } from "../../settings/redux/dialogs.slice"
 import { Dialog } from "../../share/components/dialog"
 import { FormCreateUser } from "../user/components/formCreateUser"
@@ -49,15 +50,13 @@ import { FormCreatePlant } from "../plant/components/formCreatePlant"
 import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
 import { FormSearchUser } from "../user/components/formSearchUser"
 import { FormCopyPlant } from "../plant/components/formCopyPlant"
-import { useGetUserQuery } from "../../settings/api/endpoints/user"
 import jwt_decode from "jwt-decode"
 import { JWTContent } from "../../share/models/appSession"
+import { FormSearchDevice } from "../device/components/formSearchDevice"
+import { FormSearchPlant } from "../plant/components/formSearchPlant"
 
 export const DashboardScreen: FC = () => {
   const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
-  const { data: dataUser } = useGetUserQuery({
-    id: token?.sub,
-  })
   const menuItems: DrawerMenuProps["items"] = [
     [
       {
@@ -128,6 +127,8 @@ export const DashboardScreen: FC = () => {
     assignDevice,
     formSearchUser,
     formCopyPlant,
+    formSearchDevice,
+    formSearchPlant,
   } = useAppSelector(selectorDialogs)
   const dispatch = useAppDispatch()
 
@@ -166,12 +167,20 @@ export const DashboardScreen: FC = () => {
     dispatch(closeFormCreateDevice())
   }
 
-  const onCloseFormCreatePlant = () => {
-    dispatch(closeFormCreatePlant())
+  const onCloseFormSearchDevice = () => {
+    dispatch(closeFormSearchDevice())
   }
 
   const onCloseAsignDevice = () => {
     dispatch(closeAsignDevice())
+  }
+
+  const onCloseFormCreatePlant = () => {
+    dispatch(closeFormCreatePlant())
+  }
+
+  const onCloseFormSearchPlant = () => {
+    dispatch(closeFormSearchPlant())
   }
 
   const onCloseFormCopyPlant = () => {
@@ -182,8 +191,10 @@ export const DashboardScreen: FC = () => {
   const onSaveFormCreateUser = () => {}
   const onSaveFormCreateFarm = () => {}
   const onSaveFormCreateDevice = () => {}
-  const onSaveFormCreatePlant = () => {}
   const onSaveAsignDevice = () => {}
+  const onSaveFormSearchDevice = () => {}
+  const onSaveFormCreatePlant = () => {}
+  const onSaveFormSearchPlant = () => {}
   const onSaveFormSearchUser = () => {}
   const onSaveFormCopyPlant = () => {}
 
@@ -232,11 +243,7 @@ export const DashboardScreen: FC = () => {
         onClose={onClosePQRSForm}
         visible={formPQRS.visible}
       >
-        <FormPQRS
-          onCancel={onClosePQRSForm}
-          onSave={onSavePQRSForm}
-          dataUser={dataUser}
-        />
+        <FormPQRS onCancel={onClosePQRSForm} onSave={onSavePQRSForm} />
       </Dialog>
 
       <Dialog
@@ -284,6 +291,17 @@ export const DashboardScreen: FC = () => {
       </Dialog>
 
       <Dialog
+        title={"Buscar dispositivo"}
+        onClose={onCloseFormSearchDevice}
+        visible={formSearchDevice.visible}
+      >
+        <FormSearchDevice
+          onCancel={onCloseFormSearchDevice}
+          onSave={onSaveFormSearchDevice}
+        />
+      </Dialog>
+
+      <Dialog
         title={"Registro de plantas"}
         onClose={onCloseFormCreatePlant}
         visible={formCreatePlant.visible}
@@ -291,6 +309,17 @@ export const DashboardScreen: FC = () => {
         <FormCreatePlant
           onCancel={onCloseFormCreatePlant}
           onSave={onSaveFormCreatePlant}
+        />
+      </Dialog>
+
+      <Dialog
+        title={"Buscar planta"}
+        onClose={onCloseFormSearchPlant}
+        visible={formSearchPlant.visible}
+      >
+        <FormSearchPlant
+          onCancel={onCloseFormSearchPlant}
+          onSave={onSaveFormSearchPlant}
         />
       </Dialog>
 

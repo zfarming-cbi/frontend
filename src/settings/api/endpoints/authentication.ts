@@ -67,9 +67,9 @@ const extendedApi = API.injectEndpoints({
         },
       }),
     }),
-    changePassowrd: build.mutation<void, ChangePasswordDTO>({
-      query: (body) => ({
-        url: "/auth/change-password",
+    changePassowrd: build.mutation<void, ChangePasswordDTO & { id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/auth/change-password/${id}`,
         method: "PATCH",
         body,
         headers: {

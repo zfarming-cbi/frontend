@@ -15,63 +15,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { ECharts, EChartsCoreOption, init } from "echarts"
 import { useGetDeviceQuery } from "../../settings/api/endpoints/device"
 import { useParams } from "react-router-dom"
 import { Toolbar } from "../../share/components/toolbar"
-import { CircularChart } from "../home/components/circularChart"
+import { CircularChart } from "./components/circularChart"
 import { AppEnvVars } from "../../settings/env/environment"
 import MDEditor from "@uiw/react-md-editor"
 import { useCopyPlantMutation } from "../../settings/api/endpoints/plant"
 import { useGetMeasuringsQuery } from "../../settings/api/endpoints/measuringHistory"
-
-export const BarChart: React.FC = () => {
-  const chartNodeRef = React.useRef<HTMLDivElement>(null)
-  const chartRef = React.useRef<ECharts>()
-  React.useEffect(() => {
-    const chart = init(chartNodeRef.current)
-
-    const option: EChartsCoreOption = {
-      xAxis: {
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      },
-      yAxis: {},
-      series: [
-        {
-          type: "line",
-          stack: "x",
-          data: [23, 24, 18, 25, 27, 28, 25],
-        },
-        {
-          data: [5, 4, 3, 5, 10],
-          type: "line",
-          stack: "x",
-        },
-        {
-          data: [16, 12, 8, 11, 7],
-          type: "line",
-          stack: "x",
-        },
-        {
-          data: [15, 2, 6, 9, 17],
-          type: "line",
-          stack: "x",
-        },
-      ],
-    }
-    chart.setOption(option)
-    chartRef.current = chart
-  }, [])
-  return (
-    <Box>
-      <div
-        id="myChart"
-        ref={chartNodeRef}
-        style={{ width: 500, height: 500 }}
-      />
-    </Box>
-  )
-}
+import { BarChart } from "./components/barChart"
 
 export const DeviceMeasuringScreen: React.FC = () => {
   const { deviceId } = useParams()
@@ -89,7 +41,6 @@ export const DeviceMeasuringScreen: React.FC = () => {
   React.useEffect(() => {
     setTitle(data?.name)
   }, [data])
-  console.log("measurings", measurings)
   const openFormCopyPlant = () => {
     setContent(data?.plant.content)
     setGrowing_time(data?.plant.growing_time)
@@ -108,24 +59,12 @@ export const DeviceMeasuringScreen: React.FC = () => {
     doCreatePlant(data)
     setOpen(false)
   }
-  //   const { deviceId } = useParams()
-  //   const measurings = useGetMeasuringsQuery({ farmId })
-  //   const devices = React.useMemo(() => {
-  //     return (
-  //       data?.map<DeviceByFarmListRow>(({ id, name, description, code }) => ({
-  //         id,
-  //         name,
-  //         description,
-  //         code,
-  //       })) ?? []
-  //     )
-  //   }, [data])
 
   return (
     <Grid container flex={1} flexDirection="column">
       <Toolbar title={title} showButtonReturn={true} />
       <Grid container flex={1} flexDirection={"row"}>
-        <Grid container xs={6} flexDirection={"column"}>
+        <Grid container item xs={6} flexDirection={"column"}>
           <Card
             sx={{
               display: "flex",
@@ -153,12 +92,12 @@ export const DeviceMeasuringScreen: React.FC = () => {
               >
                 {data?.plant.name}
               </Typography>
-              <Typography data-color-mode="light" paddingY={2} marginY={3}>
+              <div data-color-mode="light">
                 <MDEditor.Markdown
                   data-color-mode="light"
                   source={data?.plant.content}
                 />
-              </Typography>
+              </div>
             </CardContent>
             <CardActions
               sx={{
@@ -214,8 +153,8 @@ export const DeviceMeasuringScreen: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <CircularChart />
-            <BarChart />
+            <CircularChart measurings={measurings} />
+            <BarChart measurings={measurings} />
           </Box>
         </Grid>
       </Grid>
