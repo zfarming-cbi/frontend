@@ -10,8 +10,9 @@ RUN yarn install
 RUN yarn build
 RUN mv dist app
 
-FROM nginx:1.19.1-alpine
+FROM socialengine/nginx-spa:latest
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
-COPY --from=builder /source/app .
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+COPY --from=builder /source/app /app
+RUN chmod -R 777 /app
+# ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
