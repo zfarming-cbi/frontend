@@ -4,7 +4,7 @@ COPY . .
 
 ENV VITE_APP_ENV='production'
 ENV VITE_APP_TITLE='ZERO FARMING'
-ENV VITE_SERVER_URL="http://zfarming-backend.projects.kriverdevice.com/api/v1"
+ENV VITE_SERVER_URL="https://zfarming-backend.projects.kriverdevice.com/api/v1"
 
 RUN yarn install
 RUN yarn build
