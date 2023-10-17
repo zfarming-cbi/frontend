@@ -1,8 +1,11 @@
 FROM node:lts as builder
 WORKDIR /source
 COPY . .
-ARG VITE_APP_TITLE=""
-ARG VITE_SERVER_URL=""
+
+ENV VITE_APP_ENV='production'
+ENV VITE_APP_TITLE='ZERO FARMING'
+ENV VITE_SERVER_URL="http://zfarming-backend.projects.kriverdevice.com/api/v1"
+
 RUN yarn install
 RUN yarn build
 RUN mv dist app
