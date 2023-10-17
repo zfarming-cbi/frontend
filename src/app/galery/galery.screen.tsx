@@ -29,7 +29,7 @@ export interface PlantListRow {
   comments: number
   growing_time: string
   content: string
-  image: string
+  image: string | Blob
 }
 
 export const GaleryScreen: React.FC = () => {

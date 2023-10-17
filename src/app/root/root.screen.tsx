@@ -4,7 +4,6 @@ import { FC } from "react"
 import { AppEnvVars } from "../../settings/env/environment"
 import { useAppDispatch } from "../../settings/redux/hooks"
 import { UserList } from "../../share/components/user-list"
-import { User } from "../../share/models/user"
 
 export const RootScreen: FC = () => {
   const dispatch = useAppDispatch()

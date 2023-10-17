@@ -18,7 +18,7 @@ export const PlantFromGalery: React.FC = () => {
   const [content, setContent] = React.useState<string>()
   const [likes, setLikes] = React.useState<number>()
   const [comments, setComments] = React.useState<number>()
-  const [image, setImage] = React.useState<string>()
+  const [image, setImage] = React.useState<string | Blob>()
   const navigate = useNavigate()
 
   React.useEffect(() => {

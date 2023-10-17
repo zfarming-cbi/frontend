@@ -5,7 +5,6 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom"
 import { ReduxStore } from "../redux/store"
 import { APP_THEME } from "../theme/theme"
 import { ROUTER_OPTIONS } from "./app.routes"
-import { User } from "../../share/models/user"
 
 describe("Testing the routers", async () => {
   it.skip("Render index page", () => {

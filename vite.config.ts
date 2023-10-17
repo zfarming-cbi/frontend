@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from "vite"
 import react from "@vitejs/plugin-react-swc"
-import eslint from "@rollup/plugin-eslint"
+// import eslint from "@rollup/plugin-eslint"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -11,12 +11,12 @@ export default defineConfig(({ command, mode }) => {
     // vite config
     define: {
       __APP_ENV__: env.APP_ENV,
-      plugins: [
-        react(),
-        eslint({
-          /* your options */
-        }),
-      ],
     },
+    plugins: [
+      react(),
+      // eslint({
+      //   /* your options */
+      // }),
+    ],
   }
 })
