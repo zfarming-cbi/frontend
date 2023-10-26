@@ -57,7 +57,6 @@ export const SignupScreen: FC = () => {
     const { access_token } = data ?? {}
     if (!access_token) return
     const saveIsSuccess = AuthenticationSaveHandler(access_token)
-    console.log({ saveIsSuccess })
     if (!saveIsSuccess) return
     navigate(ROUTE_PATH.Dashboard, { replace: true })
   }, [data])

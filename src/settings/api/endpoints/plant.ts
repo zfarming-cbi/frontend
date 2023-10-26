@@ -91,6 +91,7 @@ export const {
   useCreatePlantMutation,
   useUpdatePlantMutation,
   useGetPlantsForGaleryQuery,
+  useLazyGetPlantsForGaleryQuery,
   useCopyPlantMutation,
   useLazyGetPlantsQuery,
 } = extendedApi

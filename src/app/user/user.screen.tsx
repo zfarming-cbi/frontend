@@ -9,12 +9,11 @@ import {
   showFormCreateUser,
   showFormSearchUser,
 } from "../../settings/redux/dialogs.slice"
-import jwt_decode from "jwt-decode"
-import { JWTContent } from "../../share/models/appSession"
 import {
   selectorDataFilter,
   setDataUser,
 } from "../../settings/redux/dataFilter.slice"
+import { selectorSession } from "../../settings/redux/session.slice"
 
 export const UserScreen = () => {
   const dispatch = useAppDispatch()
@@ -44,9 +43,10 @@ export const UserScreen = () => {
     },
   ]
 
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { companyId = "" } = useAppSelector(selectorSession)
+
   const { data } = useGetUsersQuery({
-    companyId: token.companyId,
+    companyId,
     page: "1",
     perPage: "10",
     search: "",

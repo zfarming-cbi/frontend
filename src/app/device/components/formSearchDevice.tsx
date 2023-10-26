@@ -6,12 +6,8 @@ import {
   closeFormSearchDevice,
   closeFormSearchUser,
 } from "../../../settings/redux/dialogs.slice"
-import {
-  setDataDevice,
-  setDataUser,
-} from "../../../settings/redux/dataFilter.slice"
+import { setDataDevice } from "../../../settings/redux/dataFilter.slice"
 import { useLazyGetDevicesQuery } from "../../../settings/api/endpoints/device"
-import jwt_decode from "jwt-decode"
 
 interface Props {
   onSave(): void

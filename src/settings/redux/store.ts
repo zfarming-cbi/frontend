@@ -4,6 +4,7 @@ import { sessionSlice } from "./session.slice"
 import { API } from "../api"
 import { setupListeners } from "@reduxjs/toolkit/dist/query"
 import { dataFilterSlice } from "./dataFilter.slice"
+import { snackbarSlice } from "./snackbar.slice"
 
 export const ReduxStore = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const ReduxStore = configureStore({
     [dialogsSlice.name]: dialogsSlice.reducer,
     [sessionSlice.name]: sessionSlice.reducer,
     [dataFilterSlice.name]: dataFilterSlice.reducer,
+    [snackbarSlice.name]: snackbarSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(API.middleware),

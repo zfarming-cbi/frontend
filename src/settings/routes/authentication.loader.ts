@@ -18,8 +18,10 @@ export const AuthenticationLessRouteLoader = () => {
 export const AuthenticationRouteLoader = () => {
   const token = localStorage.getItem("token") ?? ""
   if (!token) {
-    ReduxStore.dispatch(logout())
-    return redirect(ROUTE_PATH.Login)
+    console.log("no hay token, estoy en el loader")
+    // ReduxStore.dispatch(logout())
+    // return redirect(ROUTE_PATH.Galery)
+    return null
   }
   const tokenInfo = JWT<JWTContent>(token)
   const isTokenExpired = tokenInfo.exp < Date.now() / 1000
@@ -33,8 +35,8 @@ export const AuthenticationRouteLoader = () => {
   ReduxStore.dispatch(
     logIn({
       isLogged: true,
-      email: tokenInfo.email,
-      // tokenContent: tokenInfo,
+      userId: tokenInfo.sub,
+      ...tokenInfo,
     })
   )
 
@@ -64,7 +66,8 @@ export const AuthenticationSaveHandler = (token: string): boolean => {
     ReduxStore.dispatch(
       logIn({
         isLogged: true,
-        email: tokenInfo.email,
+        userId: tokenInfo.sub,
+        ...tokenInfo,
       })
     )
     return true

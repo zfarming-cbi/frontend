@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
@@ -9,6 +9,10 @@ import {
   SelectField,
   SelectFieldValue,
 } from "../../../share/components/selectField"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   onSave(): void
@@ -66,7 +70,35 @@ export const FormCreateUser: FC<Props> = (props) => {
 
   const dispatch = useAppDispatch()
 
-  const [doCreateUsers, { isLoading, error }] = useCreateUserMutation()
+  const [doCreateUsers, { isLoading, error, isSuccess, reset }] =
+    useCreateUserMutation()
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid

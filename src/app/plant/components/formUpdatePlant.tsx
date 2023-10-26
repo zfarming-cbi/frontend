@@ -18,6 +18,11 @@ import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
 import MDEditor, { commands } from "@uiw/react-md-editor"
 import { Edit } from "@mui/icons-material"
 import { AppEnvVars } from "../../../settings/env/environment"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
+import { useAppDispatch } from "../../../settings/redux/hooks"
 
 interface Props {
   dataPlant: any
@@ -90,11 +95,13 @@ const VisuallyHiddenInput = styled("input")({
 })
 
 export const FormUpdatePlant: FC<Props> = (props) => {
+  const dispatch = useAppDispatch()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [image, setImage] = useState<Blob>()
-  const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
+  const [doCreatePlant, { isLoading, error, isSuccess, reset }] =
+    useCreatePlantMutation()
   const [value, setValue] = React.useState<string>()
-  const [growing_time, setGrowing_time] = useState<
+  const [growingTime, setGrowingTime] = useState<
     HTMLInputElement | HTMLTextAreaElement
   >()
   React.useState<HTMLTextAreaElement | null>()
@@ -110,19 +117,19 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     errors,
     values: {
       name: nameInputValue,
-      growing_time: growing_timeInputValue,
+      growingTime: growingTimeInputValue,
       public: publicInputValue,
     },
   } = useFormik<{
     name: string
     content: string
-    growing_time: string
+    growingTime: string
     public: boolean
   }>({
     initialValues: {
       name: "",
       content: "",
-      growing_time: "",
+      growingTime: "",
       public: false,
     },
     validationSchema: FormUpdatePlantSchema,
@@ -139,13 +146,39 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     setFieldValue("public", !!dataPlant.public)
     setValue(dataPlant.content)
     setSelectedImage(`${AppEnvVars.IMAGE_URL}${dataPlant.image}`)
-    console.log("dataplant from form update", dataPlant)
   }, [dataPlant])
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click()
     }
   }
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -219,11 +252,11 @@ export const FormUpdatePlant: FC<Props> = (props) => {
             variant="outlined"
             name="growing_time"
             id="growing_time"
-            value={growing_time}
+            value={growingTime}
             disabled={isLoading}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={!!errors.growing_time}
+            error={!!errors.growingTime}
           />
         </Grid>
         <Grid item xs>

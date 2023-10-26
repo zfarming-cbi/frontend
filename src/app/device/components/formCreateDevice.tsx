@@ -1,10 +1,14 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { useCreateDevicesMutation } from "../../../settings/api/endpoints/device"
 import { closeFormCreateDevice } from "../../../settings/redux/dialogs.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   onSave(): void
@@ -12,6 +16,7 @@ interface Props {
 }
 
 export const FormCreateDevice: FC<Props> = (props) => {
+  const dispatch = useAppDispatch()
   const {
     handleChange,
     handleBlur,
@@ -42,9 +47,35 @@ export const FormCreateDevice: FC<Props> = (props) => {
     },
   })
 
-  const dispatch = useAppDispatch()
+  const [doCreateDevices, { isLoading, error, isSuccess, reset }] =
+    useCreateDevicesMutation()
 
-  const [doCreateDevices, { isLoading, error }] = useCreateDevicesMutation()
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid

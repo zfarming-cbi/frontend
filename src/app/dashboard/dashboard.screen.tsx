@@ -1,8 +1,10 @@
 import { FC, useState } from "react"
 import {
+  Alert,
   Box,
   CssBaseline,
   IconButton,
+  Snackbar,
   Toolbar,
   Typography,
 } from "@mui/material"
@@ -50,13 +52,18 @@ import { FormCreatePlant } from "../plant/components/formCreatePlant"
 import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
 import { FormSearchUser } from "../user/components/formSearchUser"
 import { FormCopyPlant } from "../plant/components/formCopyPlant"
-import jwt_decode from "jwt-decode"
-import { JWTContent } from "../../share/models/appSession"
+import { Rol } from "../../share/models/appSession"
 import { FormSearchDevice } from "../device/components/formSearchDevice"
 import { FormSearchPlant } from "../plant/components/formSearchPlant"
+import { selectorSession } from "../../settings/redux/session.slice"
+import {
+  closeSnackbar,
+  selectorSnackbar,
+} from "../../settings/redux/snackbar.slice"
 
 export const DashboardScreen: FC = () => {
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const MENU_MAIN_SESSION = 0
+  const token = useAppSelector(selectorSession)
   const menuItems: DrawerMenuProps["items"] = [
     [
       {
@@ -111,10 +118,12 @@ export const DashboardScreen: FC = () => {
     ],
   ]
 
-  if (token && token.rol != "ADMIN") {
-    menuItems[0] = menuItems[0].filter((item) => {
-      return item.text !== "Usuarios"
-    })
+  if (token && token.rol != Rol.Administrator) {
+    menuItems[MENU_MAIN_SESSION] = menuItems[MENU_MAIN_SESSION].filter(
+      (item) => {
+        return item.text !== "Usuarios"
+      }
+    )
   }
 
   const navigate = useNavigate()
@@ -132,6 +141,7 @@ export const DashboardScreen: FC = () => {
   } = useAppSelector(selectorDialogs)
   const dispatch = useAppDispatch()
 
+  const { visible, severity, message } = useAppSelector(selectorSnackbar)
   const onClickLogoutButton = () => {
     AuthenticationResetHandler()
     navigate(ROUTE_PATH.Login, { replace: true })
@@ -185,6 +195,10 @@ export const DashboardScreen: FC = () => {
 
   const onCloseFormCopyPlant = () => {
     dispatch(closeFormCopyPlant())
+  }
+
+  const onCloseSnackbar = () => {
+    dispatch(closeSnackbar())
   }
 
   const onSavePQRSForm = () => {}
@@ -343,6 +357,20 @@ export const DashboardScreen: FC = () => {
           onSave={onSaveFormCopyPlant}
         />
       </Dialog>
+      <Snackbar
+        open={visible}
+        autoHideDuration={6000}
+        onClose={onCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={onCloseSnackbar}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
     </>
   )
 }

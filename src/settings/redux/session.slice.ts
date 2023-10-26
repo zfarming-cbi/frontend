@@ -15,6 +15,7 @@ export const sessionSlice = createSlice({
     },
     logIn: (state, action: PayloadAction<AppSession>) => {
       state = action.payload
+      return state
     },
   },
 })

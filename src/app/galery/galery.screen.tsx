@@ -15,12 +15,20 @@ import { ArrowBack, FirstPage, LastPage, Search } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import LOGO_FULL from "../../assets/placeholder.png"
-import { useGetPlantsForGaleryQuery } from "../../settings/api/endpoints/plant"
+import {
+  useGetPlantsForGaleryQuery,
+  useLazyGetPlantsForGaleryQuery,
+} from "../../settings/api/endpoints/plant"
 import { LikesComments } from "./components/likesComments"
 import { DateTime } from "luxon"
-import { Remarkable } from "remarkable"
 import { AppEnvVars } from "../../settings/env/environment"
 import MDEditor from "@uiw/react-md-editor"
+import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
+import {
+  selectorDataFilter,
+  setDataPlant,
+} from "../../settings/redux/dataFilter.slice"
+import { selectorSession } from "../../settings/redux/session.slice"
 
 export interface PlantListRow {
   id?: string | number
@@ -34,17 +42,31 @@ export interface PlantListRow {
 
 export const GaleryScreen: React.FC = () => {
   const navigate = useNavigate()
-  const { data, isLoading, error } = useGetPlantsForGaleryQuery({
+  const dispatch = useAppDispatch()
+  const filteredData = useAppSelector(selectorDataFilter)
+  const { data } = useGetPlantsForGaleryQuery({
     page: "1",
     perPage: "10",
   })
-  const isLogged = localStorage.getItem("token") ?? undefined
+  const [doGetPlants, { data: searchPlants, isLoading, error }] =
+    useLazyGetPlantsForGaleryQuery()
+  const { isLogged } = useAppSelector(selectorSession)
 
-  const remarkable = new Remarkable()
+  const handleChange = () => {
+    doGetPlants({
+      perPage: "10",
+      page: "1",
+      search: "",
+    })
+  }
+
+  React.useEffect(() => {
+    dispatch(setDataPlant(data))
+  }, [data])
 
   const plants = React.useMemo(() => {
     return (
-      data?.map<PlantListRow>(
+      filteredData.dataPlantFilter?.map<PlantListRow>(
         ({ id, name, likes, comments, growing_time, content, image }) => ({
           id,
           name,
@@ -56,7 +78,7 @@ export const GaleryScreen: React.FC = () => {
         })
       ) ?? []
     )
-  }, [data])
+  }, [filteredData])
 
   const truncateContent = (content: string) => {
     if (content.length > 100) {
@@ -80,23 +102,26 @@ export const GaleryScreen: React.FC = () => {
           container
           item
           xs={12}
-          justifyContent={!isLogged ? "end" : "space-between"}
+          justifyContent={!isLogged ? "start" : "space-between"}
         >
-          <IconButton
-            onClick={() => navigate(-1)}
-            sx={{ display: !isLogged ? "none" : "flex" }}
-          >
-            <ArrowBack />
-            <Typography paddingLeft={1}>Volver</Typography>
-          </IconButton>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate(ROUTE_PATH.Login)}
-            sx={{ display: !!isLogged ? "none" : "flex" }}
-          >
-            Iniciar sesión
-          </Button>
+          {isLogged && (
+            <Button
+              variant="text"
+              onClick={() => navigate(ROUTE_PATH.Dashboard)}
+            >
+              <ArrowBack />
+              <Typography paddingLeft={1}>Volver</Typography>
+            </Button>
+          )}
+          {!isLogged && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate(ROUTE_PATH.Login)}
+            >
+              Iniciar sesión
+            </Button>
+          )}
         </Grid>
         <Grid container item xs={12} justifyContent={"center"}>
           <img src={LOGO_FULL} width="30%" alt="Agricultura Cero" />

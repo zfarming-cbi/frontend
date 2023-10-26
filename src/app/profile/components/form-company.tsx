@@ -18,9 +18,13 @@ import {
   useGetCompanyQuery,
   useUpdateCompanyMutation,
 } from "../../../settings/api/endpoints/company"
-import jwt_decode from "jwt-decode"
-import { JWTContent } from "../../../share/models/appSession"
 import { AppEnvVars } from "../../../settings/env/environment"
+import { useAppDispatch, useAppSelector } from "../../../settings/redux/hooks"
+import { selectorSession } from "../../../settings/redux/session.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 const ImageButton = styled(ButtonBase)(() => ({
   position: "relative",
@@ -52,8 +56,9 @@ const ImageSrc = styled("span")({
   right: 0,
   top: 0,
   bottom: 0,
-  backgroundSize: "cover",
-  backgroundPosition: "center 40%",
+  backgroundSize: "contain",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
 })
 
 const Image = styled("span")(({ theme }) => ({
@@ -91,15 +96,49 @@ const VisuallyHiddenInput = styled("input")({
 })
 
 export const FormCompany: FC = () => {
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const [doUpdateCompany, { isLoading, error, isSuccess, reset }] =
+    useUpdateCompanyMutation()
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
+  const [image, setImage] = React.useState<Blob>()
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null)
+  const { companyId = "" } = useAppSelector(selectorSession)
   const { data } = useGetCompanyQuery({
-    companyId: token.companyId,
+    companyId,
   })
+  const dispatch = useAppDispatch()
   useEffect(() => {
     setFieldValue("name", data?.name)
     setFieldValue("nit", data?.nit)
     setSelectedImage(`${AppEnvVars.IMAGE_URL}${data?.logo}`)
   }, [data])
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
+
   const {
     handleChange,
     handleBlur,
@@ -120,14 +159,9 @@ export const FormCompany: FC = () => {
     validateOnChange: false,
     validationSchema: FormEditCompanySchema,
     async onSubmit(data) {
-      doUpdateCompany({ ...data, companyId: token.companyId, logo: image })
+      doUpdateCompany({ ...data, companyId, logo: image })
     },
   })
-  const [doUpdateCompany, { isLoading, error }] = useUpdateCompanyMutation()
-  const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
-  const [image, setImage] = React.useState<Blob>()
-
-  const fileInputRef = React.useRef<HTMLInputElement | null>(null)
 
   const handleClick = () => {
     if (fileInputRef.current) {

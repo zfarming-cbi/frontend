@@ -41,6 +41,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
   {
     path: ROUTE_PATH.Galery,
     element: <GaleryScreen />,
+    loader: AuthenticationRouteLoader,
   },
   {
     path: ROUTE_PATH.PlantFromGalery,

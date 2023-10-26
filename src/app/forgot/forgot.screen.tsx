@@ -113,7 +113,7 @@ export const ForgotPasswordScreen: FC = () => {
                   }}
                   variant="filled"
                 >
-                  {JSON.stringify(data)} //data.message
+                  {JSON.stringify(data.message)}
                   {/* {JSON.stringify(error)} */}
                 </Alert>
                 <Typography fontSize={12} textAlign={"center"} padding={1}>

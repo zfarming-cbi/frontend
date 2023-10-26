@@ -1,14 +1,10 @@
-import { FC, FormEvent, FormEventHandler, useEffect, useState } from "react"
+import { FC, FormEvent, useEffect, useState } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
-import {
-  useGetUsersQuery,
-  useLazyGetUsersQuery,
-} from "../../../settings/api/endpoints/user"
-import { useAppDispatch } from "../../../settings/redux/hooks"
-import { JWTContent } from "../../../share/models/appSession"
-import jwt_decode from "jwt-decode"
+import { useLazyGetUsersQuery } from "../../../settings/api/endpoints/user"
+import { useAppDispatch, useAppSelector } from "../../../settings/redux/hooks"
 import { closeFormSearchUser } from "../../../settings/redux/dialogs.slice"
 import { setDataUser } from "../../../settings/redux/dataFilter.slice"
+import { selectorSession } from "../../../settings/redux/session.slice"
 
 interface Props {
   onSave(): void
@@ -17,14 +13,14 @@ interface Props {
 
 export const FormSearchUser: FC<Props> = (props) => {
   const dispatch = useAppDispatch()
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { companyId = "" } = useAppSelector(selectorSession)
   const [search, setSearch] = useState<string>("")
   const [doGetUsers, { data, isLoading, error }] = useLazyGetUsersQuery()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     doGetUsers({
-      companyId: token.companyId,
+      companyId,
       perPage: "10",
       page: "1",
       search: search,

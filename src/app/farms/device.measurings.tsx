@@ -22,13 +22,17 @@ import { CircularChart } from "./components/circularChart"
 import { AppEnvVars } from "../../settings/env/environment"
 import MDEditor from "@uiw/react-md-editor"
 import { useCopyPlantMutation } from "../../settings/api/endpoints/plant"
-import { useGetMeasuringsQuery } from "../../settings/api/endpoints/measuringHistory"
+import {
+  useGetMeasuringsAverageQuery,
+  useGetMeasuringsQuery,
+} from "../../settings/api/endpoints/measuringHistory"
 import { BarChart } from "./components/barChart"
 
 export const DeviceMeasuringScreen: React.FC = () => {
   const { deviceId } = useParams()
   const { data } = useGetDeviceQuery({ deviceId })
   const { data: measurings } = useGetMeasuringsQuery({ deviceId })
+  const { data: measuringsAverage } = useGetMeasuringsAverageQuery({ deviceId })
   const [title, setTitle] = React.useState<string>()
   const [open, setOpen] = React.useState(false)
   const [name, setName] = React.useState<string>("")
@@ -64,12 +68,12 @@ export const DeviceMeasuringScreen: React.FC = () => {
     <Grid container flex={1} flexDirection="column">
       <Toolbar title={title} showButtonReturn={true} />
       <Grid container flex={1} flexDirection={"row"}>
-        <Grid container item xs={6} flexDirection={"column"}>
+        <Grid container item xs={4} md={5} flexDirection={"column"}>
           <Card
             sx={{
               display: "flex",
               maxWidth: "800px",
-              margin: "10px auto",
+              marginLeft: 2,
               flexDirection: "column",
             }}
           >
@@ -153,7 +157,10 @@ export const DeviceMeasuringScreen: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <CircularChart measurings={measurings} />
+            <CircularChart
+              title={data?.plant.name}
+              measurings={measuringsAverage}
+            />
             <BarChart measurings={measurings} />
           </Box>
         </Grid>

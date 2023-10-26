@@ -18,13 +18,13 @@ import {
 } from "../../../settings/api/endpoints/plantComments"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../../settings/routes/routes"
-import jwt_decode from "jwt-decode"
-import { JWTContent } from "../../../share/models/appSession"
 import { DateTime } from "luxon"
 import {
   useCreateLikeMutation,
-  useGetLikeQuery,
+  useLazyGetLikeQuery,
 } from "../../../settings/api/endpoints/plantLikes"
+import { useAppSelector } from "../../../settings/redux/hooks"
+import { selectorSession } from "../../../settings/redux/session.slice"
 
 interface Props {
   plantId?: string
@@ -40,22 +40,24 @@ export interface CommentsListRow {
 
 export const Comments: React.FC<Props> = (props) => {
   const { plantId } = props
-  const isLogged = localStorage.getItem("token") ?? undefined
+  const { isLogged, userId = "" } = useAppSelector(selectorSession)
   const [liked, setLiked] = React.useState<boolean>()
   const [message, setMessage] = React.useState<string>()
   const { data } = useGetCommentsQuery({ plantId: plantId ?? "" })
-  let token: JWTContent
-  if (isLogged) {
-    const decodeToken: JWTContent = jwt_decode(isLogged ?? "")
-    token = decodeToken
-    const isLike = useGetLikeQuery({
+
+  const [doGetLike, { data: like }] = useLazyGetLikeQuery()
+  React.useEffect(() => {
+    setLiked(!!like?.like)
+  }, [like])
+  React.useEffect(() => {
+    if (!isLogged) {
+      return
+    }
+    doGetLike({
       plantId: plantId ?? "",
-      userId: token.sub,
+      userId,
     })
-    React.useEffect(() => {
-      setLiked(!!isLike?.data?.like)
-    }, [isLike])
-  }
+  }, [isLogged])
   const [doCreateComment, { isLoading, error }] = useCreateCommentMutation()
   const [doCreateLike] = useCreateLikeMutation()
   const navigate = useNavigate()
@@ -74,7 +76,7 @@ export const Comments: React.FC<Props> = (props) => {
   const handleCreateComment = () => {
     doCreateComment({
       message: message,
-      userId: token.sub,
+      userId,
       plantId: plantId,
     })
     setMessage("")
@@ -82,14 +84,9 @@ export const Comments: React.FC<Props> = (props) => {
 
   const handleCreateLike = () => {
     setLiked(!liked)
-    console.log({
-      like: 1,
-      userId: token.sub,
-      plantId: plantId,
-    })
     doCreateLike({
       like: 1,
-      userId: token.sub,
+      userId,
       plantId: plantId,
     })
   }

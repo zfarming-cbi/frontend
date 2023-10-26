@@ -5,6 +5,11 @@ import {
   SelectField,
   SelectFieldValue,
 } from "../../../share/components/selectField"
+import { useAppDispatch } from "../../../settings/redux/hooks"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   dataUser: any
@@ -14,7 +19,9 @@ interface Props {
 export const FormUpdateUser: FC<Props> = (props) => {
   const { dataUser, onClose } = props
   const [rol, setRol] = useState<string | number>()
-  const [doUpdateUser, { isLoading, error }] = useUpdateUserMutation()
+  const dispatch = useAppDispatch()
+  const [doUpdateUser, { isLoading, error, isSuccess, reset }] =
+    useUpdateUserMutation()
   const KindOfRol: SelectFieldValue<string>[] = [
     {
       value: "ADMIN",
@@ -32,6 +39,33 @@ export const FormUpdateUser: FC<Props> = (props) => {
   useEffect(() => {
     setRol(dataUser.rol)
   }, [dataUser])
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   const handleClick = () => {
     doUpdateUser({ id: dataUser.id, rol })

@@ -4,7 +4,10 @@ import { UserDTO } from "../../../share/models/user"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getUsers: build.query<UserDTO[], PaginationDTO & { companyId: number }>({
+    getUsers: build.query<
+      UserDTO[],
+      PaginationDTO & { companyId: number | string }
+    >({
       query: ({ companyId, search, page, perPage }) => ({
         url: `/user/company/${companyId}?search=${search}&page=${page}&perPage=${perPage}`,
         method: "GET",

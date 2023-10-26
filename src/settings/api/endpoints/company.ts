@@ -5,7 +5,7 @@ const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
     updateCompany: build.mutation<
       CompanyDTO,
-      CompanyDTO & { companyId: number }
+      CompanyDTO & { companyId: number | string }
     >({
       query: ({ companyId, name, nit, logo }) => {
         const formData = new FormData()
@@ -19,7 +19,7 @@ const extendedApi = API.injectEndpoints({
         }
       },
     }),
-    getCompany: build.query<CompanyDTO, { companyId: number }>({
+    getCompany: build.query<CompanyDTO, { companyId: number | string }>({
       query: ({ companyId }) => ({
         url: `/company/${companyId}`,
         method: "GET",

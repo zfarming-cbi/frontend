@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import {
   Alert,
   Button,
@@ -11,11 +11,17 @@ import {
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useChangePassowrdMutation } from "../../../settings/api/endpoints/authentication"
-import jwt_decode from "jwt-decode"
-import { JWTContent } from "../../../share/models/appSession"
+import { useAppDispatch, useAppSelector } from "../../../settings/redux/hooks"
+import { selectorSession } from "../../../settings/redux/session.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 export const FormChangePassword: FC = () => {
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
+  const { userId = "" } = useAppSelector(selectorSession)
+  const dispatch = useAppDispatch()
+
   const {
     handleChange,
     handleBlur,
@@ -38,11 +44,39 @@ export const FormChangePassword: FC = () => {
     validateOnChange: false,
     validationSchema: FormChangePasswordSchema,
     async onSubmit(credentials) {
-      doChangePassword({ ...credentials, id: token.sub })
+      doChangePassword({ ...credentials, id: userId })
     },
   })
 
-  const [doChangePassword, { isLoading, error }] = useChangePassowrdMutation()
+  const [doChangePassword, { isLoading, error, isSuccess, reset }] =
+    useChangePassowrdMutation()
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid

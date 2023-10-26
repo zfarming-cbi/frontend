@@ -16,12 +16,18 @@ import {
   useGetUserQuery,
   useUpdateUserMutation,
 } from "../../../settings/api/endpoints/user"
-import { JWTContent } from "../../../share/models/appSession"
-import jwt_decode from "jwt-decode"
+import { useAppDispatch, useAppSelector } from "../../../settings/redux/hooks"
+import { selectorSession } from "../../../settings/redux/session.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 export const FormProfile: FC = () => {
-  const token: JWTContent = jwt_decode(localStorage.getItem("token") ?? "")
-  const { data } = useGetUserQuery({ id: token.sub })
+  const { userId = "" } = useAppSelector(selectorSession)
+  const dispatch = useAppDispatch()
+
+  const { data } = useGetUserQuery({ id: userId })
   useEffect(() => {
     setFieldValue("firstname", data?.firstname)
     setFieldValue("lastname", data?.lastname)
@@ -57,7 +63,35 @@ export const FormProfile: FC = () => {
     },
   })
 
-  const [doUpdateUser, { isLoading, error }] = useUpdateUserMutation()
+  const [doUpdateUser, { isLoading, error, isSuccess, reset }] =
+    useUpdateUserMutation()
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid

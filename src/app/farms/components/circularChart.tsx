@@ -1,64 +1,55 @@
 import { Box } from "@mui/material"
 import { ECharts, EChartsCoreOption, init } from "echarts"
 import { FC, useEffect, useRef } from "react"
-import { useGetMeasuringsQuery } from "../../../settings/api/endpoints/measuringHistory"
+import { MeasuringHistoryAverageDTO } from "../../../share/models/measuringHistory"
 
 interface Props {
-  measurings: any
+  measurings?: MeasuringHistoryAverageDTO
+  title?: string
 }
 
 export const CircularChart: FC<Props> = (props) => {
-  const { measurings } = props
+  const { measurings, title } = props
   const chartNodeRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<ECharts>()
   useEffect(() => {
-    console.log("Aqui tengo a measurings", measurings)
     const chart = init(chartNodeRef.current)
 
     const option: EChartsCoreOption = {
       title: [
         {
-          text: "Cultivo Lechuga 1, Granja Ref: 0023",
+          text: title,
         },
       ],
       polar: {
         radius: [30, "80%"],
       },
       angleAxis: {
-        max: 4,
+        max: measurings?.maxRange,
         startAngle: 225,
       },
       radiusAxis: {
         type: "category",
-        data: ["Electroconductividad", "Ph", "Temperatura", "Humedad"],
+        data: measurings?.namesSensor,
       },
       tooltip: {},
       series: [
         {
           type: "bar",
-          data: ["2", 1.2, 2.4, 3.6],
+          data: measurings?.data,
           coordinateSystem: "polar",
           itemStyle: {
-            // Estilo para todos los elementos (barras) en la serie
             color: function (params: any) {
-              var colors = ["red", "blue", "green", "orange", "purple"]
+              var colors = ["red", "blue", "green", "orange", "purple", "grey"]
               return colors[params.dataIndex]
             },
           },
-          showBackground: false, // Desactivar la visualización del nombre en el fondo
-          // label: {
-          //   show: false,
-          //   formatter: function (params) {
-          //     return ""
-          //   },
-          //   //   position: "middle",
-          //   //   formatter: "{b}: {c}",
-          // },
+          showBackground: false,
         },
       ],
       legend: {
         show: true,
-        data: ["Electroconductividad", "Ph", "Temperatura", "Humedad"],
+        data: measurings?.namesSensor,
       },
     }
     chart.setOption(option)

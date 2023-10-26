@@ -41,5 +41,9 @@ const extendedApi = API.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useGetLikesQuery, useCreateLikeMutation, useGetLikeQuery } =
-  extendedApi
+export const {
+  useGetLikesQuery,
+  useCreateLikeMutation,
+  useGetLikeQuery,
+  useLazyGetLikeQuery,
+} = extendedApi

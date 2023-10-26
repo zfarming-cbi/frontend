@@ -146,7 +146,6 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
           autoPageSize
           page={page}
           onPageChange={(newPage) => {
-            console.log(newPage)
             setPage(newPage)
           }}
         />

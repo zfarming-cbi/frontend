@@ -1,10 +1,14 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
 import { closeFormCreatePlant } from "../../../settings/redux/dialogs.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   onSave(): void
@@ -42,9 +46,37 @@ export const FormCopyPlant: FC<Props> = (props) => {
   })
 
   const dispatch = useAppDispatch()
-  const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
+  const [doCreatePlant, { isLoading, error, isSuccess, reset }] =
+    useCreatePlantMutation()
   const [value, setValue] = React.useState<string>()
   const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid

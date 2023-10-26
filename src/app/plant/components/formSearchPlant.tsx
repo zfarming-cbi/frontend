@@ -1,8 +1,6 @@
 import { FC, FormEvent, FormEventHandler, useEffect, useState } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { useAppDispatch } from "../../../settings/redux/hooks"
-import { JWTContent } from "../../../share/models/appSession"
-import jwt_decode from "jwt-decode"
 import { closeFormSearchPlant } from "../../../settings/redux/dialogs.slice"
 import { setDataPlant } from "../../../settings/redux/dataFilter.slice"
 import { useLazyGetPlantsQuery } from "../../../settings/api/endpoints/plant"

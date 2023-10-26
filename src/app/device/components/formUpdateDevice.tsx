@@ -2,6 +2,11 @@ import { FC, useEffect, useState } from "react"
 import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
 import { SelectField } from "../../../share/components/selectField"
 import { useUpdateDeviceMutation } from "../../../settings/api/endpoints/device"
+import { useAppDispatch } from "../../../settings/redux/hooks"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   dataDevice: any
@@ -13,12 +18,41 @@ export const FormUpdateDevice: FC<Props> = (props) => {
   const [name, setName] = useState<string>(dataDevice.name)
   const [description, setDescription] = useState<string>(dataDevice.description)
   const [code, setCode] = useState<string>(dataDevice.code)
-  const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
+  const [doUpdateDevice, { isLoading, error, isSuccess, reset }] =
+    useUpdateDeviceMutation()
+  const dispatch = useAppDispatch()
 
   const handleClick = () => {
     doUpdateDevice({ id: dataDevice.id, name, description, code })
     onClose()
   }
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid container spacing={1} flexDirection="column">

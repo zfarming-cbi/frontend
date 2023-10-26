@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import {
   Alert,
   Box,
@@ -19,6 +19,10 @@ import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
 import { closeFormCreatePlant } from "../../../settings/redux/dialogs.slice"
 import MDEditor, { commands } from "@uiw/react-md-editor"
 import { Edit } from "@mui/icons-material"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   onSave(): void
@@ -95,7 +99,8 @@ export const FormCreatePlant: FC<Props> = (props) => {
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
   const [image, setImage] = React.useState<Blob>()
   const dispatch = useAppDispatch()
-  const [doCreatePlant, { isLoading, error }] = useCreatePlantMutation()
+  const [doCreatePlant, { isLoading, error, isSuccess, reset }] =
+    useCreatePlantMutation()
   const [value, setValue] = React.useState<string>()
   const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
@@ -155,6 +160,33 @@ export const FormCreatePlant: FC<Props> = (props) => {
     value: "preview",
     icon: <Button />,
   }
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid container gap={1} flexDirection={"row"}>
