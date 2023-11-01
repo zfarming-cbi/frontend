@@ -66,10 +66,20 @@ export const HomeScreen: React.FC = () => {
   ]
 
   React.useEffect(() => {
+    doGetFarms({ search: "" })
+  }, [])
+
+  React.useEffect(() => {
+    if (!dataFilter) return
     dispatch(setDataFarm(dataFilter))
   }, [dataFilter])
 
   const filteredData = useAppSelector(selectorDataFilter)
+
+  const removeMd = (content: string) => {
+    const textPlane = content.replace(/[*#\\]/g, "")
+    return textPlane
+  }
 
   const farms = React.useMemo(() => {
     return (
@@ -84,7 +94,7 @@ export const HomeScreen: React.FC = () => {
         })
       ) ?? []
     )
-  }, [dataFilter])
+  }, [dataFilter, filteredData])
 
   return (
     <Grid container flex={1} flexDirection="column">
@@ -101,7 +111,7 @@ export const HomeScreen: React.FC = () => {
             values={KindOfShowFarms}
             value={showFarms}
             onSelect={(selectedValue) => {
-              doGetFarms({ search: showFarms })
+              doGetFarms({ search: selectedValue })
               setShowFarms(selectedValue)
             }}
           ></SelectField>
@@ -155,7 +165,7 @@ export const HomeScreen: React.FC = () => {
                     color={"grey"}
                     paddingY={1}
                   >
-                    {farm.description}
+                    {removeMd(farm.description)}
                   </Typography>
                 </Box>
                 <Box

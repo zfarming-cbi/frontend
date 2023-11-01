@@ -110,6 +110,8 @@ export const FormCompany: FC = () => {
     setFieldValue("name", data?.name ?? "")
     setFieldValue("nit", data?.nit ?? "")
     setSelectedImage(`${AppEnvVars.IMAGE_URL}${data?.logo}`)
+    console.log(">>>>", data?.logo)
+    console.log(">>>>", selectedImage)
   }, [data])
 
   useEffect(() => {
@@ -205,7 +207,7 @@ export const FormCompany: FC = () => {
         <ImageButton focusRipple onClick={handleClick}>
           <ImageSrc
             style={{
-              backgroundImage: `url(${selectedImage})`,
+              backgroundImage: selectedImage ? `url(${selectedImage})` : "",
             }}
           />
           <ImageBackdrop className="MuiImageBackdrop-root" />

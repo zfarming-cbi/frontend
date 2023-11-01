@@ -49,7 +49,7 @@ export const FormUpdateUser: FC<Props> = (props) => {
   const { dataUser, onClose } = props
   const [farmsSelect, setFarmsSelect] = useState<any[]>([])
   const [rol, setRol] = useState<string | number>()
-  const { data } = useGetFarmsQuery()
+  const { data } = useGetFarmsQuery({ search: "" })
   const [doUpdateUser, { isLoading, error, isSuccess, reset }] =
     useUpdateUserMutation()
   const farms =

@@ -24,6 +24,9 @@ export const BarChart: React.FC<Props> = (props) => {
     }))
     const chart = init(chartNodeRef.current)
     const option: EChartsCoreOption = {
+      grid: {
+        right: 250,
+      },
       xAxis: {
         data: measurings?.dates,
       },
@@ -45,7 +48,7 @@ export const BarChart: React.FC<Props> = (props) => {
       <div
         id="myChart"
         ref={chartNodeRef}
-        style={{ width: 500, height: 500 }}
+        style={{ width: 750, height: 600 }}
       />
     </Box>
   )

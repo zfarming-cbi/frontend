@@ -13,6 +13,18 @@ export const CircularChart: FC<Props> = (props) => {
   const chartNodeRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<ECharts>()
   useEffect(() => {
+    const series = measurings?.data.map((value) => ({
+      type: "bar",
+      data: value,
+      coordinateSystem: "polar",
+      itemStyle: {
+        color: function (params: any) {
+          var colors = ["red", "blue", "green", "orange", "purple", "grey"]
+          return colors[params.dataIndex]
+        },
+      },
+      showBackground: false,
+    }))
     const chart = init(chartNodeRef.current)
     const option: EChartsCoreOption = {
       title: [
@@ -46,10 +58,10 @@ export const CircularChart: FC<Props> = (props) => {
           showBackground: false,
         },
       ],
-      // legend: {
-      //   show: true,
-      //   data: measurings?.namesSensor,
-      // },
+      legend: {
+        show: true,
+        data: measurings?.namesSensor,
+      },
     }
     chart.setOption(option)
     chartRef.current = chart

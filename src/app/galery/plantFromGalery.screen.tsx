@@ -1,4 +1,4 @@
-import { Box, Grid, IconButton, Typography } from "@mui/material"
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material"
 import * as React from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetPlantQuery } from "../../settings/api/endpoints/plant"
@@ -8,6 +8,7 @@ import { DateTime } from "luxon"
 import { LikesComments } from "./components/likesComments"
 import { AppEnvVars } from "../../settings/env/environment"
 import MDEditor from "@uiw/react-md-editor"
+import { ROUTE_PATH } from "../../settings/routes/routes"
 
 export const PlantFromGalery: React.FC = () => {
   const { plantId } = useParams()
@@ -40,10 +41,10 @@ export const PlantFromGalery: React.FC = () => {
     >
       <Grid item xs={12}>
         <Grid container item xs={12} justifyContent="space-between">
-          <IconButton onClick={() => navigate(-1)}>
+          <Button variant="text" onClick={() => navigate(ROUTE_PATH.Galery)}>
             <ArrowBack />
             <Typography paddingLeft={1}>Volver</Typography>
-          </IconButton>
+          </Button>
         </Grid>
         <Grid container item xs={12} flexDirection={"column"}>
           <Box

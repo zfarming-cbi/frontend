@@ -192,7 +192,9 @@ export const FormCreatePlant: FC<Props> = (props) => {
     <Grid container gap={1} flexDirection={"row"}>
       <Grid
         item
-        xs={9}
+        sm={12}
+        md={12}
+        lg={12}
         component="form"
         flexDirection="column"
         onSubmit={handleSubmit}
@@ -286,7 +288,9 @@ export const FormCreatePlant: FC<Props> = (props) => {
       </Grid>
       <Grid
         item
-        xs={2}
+        sm={12}
+        md={12}
+        lg={12}
         marginX={5}
         sx={{
           display: "flex",

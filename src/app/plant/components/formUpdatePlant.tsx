@@ -116,12 +116,10 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     values: { name: nameInputValue, public: publicInputValue },
   } = useFormik<{
     name: string
-    content: string
     public: boolean
   }>({
     initialValues: {
       name: "",
-      content: "",
       public: false,
     },
     validationSchema: FormUpdatePlantSchema,
@@ -130,6 +128,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
         setContentEmpty(true)
         return
       }
+      console.log(">>>>", { data })
       doUpdatePlant({
         ...data,
         id: dataPlant.id,
@@ -143,7 +142,9 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     setFieldValue("name", dataPlant.name)
     setFieldValue("public", !!dataPlant.public)
     setValue(dataPlant.content)
-    setSelectedImage(`${AppEnvVars.IMAGE_URL}${dataPlant.image}`)
+    if (dataPlant.image) {
+      setSelectedImage(`${AppEnvVars.IMAGE_URL}${dataPlant.image}`)
+    }
   }, [dataPlant])
   const handleClick = () => {
     if (fileInputRef.current) {
@@ -152,10 +153,9 @@ export const FormUpdatePlant: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    if (isLoading && !isSuccess) {
+    if (!isLoading && !isSuccess) {
       return
     }
-    console.log("Entro aqui al usefect activar el snackbar")
     dispatch(
       showSnackbar({
         visible: true,
@@ -167,7 +167,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
   }, [isLoading, isSuccess])
 
   useEffect(() => {
-    if (error) {
+    if (!error) {
       return
     }
     dispatch(
@@ -200,7 +200,9 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     <Grid container gap={1} flexDirection={"row"}>
       <Grid
         item
-        xs={9}
+        md={12}
+        sm={12}
+        lg={12}
         component="form"
         flexDirection="column"
         onSubmit={handleSubmit}
@@ -279,7 +281,9 @@ export const FormUpdatePlant: FC<Props> = (props) => {
       </Grid>
       <Grid
         item
-        xs={2}
+        sm={12}
+        md={12}
+        lg={12}
         marginX={5}
         sx={{
           display: "flex",
@@ -300,7 +304,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
           <ImageButton focusRipple onClick={handleClick}>
             <ImageSrc
               style={{
-                backgroundImage: `url(${selectedImage})`,
+                backgroundImage: selectedImage ? `url(${selectedImage})` : "",
               }}
             />
             <ImageBackdrop className="MuiImageBackdrop-root" />
