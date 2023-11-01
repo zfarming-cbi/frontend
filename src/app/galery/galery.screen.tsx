@@ -78,10 +78,13 @@ export const GaleryScreen: React.FC = () => {
   }, [filteredData])
 
   const truncateContent = (content: string) => {
-    if (content.length > 100) {
-      return content.substring(0, 100) + "..."
+    const textWithoutHtml = content.replace(/<[^>]*>/g, "")
+    const textWithoutMd = textWithoutHtml.replace(/(\\|_|\*||~~|`)(.*?)\1/g, "")
+    const textPlane = textWithoutMd.replace(/[*#\\]/g, "")
+    if (textPlane.length > 100) {
+      return textPlane.substring(0, 100) + "..."
     } else {
-      return content
+      return textPlane
     }
   }
 
@@ -212,18 +215,21 @@ export const GaleryScreen: React.FC = () => {
                     >
                       <Typography
                         fontWeight="ligth"
-                        fontSize={20}
+                        variant={"h5"}
                         textAlign={"left"}
                         color={"black"}
                       >
                         {plant.name}
                       </Typography>
-                      <Box data-color-mode="light">
+                      <Typography fontWeight="ligth" fontSize={20} paddingY={1}>
+                        {truncateContent(plant.content)}
+                      </Typography>
+                      {/* <Box data-color-mode="light">
                         <MDEditor.Markdown
                           data-color-mode="light"
                           source={truncateContent(plant.content)}
                         />
-                      </Box>
+                      </Box> */}
                       <Typography
                         fontWeight="ligth"
                         fontSize={10}
