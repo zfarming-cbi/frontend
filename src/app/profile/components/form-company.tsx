@@ -107,8 +107,8 @@ export const FormCompany: FC = () => {
   })
   const dispatch = useAppDispatch()
   useEffect(() => {
-    setFieldValue("name", data?.name)
-    setFieldValue("nit", data?.nit)
+    setFieldValue("name", data?.name ?? "")
+    setFieldValue("nit", data?.nit ?? "")
     setSelectedImage(`${AppEnvVars.IMAGE_URL}${data?.logo}`)
   }, [data])
 

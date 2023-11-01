@@ -14,7 +14,7 @@ import {
 } from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useCreatePlantMutation } from "../../../settings/api/endpoints/plant"
+import { useUpdatePlantMutation } from "../../../settings/api/endpoints/plant"
 import MDEditor, { commands } from "@uiw/react-md-editor"
 import { Edit } from "@mui/icons-material"
 import { AppEnvVars } from "../../../settings/env/environment"
@@ -26,6 +26,7 @@ import { useAppDispatch } from "../../../settings/redux/hooks"
 
 interface Props {
   dataPlant: any
+  onClose(): void
 }
 
 const ImageButton = styled(ButtonBase)(() => ({
@@ -98,16 +99,13 @@ export const FormUpdatePlant: FC<Props> = (props) => {
   const dispatch = useAppDispatch()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [image, setImage] = useState<Blob>()
-  const [doCreatePlant, { isLoading, error, isSuccess, reset }] =
-    useCreatePlantMutation()
+  const [doUpdatePlant, { isLoading, error, isSuccess, reset }] =
+    useUpdatePlantMutation()
   const [value, setValue] = React.useState<string>()
-  const [growingTime, setGrowingTime] = useState<
-    HTMLInputElement | HTMLTextAreaElement
-  >()
   React.useState<HTMLTextAreaElement | null>()
   const [contentEmpty, setContentEmpty] = React.useState<boolean>(false)
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
-  const { dataPlant } = props
+  const { dataPlant, onClose } = props
 
   const {
     handleChange,
@@ -115,21 +113,15 @@ export const FormUpdatePlant: FC<Props> = (props) => {
     handleSubmit,
     setFieldValue,
     errors,
-    values: {
-      name: nameInputValue,
-      growingTime: growingTimeInputValue,
-      public: publicInputValue,
-    },
+    values: { name: nameInputValue, public: publicInputValue },
   } = useFormik<{
     name: string
     content: string
-    growingTime: string
     public: boolean
   }>({
     initialValues: {
       name: "",
       content: "",
-      growingTime: "",
       public: false,
     },
     validationSchema: FormUpdatePlantSchema,
@@ -138,11 +130,17 @@ export const FormUpdatePlant: FC<Props> = (props) => {
         setContentEmpty(true)
         return
       }
+      doUpdatePlant({
+        ...data,
+        id: dataPlant.id,
+        content: value ?? "",
+        image: image,
+      })
+      onClose()
     },
   })
   useEffect(() => {
     setFieldValue("name", dataPlant.name)
-    setFieldValue("growing_time", dataPlant.growing_time)
     setFieldValue("public", !!dataPlant.public)
     setValue(dataPlant.content)
     setSelectedImage(`${AppEnvVars.IMAGE_URL}${dataPlant.image}`)
@@ -154,9 +152,10 @@ export const FormUpdatePlant: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    if (!isLoading && !isSuccess) {
+    if (isLoading && !isSuccess) {
       return
     }
+    console.log("Entro aqui al usefect activar el snackbar")
     dispatch(
       showSnackbar({
         visible: true,
@@ -168,7 +167,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
   }, [isLoading, isSuccess])
 
   useEffect(() => {
-    if (!error) {
+    if (error) {
       return
     }
     dispatch(
@@ -243,22 +242,6 @@ export const FormUpdatePlant: FC<Props> = (props) => {
             Es necesario agregar una descripción o contenido.
           </Alert>
         )}
-        <Grid item xs>
-          <TextField
-            fullWidth
-            required
-            label="Fecha de siembra"
-            type="date"
-            variant="outlined"
-            name="growing_time"
-            id="growing_time"
-            value={growingTime}
-            disabled={isLoading}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={!!errors.growingTime}
-          />
-        </Grid>
         <Grid item xs>
           <FormControlLabel
             disabled={isLoading}

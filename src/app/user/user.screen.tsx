@@ -60,12 +60,13 @@ export const UserScreen = () => {
   const users = React.useMemo(() => {
     return (
       filteredData.dataUserFilter?.map<UserListRow>(
-        ({ id, firstname, lastname, email, rol }) => ({
+        ({ id, firstname, lastname, email, rol, farms }) => ({
           id,
           firstname,
           lastname,
           email,
           rol: rol == "ADMIN" ? "Administrador" : "Colaborador",
+          farms,
         })
       ) ?? []
     )

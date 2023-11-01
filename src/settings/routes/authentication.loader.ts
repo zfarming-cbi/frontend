@@ -18,9 +18,6 @@ export const AuthenticationLessRouteLoader = () => {
 export const AuthenticationRouteLoader = () => {
   const token = localStorage.getItem("token") ?? ""
   if (!token) {
-    console.log("no hay token, estoy en el loader")
-    // ReduxStore.dispatch(logout())
-    // return redirect(ROUTE_PATH.Galery)
     return null
   }
   const tokenInfo = JWT<JWTContent>(token)

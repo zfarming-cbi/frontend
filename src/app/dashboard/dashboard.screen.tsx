@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import {
   Alert,
   Box,
@@ -62,6 +62,7 @@ import {
 } from "../../settings/redux/snackbar.slice"
 
 export const DashboardScreen: FC = () => {
+  const dispatch = useAppDispatch()
   const MENU_MAIN_SESSION = 0
   const token = useAppSelector(selectorSession)
   const menuItems: DrawerMenuProps["items"] = [
@@ -139,7 +140,6 @@ export const DashboardScreen: FC = () => {
     formSearchDevice,
     formSearchPlant,
   } = useAppSelector(selectorDialogs)
-  const dispatch = useAppDispatch()
 
   const { visible, severity, message } = useAppSelector(selectorSnackbar)
   const onClickLogoutButton = () => {
@@ -359,9 +359,9 @@ export const DashboardScreen: FC = () => {
       </Dialog>
       <Snackbar
         open={visible}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={onCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert
           onClose={onCloseSnackbar}

@@ -1,11 +1,22 @@
 import { API } from ".."
-import { FarmDTO } from "../../../share/models/farm"
+import { FarmDTO, FarmForAsignedDTO } from "../../../share/models/farm"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getFarms: build.query<FarmDTO[], void>({
-      query: () => ({
-        url: "/farms",
+    getFarms: build.query<FarmDTO[], { search?: string | number }>({
+      query: ({ search }) => ({
+        url: `/farms?option=${search}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Farm"],
+    }),
+    getFarmsForAsigned: build.query<FarmForAsignedDTO[], { userId?: string }>({
+      query: ({ userId }) => ({
+        url: `/farms/user-asigned/${userId}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -41,5 +52,10 @@ const extendedApi = API.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useGetFarmQuery, useGetFarmsQuery, useCreateFarmMutation } =
-  extendedApi
+export const {
+  useGetFarmQuery,
+  useLazyGetFarmQuery,
+  useLazyGetFarmsQuery,
+  useGetFarmsQuery,
+  useCreateFarmMutation,
+} = extendedApi

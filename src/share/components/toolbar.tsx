@@ -4,6 +4,8 @@ import {
   Paper,
   Toolbar as MUIToolbar,
   Typography,
+  SelectProps,
+  Select,
 } from "@mui/material"
 import { Box } from "@mui/system"
 import React from "react"
@@ -24,6 +26,7 @@ export const Toolbar: React.FC<Toolbar> = (props) => {
           {props.title}
         </Typography>
         <Box sx={{ flex: 1 }} />
+        {props.select}
         {props.buttons?.map((button, index) => (
           <IconButton
             edge="start"
@@ -46,6 +49,7 @@ export interface Toolbar {
   buttons?: ToolbarButton[]
   title?: string
   showButtonReturn?: boolean
+  select?: React.ReactNode
 }
 
 export interface ToolbarButton {

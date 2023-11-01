@@ -29,9 +29,9 @@ export const FormProfile: FC = () => {
 
   const { data } = useGetUserQuery({ id: userId })
   useEffect(() => {
-    setFieldValue("firstname", data?.firstname)
-    setFieldValue("lastname", data?.lastname)
-    setFieldValue("email", data?.email)
+    setFieldValue("firstname", data?.firstname ?? "")
+    setFieldValue("lastname", data?.lastname ?? "")
+    setFieldValue("email", data?.email ?? "")
   }, [data])
   const {
     handleChange,
@@ -116,7 +116,6 @@ export const FormProfile: FC = () => {
           variant="outlined"
           name="firstname"
           id="firstname"
-          defaultValue={data?.firstname}
           value={firstnameInputValue}
           disabled={isLoading}
           onChange={handleChange}

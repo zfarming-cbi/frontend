@@ -96,9 +96,9 @@ export const PlantFromGalery: React.FC = () => {
               }}
               src={`${AppEnvVars.IMAGE_URL}${image}`}
             />
-            <Typography data-color-mode="light" paddingY={2} marginY={3}>
+            <Box data-color-mode="light" marginY={3} paddingY={2}>
               <MDEditor.Markdown data-color-mode="light" source={content} />
-            </Typography>
+            </Box>
             <Comments plantId={plantId} />
           </Box>
         </Grid>

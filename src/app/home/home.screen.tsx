@@ -2,23 +2,31 @@ import * as React from "react"
 import Grid from "@mui/material/Grid"
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
   CardContent,
   Divider,
-  Menu,
-  MenuItem,
   Typography,
 } from "@mui/material"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import { Add as AddIcon, Search as FilterIcon } from "@mui/icons-material"
-import { useGetFarmsQuery } from "../../settings/api/endpoints/farm"
-import { useAppDispatch } from "../../settings/redux/hooks"
+import {
+  useGetFarmsQuery,
+  useLazyGetFarmsQuery,
+} from "../../settings/api/endpoints/farm"
+import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import { showFormCreateFarm } from "../../settings/redux/dialogs.slice"
 import { DateTime } from "luxon"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
+import {
+  SelectField,
+  SelectFieldValue,
+} from "../../share/components/selectField"
+import {
+  selectorDataFilter,
+  setDataFarm,
+} from "../../settings/redux/dataFilter.slice"
 
 export interface FarmListRow {
   id?: string | number
@@ -28,8 +36,21 @@ export interface FarmListRow {
   end_crop_dt: string
   devices: number
 }
+const KindOfShowFarms: SelectFieldValue<string>[] = [
+  { value: "all", content: "Todas" },
+  { value: "active", content: "Activas" },
+  { value: "inactive", content: "Inactivas" },
+]
 
 export const HomeScreen: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const [doGetFarms, { data: dataFilter }] = useLazyGetFarmsQuery()
+
+  const [showFarms, setShowFarms] = React.useState<string | number>(
+    KindOfShowFarms[0].value
+  )
   const toolbarButtons: ToolbarButton[] = [
     {
       icon: <AddIcon />,
@@ -43,13 +64,16 @@ export const HomeScreen: React.FC = () => {
       },
     },
   ]
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-  const { data } = useGetFarmsQuery()
+
+  React.useEffect(() => {
+    dispatch(setDataFarm(dataFilter))
+  }, [dataFilter])
+
+  const filteredData = useAppSelector(selectorDataFilter)
 
   const farms = React.useMemo(() => {
     return (
-      data?.map<FarmListRow>(
+      filteredData.dataFarmFilter?.map<FarmListRow>(
         ({ id, name, description, start_crop_dt, end_crop_dt, devices }) => ({
           id,
           name,
@@ -60,11 +84,29 @@ export const HomeScreen: React.FC = () => {
         })
       ) ?? []
     )
-  }, [data])
+  }, [dataFilter])
 
   return (
     <Grid container flex={1} flexDirection="column">
-      <Toolbar title="Gestión de granjas" buttons={toolbarButtons} />
+      <Toolbar
+        title="Gestión de granjas"
+        buttons={toolbarButtons}
+        select={
+          <SelectField
+            dense
+            label="Vista"
+            name="show"
+            id="show"
+            defaultValue={KindOfShowFarms[0].value}
+            values={KindOfShowFarms}
+            value={showFarms}
+            onSelect={(selectedValue) => {
+              doGetFarms({ search: showFarms })
+              setShowFarms(selectedValue)
+            }}
+          ></SelectField>
+        }
+      />
       <Grid item container gap={2} padding={2}>
         {farms.map((farm, index) => (
           <Card sx={{ width: 250 }} key={index}>

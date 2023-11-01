@@ -43,26 +43,23 @@ export interface PlantListRow {
 export const GaleryScreen: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const [filter, setFilter] = React.useState<string>("")
   const filteredData = useAppSelector(selectorDataFilter)
-  const { data } = useGetPlantsForGaleryQuery({
-    page: "1",
-    perPage: "10",
-  })
   const [doGetPlants, { data: searchPlants, isLoading, error }] =
     useLazyGetPlantsForGaleryQuery()
   const { isLogged } = useAppSelector(selectorSession)
 
-  const handleChange = () => {
+  React.useEffect(() => {
     doGetPlants({
       perPage: "10",
       page: "1",
-      search: "",
+      search: filter,
     })
-  }
+  }, [filter])
 
   React.useEffect(() => {
-    dispatch(setDataPlant(data))
-  }, [data])
+    dispatch(setDataPlant(searchPlants))
+  }, [searchPlants])
 
   const plants = React.useMemo(() => {
     return (
@@ -140,6 +137,7 @@ export const GaleryScreen: React.FC = () => {
             InputProps={{
               endAdornment: <Search sx={{ mr: 1 }} color="disabled" />,
             }}
+            onChange={(e) => setFilter(e.target.value)}
           />
           <IconButton>
             <FirstPage />
@@ -220,12 +218,12 @@ export const GaleryScreen: React.FC = () => {
                       >
                         {plant.name}
                       </Typography>
-                      <Typography data-color-mode="light">
+                      <Box data-color-mode="light">
                         <MDEditor.Markdown
                           data-color-mode="light"
                           source={truncateContent(plant.content)}
                         />
-                      </Typography>
+                      </Box>
                       <Typography
                         fontWeight="ligth"
                         fontSize={10}

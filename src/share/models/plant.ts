@@ -18,3 +18,11 @@ export interface CopyPlantDTO {
   public: boolean
   image?: string
 }
+
+export interface UpdatePlantDTO {
+  id?: string
+  name: string
+  content: string
+  public?: boolean
+  image?: Blob | string
+}

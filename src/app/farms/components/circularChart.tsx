@@ -14,7 +14,6 @@ export const CircularChart: FC<Props> = (props) => {
   const chartRef = useRef<ECharts>()
   useEffect(() => {
     const chart = init(chartNodeRef.current)
-
     const option: EChartsCoreOption = {
       title: [
         {
@@ -47,10 +46,10 @@ export const CircularChart: FC<Props> = (props) => {
           showBackground: false,
         },
       ],
-      legend: {
-        show: true,
-        data: measurings?.namesSensor,
-      },
+      // legend: {
+      //   show: true,
+      //   data: measurings?.namesSensor,
+      // },
     }
     chart.setOption(option)
     chartRef.current = chart

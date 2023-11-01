@@ -1,6 +1,10 @@
 import { API } from ".."
 import { PaginationDTO } from "../../../share/models/pagination"
-import { CopyPlantDTO, PlantDTO } from "../../../share/models/plant"
+import {
+  CopyPlantDTO,
+  PlantDTO,
+  UpdatePlantDTO,
+} from "../../../share/models/plant"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
@@ -42,12 +46,11 @@ const extendedApi = API.injectEndpoints({
       },
       invalidatesTags: ["Plant"],
     }),
-    updatePlant: build.mutation<PlantDTO, PlantDTO & { id: string }>({
-      query: ({ id, name, content, growing_time, public: isPublic, image }) => {
+    updatePlant: build.mutation<PlantDTO, UpdatePlantDTO & { id: string }>({
+      query: ({ id, name, content, public: isPublic, image }) => {
         const formData = new FormData()
         formData.append("name", name)
         formData.append("content", content)
-        formData.append("growing_time", growing_time)
         formData.append("public", JSON.stringify(isPublic))
         image && formData.append("files", image)
         return {
@@ -71,8 +74,8 @@ const extendedApi = API.injectEndpoints({
       invalidatesTags: ["Plant"],
     }),
     getPlantsForGalery: build.query<PlantDTO[], PaginationDTO>({
-      query: ({ page, perPage }) => ({
-        url: `/plants/galery?page=${page}&perPage=${perPage}`,
+      query: ({ page, perPage, search }) => ({
+        url: `/plants/galery?search=${search}&page=${page}&perPage=${perPage}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -3,17 +3,20 @@ import { RootState } from "./store"
 import { UserDTO } from "../../share/models/user"
 import { PlantDTO } from "../../share/models/plant"
 import { DeviceDTO } from "../../share/models/device"
+import { FarmDTO } from "../../share/models/farm"
 
 interface DataFilterState {
   dataUserFilter?: UserDTO[]
   dataPlantFilter?: PlantDTO[]
   dataDeviceFilter?: DeviceDTO[]
+  dataFarmFilter?: FarmDTO[]
 }
 
 const initialState: DataFilterState = {
   dataUserFilter: [],
   dataPlantFilter: [],
   dataDeviceFilter: [],
+  dataFarmFilter: [],
 }
 
 export const dataFilterSlice = createSlice({
@@ -38,10 +41,16 @@ export const dataFilterSlice = createSlice({
     ) => {
       state.dataDeviceFilter = action.payload
     },
+    setDataFarm: (
+      state,
+      action: PayloadAction<DataFilterState["dataFarmFilter"]>
+    ) => {
+      state.dataFarmFilter = action.payload
+    },
   },
 })
 
-export const { setDataUser } = dataFilterSlice.actions
-export const { setDataPlant } = dataFilterSlice.actions
-export const { setDataDevice } = dataFilterSlice.actions
+export const { setDataUser, setDataPlant, setDataDevice, setDataFarm } =
+  dataFilterSlice.actions
+
 export const selectorDataFilter = (state: RootState) => state.dataFilter

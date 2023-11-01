@@ -68,7 +68,7 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
     },
   ]
 
-  const updatePlant = () => {
+  const handleClose = () => {
     setOpen(false)
   }
 
@@ -85,32 +85,24 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
         autoPageSize
         disableSelectionOnClick
       />
-      <Dialog
-        closeAfterTransition
-        fullWidth
-        maxWidth="lg"
-        onClose={updatePlant}
-        open={open}
-      >
+      <Dialog closeAfterTransition fullWidth maxWidth="lg" open={open}>
         <DialogTitle>
           Actualizar planta
-          {!!updatePlant && (
-            <IconButton
-              aria-label="close"
-              onClick={updatePlant}
-              sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <Close />
-            </IconButton>
-          )}
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
         </DialogTitle>
         <DialogContent>
-          <FormUpdatePlant dataPlant={dataPlant} />
+          <FormUpdatePlant dataPlant={dataPlant} onClose={handleClose} />
         </DialogContent>
       </Dialog>
     </Grid>
