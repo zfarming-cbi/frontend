@@ -1,5 +1,5 @@
 export interface FarmDTO {
-  id: string
+  id?: string
   name: string
   description: string
   start_crop_dt: string

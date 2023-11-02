@@ -109,7 +109,11 @@ export const FormUpdateUser: FC<Props> = (props) => {
     onClose()
   }
 
-  const getStyles = (id: string, farmsSelect: readonly any[], theme: Theme) => {
+  const getStyles = (
+    farmsSelect: readonly any[],
+    theme: Theme,
+    id?: string
+  ) => {
     const indice = farmsSelect.findIndex((farm) => {
       return farm.id === id
     })
@@ -127,7 +131,6 @@ export const FormUpdateUser: FC<Props> = (props) => {
     } = event
 
     setFarmsSelect(typeof value === "string" ? value.split(",") : value)
-    console.log("person name", farmsSelect)
   }
 
   return (
@@ -216,7 +219,7 @@ export const FormUpdateUser: FC<Props> = (props) => {
             <MenuItem
               key={id}
               value={id}
-              style={getStyles(id, farmsSelect, theme)}
+              style={getStyles(farmsSelect, theme, id)}
             >
               {name}
             </MenuItem>

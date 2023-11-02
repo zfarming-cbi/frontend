@@ -32,7 +32,7 @@ const extendedApi = API.injectEndpoints({
         },
       }),
     }),
-    forgot: build.mutation<void, ForgotDTO>({
+    forgot: build.mutation<{ message: string }, ForgotDTO>({
       query: (body) => ({
         url: "/auth/forgot-password",
         method: "POST",
