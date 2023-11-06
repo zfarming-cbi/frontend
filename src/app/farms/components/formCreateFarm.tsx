@@ -1,10 +1,18 @@
 import { FC } from "react"
-import { Alert, Button, DialogActions, Grid, TextField } from "@mui/material"
+import {
+  Alert,
+  Button,
+  DialogActions,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useAppDispatch } from "../../../settings/redux/hooks"
 import { closeFormCreateFarm } from "../../../settings/redux/dialogs.slice"
 import { useCreateFarmMutation } from "../../../settings/api/endpoints/farm"
+import { Search } from "@mui/icons-material"
 
 interface Props {
   onSave(): void
@@ -67,6 +75,7 @@ export const FormCreateFarm: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.name}
+          helperText={errors.name}
         />
       </Grid>
       <Grid item xs>
@@ -84,7 +93,12 @@ export const FormCreateFarm: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.description}
+          inputProps={{ maxLength: 255 }}
+          helperText={errors.description}
         />
+        <Typography color={"grey"}>
+          {descriptionInputValue.length}/255
+        </Typography>
       </Grid>
       <Grid item xs>
         <TextField
@@ -146,5 +160,8 @@ export const FormCreateFarm: FC<Props> = (props) => {
 
 const FormCreateFarmSchema = Yup.object().shape({
   name: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  description: Yup.string().min(3).max(250).required("El nombre no es valido."),
+  description: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(250, "Maximo 250 caracteres")
+    .required("la descripción no es valida."),
 })

@@ -37,7 +37,7 @@ export const DeviceMeasuringScreen: React.FC = () => {
   const [open, setOpen] = React.useState(false)
   const [name, setName] = React.useState<string>("")
   const [content, setContent] = React.useState<string>("")
-  const [growing_time, setGrowing_time] = React.useState<string>("")
+  const [growingTime, setGrowingTime] = React.useState<string>("")
   const [image, setImage] = React.useState<string>("")
   const [isPublic, setIsPublic] = React.useState<boolean>(false)
   const [doCreatePlant, { isLoading, error }] = useCopyPlantMutation()
@@ -47,16 +47,20 @@ export const DeviceMeasuringScreen: React.FC = () => {
   }, [data])
   const openFormCopyPlant = () => {
     setContent(data?.plant.content)
-    setGrowing_time(data?.plant.growing_time)
+    setGrowingTime(data?.plant.growing_time)
     setImage(data?.plant.image)
     setIsPublic(data?.plant.public)
     setOpen(true)
+  }
+  const closeFormCopyPlant = () => {
+    setOpen(false)
+    setName("")
   }
   const copyPlant = () => {
     const data = {
       name,
       content,
-      growing_time,
+      growing_time: growingTime,
       public: isPublic,
       image,
     }
@@ -113,7 +117,7 @@ export const DeviceMeasuringScreen: React.FC = () => {
               <Button onClick={openFormCopyPlant}>Copiar formula</Button>
             </CardActions>
           </Card>
-          <Dialog open={open} onClose={copyPlant}>
+          <Dialog open={open} onClose={closeFormCopyPlant}>
             <DialogTitle>Copiar formula</DialogTitle>
             <DialogContent>
               <TextField

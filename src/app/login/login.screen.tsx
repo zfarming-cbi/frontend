@@ -114,6 +114,7 @@ export const LoginScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.email}
+              helperText={errors.email}
             />
             <Box sx={{ height: 8, width: 1 }} />
             <TextField
@@ -129,6 +130,7 @@ export const LoginScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.password}
+              helperText={errors.password}
             />
             {!!error && (
               <Alert
@@ -183,11 +185,11 @@ export const LoginScreen: FC = () => {
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
-    .min(3)
-    .max(50)
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El nombre de usuario no es valido."),
   password: Yup.string()
-    .min(2)
-    .max(50)
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El password ingresado no es valido"),
 })

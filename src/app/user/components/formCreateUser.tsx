@@ -211,13 +211,19 @@ export const FormCreateUser: FC<Props> = (props) => {
 
 const FormCreateUserSchema = Yup.object().shape({
   email: Yup.string()
-    .min(3)
-    .max(50)
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El nombre de usuario no es valido."),
   password: Yup.string()
-    .min(2)
-    .max(50)
+    .min(8, "Minimo 8 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El password ingresado no es valido"),
-  firstname: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  lastname: Yup.string().min(3).max(50).required("El apellido no es valido."),
+  firstname: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El nombre no es valido."),
+  lastname: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El apellido no es valido."),
 })

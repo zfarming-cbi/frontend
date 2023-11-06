@@ -216,20 +216,20 @@ export const Comments: React.FC<Props> = (props) => {
         </Alert>
       )}
       <Grid container item xs={12} justifyContent="end" marginTop={1}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate(ROUTE_PATH.Login)}
-          sx={{ display: !!isLogged ? "none" : "flex" }}
-        >
-          Iniciar sesión
-        </Button>
-        <Button
-          sx={{ marginInline: 1, display: !isLogged ? "none" : "flex" }}
-          onClick={handleCreateComment}
-        >
-          Enviar
-        </Button>
+        {!isLogged && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(ROUTE_PATH.Login)}
+          >
+            Iniciar sesión
+          </Button>
+        )}
+        {isLogged && (
+          <Button sx={{ marginInline: 1 }} onClick={handleCreateComment}>
+            Enviar
+          </Button>
+        )}
       </Grid>
     </Grid>
   )

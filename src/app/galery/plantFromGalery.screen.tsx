@@ -1,7 +1,23 @@
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material"
+import {
+  Alert,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material"
 import * as React from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useGetPlantQuery } from "../../settings/api/endpoints/plant"
+import {
+  useCopyPlantMutation,
+  useGetPlantQuery,
+} from "../../settings/api/endpoints/plant"
 import { ArrowBack } from "@mui/icons-material"
 import { Comments } from "./components/comments"
 import { DateTime } from "luxon"
@@ -9,27 +25,100 @@ import { LikesComments } from "./components/likesComments"
 import { AppEnvVars } from "../../settings/env/environment"
 import MDEditor from "@uiw/react-md-editor"
 import { ROUTE_PATH } from "../../settings/routes/routes"
+import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
+import { selectorSession } from "../../settings/redux/session.slice"
+import {
+  MesageSnackbar,
+  closeSnackbar,
+  selectorSnackbar,
+  showSnackbar,
+} from "../../settings/redux/snackbar.slice"
+import { selectorDataFilter } from "../../settings/redux/dataFilter.slice"
 
 export const PlantFromGalery: React.FC = () => {
   const { plantId } = useParams()
-
   const { data } = useGetPlantQuery({ plantId })
   const [title, setTitle] = React.useState<string>()
   const [updatedAt, setUpdatedAt] = React.useState<string>()
-  const [content, setContent] = React.useState<string>()
+  const [content, setContent] = React.useState<string>("")
   const [likes, setLikes] = React.useState<number>()
   const [comments, setComments] = React.useState<number>()
-  const [image, setImage] = React.useState<Blob | string>()
+  const [image, setImage] = React.useState<string>()
+  const [open, setOpen] = React.useState(false)
+  const [isPublic, setIsPublic] = React.useState<boolean>(false)
+  const [growingTime, setGrowingTime] = React.useState<string>("")
+  const [name, setName] = React.useState<string>("")
+  const { isLogged } = useAppSelector(selectorSession)
+  const [doCreatePlant, { isLoading, error, reset, isSuccess }] =
+    useCopyPlantMutation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const { visible, severity, message } = useAppSelector(selectorSnackbar)
+
+  const onCloseSnackbar = () => {
+    dispatch(closeSnackbar())
+  }
+
+  const openFormCopyPlant = () => {
+    setContent(data?.content ?? "")
+    setGrowingTime(data?.growing_time ?? "")
+    setImage(data?.image)
+    setIsPublic(data?.public ?? false)
+    setOpen(true)
+  }
+  const copyPlant = () => {
+    const plantCopy = {
+      name,
+      content,
+      growing_time: growingTime,
+      public: isPublic,
+      image,
+    }
+    doCreatePlant(plantCopy)
+    setOpen(false)
+  }
+
+  const closeFormCopyPlant = () => {
+    setOpen(false)
+    setName("")
+  }
 
   React.useEffect(() => {
     setTitle(data?.name)
-    setContent(data?.content)
+    setContent(data?.content ?? "")
     setUpdatedAt(data?.updatedAt ?? "")
     setLikes(data?.likes?.length ?? 0)
     setComments(data?.comments?.length ?? 0)
     setImage(data?.image ?? "")
   }, [data])
+
+  React.useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  React.useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
+
   return (
     <Grid
       padding={4}
@@ -88,6 +177,18 @@ export const PlantFromGalery: React.FC = () => {
                 }}
               >
                 <LikesComments likes={likes} comments={comments} />
+                <Box
+                  sx={{
+                    flex: 1,
+                    padding: 2,
+                  }}
+                >
+                  {isLogged && (
+                    <Button size="small" onClick={openFormCopyPlant}>
+                      Copiar formula
+                    </Button>
+                  )}
+                </Box>
               </Box>
             </Box>
             <img
@@ -104,6 +205,54 @@ export const PlantFromGalery: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
+      <Dialog open={open} onClose={closeFormCopyPlant}>
+        <DialogTitle>Copiar formula</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            required
+            label="Nombre"
+            variant="outlined"
+            name="name"
+            id="name"
+            value={name}
+            disabled={isLoading}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {!!error && (
+            <Alert
+              sx={{
+                marginTop: 1,
+                textAlign: "left",
+                fontSize: 10,
+                alignItems: "center",
+              }}
+              severity="error"
+              variant="filled"
+            >
+              lo sentimos en este momento no podemos validar la información
+              {/* {JSON.stringify(error)} */}
+            </Alert>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={copyPlant}>Copiar</Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        open={visible}
+        autoHideDuration={4000}
+        onClose={onCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={onCloseSnackbar}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
     </Grid>
   )
 }

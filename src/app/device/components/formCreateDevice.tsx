@@ -98,6 +98,7 @@ export const FormCreateDevice: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.name}
+          helperText={errors.name}
         />
       </Grid>
       <Grid item xs>
@@ -113,6 +114,7 @@ export const FormCreateDevice: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.code}
+          helperText={errors.code}
         />
       </Grid>
       <Grid item xs>
@@ -130,6 +132,7 @@ export const FormCreateDevice: FC<Props> = (props) => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.description}
+          helperText={errors.description}
         />
       </Grid>
       {!!error && (
@@ -160,12 +163,15 @@ export const FormCreateDevice: FC<Props> = (props) => {
 
 const FormCreateDeviceSchema = Yup.object().shape({
   name: Yup.string()
-    .min(3)
-    .max(50)
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El nombre del dispositivo no es valido."),
   description: Yup.string()
-    .min(3)
-    .max(250)
+    .min(3, "Minimo 3 caracteres")
+    .max(250, "Maximo 250 caracteres")
     .required("La descripción no es valida."),
-  code: Yup.string().min(3).max(20).required("El código no es válido."),
+  code: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(20, "Maximo 20 caracteres")
+    .required("El código no es válido."),
 })

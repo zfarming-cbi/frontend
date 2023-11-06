@@ -158,5 +158,8 @@ export const ForgotPasswordScreen: FC = () => {
 }
 
 const ForgotSchema = Yup.object().shape({
-  email: Yup.string().min(3).max(50).required("El email no es valido."),
+  email: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El email no es valido."),
 })

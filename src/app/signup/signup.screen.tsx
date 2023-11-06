@@ -101,6 +101,7 @@ export const SignupScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.company}
+              helperText={errors.company}
             />
             <TextField
               fullWidth
@@ -114,6 +115,7 @@ export const SignupScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.nit}
+              helperText={errors.nit}
             />
             <TextField
               fullWidth
@@ -127,6 +129,7 @@ export const SignupScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.email}
+              helperText={errors.email}
             />
             <TextField
               fullWidth
@@ -140,6 +143,7 @@ export const SignupScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.firstname}
+              helperText={errors.firstname}
             />
             <TextField
               fullWidth
@@ -153,6 +157,7 @@ export const SignupScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.lastname}
+              helperText={errors.lastname}
             />
             <Box sx={{ height: 8, width: 1 }} />
             <TextField
@@ -168,6 +173,7 @@ export const SignupScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.password}
+              helperText={errors.password}
             />
             {!!error && (
               <Alert
@@ -219,18 +225,28 @@ export const SignupScreen: FC = () => {
 
 const SignUpSchema = Yup.object().shape({
   email: Yup.string()
-    .min(3)
-    .max(50)
+    .email("El correo electrónico no es válido")
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El nombre de usuario no es valido."),
   password: Yup.string()
-    .min(2)
-    .max(50)
-    .required("El password ingresado no es valido"),
-  firstname: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  lastname: Yup.string().min(3).max(50).required("El apellido no es valido."),
+    .min(8, "Minimo 8 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("La contraseña ingresada no es valido"),
+  firstname: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El nombre no es valido."),
+  lastname: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El apellido no es valido."),
   company: Yup.string()
-    .min(3)
-    .max(50)
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El nombre de la compañia no es valido."),
-  nit: Yup.string().min(3).max(50).required("El NIT no es valido."),
+  nit: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El NIT no es valido."),
 })

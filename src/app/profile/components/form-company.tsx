@@ -278,6 +278,12 @@ export const FormCompany: FC = () => {
 }
 
 const FormEditCompanySchema = Yup.object().shape({
-  name: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  nit: Yup.string().min(3).max(50).required("El apellido no es valido."),
+  name: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(20, "Maximo 20 caracteres")
+    .required("El nombre no es valido."),
+  nit: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El apellido no es valido."),
 })

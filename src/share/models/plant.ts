@@ -10,6 +10,11 @@ export interface PlantDTO {
   comments?: []
   devices?: []
 }
+
+export interface GetPlantDTO extends PlantDTO {
+  image?: string
+}
+
 export interface CopyPlantDTO {
   id?: string
   name: string

@@ -39,9 +39,9 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Device"],
     }),
-    getDevicesUnasigned: build.query<DeviceDTO[], void>({
-      query: () => ({
-        url: `/device`,
+    getDevicesUnasigned: build.query<DeviceDTO[], PaginationDTO>({
+      query: ({ page, perPage, search }) => ({
+        url: `/device?search=${search}&page=${page}&perPage=${perPage}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -93,6 +93,7 @@ export const {
   useGetDevicesQuery,
   useLazyGetDevicesQuery,
   useGetDevicesUnasignedQuery,
+  useLazyGetDevicesUnasignedQuery,
   useCreateDevicesMutation,
   useUpdateDeviceMutation,
   useGetDeviceQuery,

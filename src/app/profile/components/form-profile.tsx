@@ -180,7 +180,16 @@ export const FormProfile: FC = () => {
 }
 
 const FormEditProfileSchema = Yup.object().shape({
-  firstname: Yup.string().min(3).max(50).required("El nombre no es valido."),
-  lastname: Yup.string().min(3).max(50).required("El apellido no es valido."),
-  email: Yup.string().min(3).max(50).required("El email no es valido."),
+  firstname: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El nombre no es valido."),
+  lastname: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El apellido no es valido."),
+  email: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("El email no es valido."),
 })

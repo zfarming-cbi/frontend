@@ -167,12 +167,12 @@ export const RecoverPasswordScreen: FC = () => {
 
 const ResetPasswordSchema = Yup.object().shape({
   password: Yup.string()
-    .min(3)
-    .max(50)
-    .required("Debe tener almenos 8 caracteres"),
+    .min(8, "Minimo 8 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("Contraseña no valida"),
   confirmPassword: Yup.string()
-    .min(8)
-    .max(50)
-    .required("Debe tener almenos 8 caracteres")
+    .min(8, "Minimo 8 caracteres")
+    .max(50, "Maximo 50 caracteres")
+    .required("Contraseña no valida")
     .oneOf([Yup.ref("password"), ""], "La contraseña no coincide"),
 })

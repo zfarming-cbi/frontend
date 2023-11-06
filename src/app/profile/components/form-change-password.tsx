@@ -153,11 +153,11 @@ export const FormChangePassword: FC = () => {
 
 const FormChangePasswordSchema = Yup.object().shape({
   currentPassword: Yup.string()
-    .min(8)
-    .max(20)
+    .min(8, "Minimo 8 caracteres")
+    .max(20, "Maximo 8 caracteres")
     .required("La contraseña no es valida."),
   newPassword: Yup.string()
-    .min(8)
-    .max(20)
+    .min(8, "Minimo 8 caracteres")
+    .max(20, "Maximo 8 caracteres")
     .required("La contraseña no es valida."),
 })

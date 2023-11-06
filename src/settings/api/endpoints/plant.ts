@@ -2,6 +2,7 @@ import { API } from ".."
 import { PaginationDTO } from "../../../share/models/pagination"
 import {
   CopyPlantDTO,
+  GetPlantDTO,
   PlantDTO,
   UpdatePlantDTO,
 } from "../../../share/models/plant"
@@ -19,7 +20,7 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Plant"],
     }),
-    getPlant: build.query<PlantDTO, { plantId?: string }>({
+    getPlant: build.query<GetPlantDTO, { plantId?: string }>({
       query: ({ plantId }) => ({
         url: `/plants/${plantId}`,
         method: "GET",

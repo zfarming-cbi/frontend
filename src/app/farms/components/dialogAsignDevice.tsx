@@ -11,16 +11,26 @@ import {
   Typography,
 } from "@mui/material"
 import { PlantListRow } from "../../plant/components/plantList"
-import { useGetPlantsQuery } from "../../../settings/api/endpoints/plant"
+import { useLazyGetPlantsQuery } from "../../../settings/api/endpoints/plant"
 import {
   useGetDevicesUnasignedQuery,
+  useLazyGetDevicesUnasignedQuery,
   useUpdateDeviceMutation,
 } from "../../../settings/api/endpoints/device"
 import { DeviceListRow } from "../../device/components/deviceList"
 import { DataGrid, GridColDef, GridEventListener, esES } from "@mui/x-data-grid"
 import { useParams } from "react-router-dom"
-import { useAppDispatch } from "../../../settings/redux/hooks"
+import { useAppDispatch, useAppSelector } from "../../../settings/redux/hooks"
 import { closeAsignDevice } from "../../../settings/redux/dialogs.slice"
+import {
+  selectorDataFilter,
+  setDataDevice,
+  setDataPlant,
+} from "../../../settings/redux/dataFilter.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   onSave(): void
@@ -55,37 +65,91 @@ const COLUMNS_DEF_DEVICES: GridColDef[] = [
 
 export const AsigmentDevice: React.FC<Props> = (props) => {
   const { farmId = "" } = useParams()
+  const filteredData = useAppSelector(selectorDataFilter)
   const [plantName, setPlantName] = useState<string>()
   const [plantContent, setPlantContent] = useState<string>()
   const [deviceName, setDeviceName] = useState<string>()
   const [deviceCode, setDeviceCode] = useState<string>()
   const [deviceId, setDeviceId] = useState<string>("")
   const [plantId, setPlantId] = useState<string>("")
+  const [filterPlant, setFilterPlant] = React.useState<string>("")
+  const [filterDevice, setFilterDevice] = React.useState<string>("")
 
-  const [page, setPage] = useState(1)
+  const [doGetPlants, { data: searchPlants, isLoading, error }] =
+    useLazyGetPlantsQuery()
+  const [doGetDevices, { data: dataDevices }] =
+    useLazyGetDevicesUnasignedQuery()
 
-  const { data: dataDevices, refetch: refetchDevices } =
-    useGetDevicesUnasignedQuery()
-  const { data, refetch } = useGetPlantsQuery({
-    page: String(page),
-    perPage: "10",
-  })
+  React.useEffect(() => {
+    doGetPlants({
+      perPage: "10",
+      page: "1",
+      search: filterPlant,
+    })
+  }, [filterPlant])
+
+  React.useEffect(() => {
+    doGetDevices({
+      perPage: "10",
+      page: "1",
+      search: filterDevice,
+    })
+  }, [filterDevice])
+
+  React.useEffect(() => {
+    dispatch(setDataPlant(searchPlants))
+  }, [searchPlants])
+
+  React.useEffect(() => {
+    dispatch(setDataDevice(dataDevices))
+  }, [dataDevices])
+
+  const [
+    doUpdateDevice,
+    { isLoading: loadDevice, error: errorDevice, isSuccess, reset },
+  ] = useUpdateDeviceMutation()
+  const dispatch = useAppDispatch()
+  const truncateContent = (content: string) => {
+    const textWithoutHtml = content.replace(/<[^>]*>/g, "")
+    const textWithoutMd = textWithoutHtml.replace(/(\\|_|\*||~~|`)(.*?)\1/g, "")
+    const textPlane = textWithoutMd.replace(/[*#\\]/g, "")
+    if (textPlane.length > 100) {
+      return textPlane.substring(0, 100) + "..."
+    } else {
+      return textPlane
+    }
+  }
 
   useEffect(() => {
-    refetchDevices()
-    refetch()
-  }, [page])
+    if (!loadDevice && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [loadDevice, isSuccess])
 
-  const [doUpdateDevice, { isLoading, error }] = useUpdateDeviceMutation()
-  const dispatch = useAppDispatch()
-  const removeMd = (content: string) => {
-    const textPlane = content.replace(/[*#\\]/g, "")
-    return textPlane
-  }
+  useEffect(() => {
+    if (!errorDevice) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [errorDevice])
 
   const plants = React.useMemo(() => {
     return (
-      data?.map<PlantListRow>(
+      filteredData.dataPlantFilter?.map<PlantListRow>(
         ({ id, name, content, growing_time, devices }) => ({
           id,
           name,
@@ -95,7 +159,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
         })
       ) ?? []
     )
-  }, [data])
+  }, [filteredData.dataPlantFilter])
 
   const devices = React.useMemo(() => {
     return (
@@ -106,7 +170,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
         code,
       })) ?? []
     )
-  }, [data])
+  }, [filteredData.dataDeviceFilter])
 
   const onClickRowDevice: GridEventListener<"rowClick"> = ({ row }) => {
     setDeviceName(row.name)
@@ -133,6 +197,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
           variant="outlined"
           name="searchDevice"
           id="searchDevice"
+          onChange={(e) => setFilterDevice(e.target.value)}
         />
         <DataGrid
           rows={devices}
@@ -144,10 +209,6 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={onClickRowDevice}
           autoPageSize
-          page={page}
-          onPageChange={(newPage) => {
-            setPage(newPage)
-          }}
         />
         <TextField
           fullWidth
@@ -156,6 +217,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
           variant="outlined"
           name="searchPlant"
           id="searchPlant"
+          onChange={(e) => setFilterPlant(e.target.value)}
         />
         <DataGrid
           rows={plants}
@@ -192,7 +254,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
                 name="nameDevice"
                 id="nameDevice"
                 value={deviceName}
-                disabled={isLoading}
+                disabled={loadDevice}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -238,7 +300,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
                 name="contentPlant"
                 id="contentPlant"
                 maxRows={7}
-                value={removeMd(plantContent)}
+                value={truncateContent(plantContent)}
                 disabled={isLoading}
                 InputProps={{
                   readOnly: true,
@@ -253,7 +315,7 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
               </Button>
             </CardActions>
           )}
-          {!!error && (
+          {!!errorDevice && (
             <Alert
               sx={{
                 marginTop: 1,

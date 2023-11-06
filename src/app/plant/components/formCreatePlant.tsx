@@ -212,6 +212,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
             onChange={handleChange}
             onBlur={handleBlur}
             error={!!errors.name}
+            helperText={errors.name}
           />
         </Grid>
         <Grid item xs marginY={1}>
@@ -331,5 +332,8 @@ export const FormCreatePlant: FC<Props> = (props) => {
 }
 
 const FormCreatePlantSchema = Yup.object().shape({
-  name: Yup.string().min(3).max(50).required("El nombre no es valido."),
+  name: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 3 caracteres")
+    .required("El nombre no es valido."),
 })

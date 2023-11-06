@@ -15,14 +15,10 @@ import { ArrowBack, FirstPage, LastPage, Search } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import LOGO_FULL from "../../assets/placeholder.png"
-import {
-  useGetPlantsForGaleryQuery,
-  useLazyGetPlantsForGaleryQuery,
-} from "../../settings/api/endpoints/plant"
+import { useLazyGetPlantsForGaleryQuery } from "../../settings/api/endpoints/plant"
 import { LikesComments } from "./components/likesComments"
 import { DateTime } from "luxon"
 import { AppEnvVars } from "../../settings/env/environment"
-import MDEditor from "@uiw/react-md-editor"
 import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
   selectorDataFilter,

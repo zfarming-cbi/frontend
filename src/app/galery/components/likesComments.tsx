@@ -12,7 +12,11 @@ interface Props extends React.PropsWithChildren {
 export const LikesComments: React.FC<Props> = (props) => {
   const { likes, comments } = props
   return (
-    <Stack direction="row" spacing={1} sx={{ display: "flex", pl: 1 }}>
+    <Stack
+      direction="row"
+      spacing={1}
+      sx={{ marginY: 2, display: "flex", pl: 1 }}
+    >
       <IconButton disabled>
         <ThumbUp />
       </IconButton>
