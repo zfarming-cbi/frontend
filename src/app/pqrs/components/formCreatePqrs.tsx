@@ -7,15 +7,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { BadgeOutlined as DocumentIdIcon } from "@mui/icons-material"
 import {
   SelectField,
   SelectFieldValue,
 } from "../../../share/components/selectField"
-import React, { useState } from "react"
+import React, { useEffect } from "react"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { useCreatePqrsMutation } from "../../../settings/api/endpoints/pqrs"
+import { useAppDispatch } from "../../../settings/redux/hooks"
+import { closeFormPQRS } from "../../../settings/redux/dialogs.slice"
+import {
+  MesageSnackbar,
+  showSnackbar,
+} from "../../../settings/redux/snackbar.slice"
 
 interface Props {
   onSave(): void
@@ -23,7 +28,9 @@ interface Props {
 }
 
 export const FormPQRS: React.FC<Props> = (props) => {
-  const [doCreatePqrs, { isLoading, error }] = useCreatePqrsMutation()
+  const [doCreatePqrs, { isLoading, error, isSuccess, reset }] =
+    useCreatePqrsMutation()
+  const dispatch = useAppDispatch()
 
   const KindOfPQRS: SelectFieldValue<string>[] = [
     {
@@ -52,14 +59,10 @@ export const FormPQRS: React.FC<Props> = (props) => {
     errors,
     values: { description: descriptionInputValue, type: typeInputValue },
   } = useFormik<{
-    document: string
-    phone: string
     description: string
     type: string | number
   }>({
     initialValues: {
-      document: "",
-      phone: "",
       description: "",
       type: KindOfPQRS[0].value,
     },
@@ -67,10 +70,38 @@ export const FormPQRS: React.FC<Props> = (props) => {
     validateOnBlur: true,
     validateOnChange: false,
     validationSchema: FormPqrsSchema,
-    async onSubmit(data) {
-      doCreatePqrs(data)
+    async onSubmit(dataPqrs) {
+      doCreatePqrs(dataPqrs)
+      dispatch(closeFormPQRS())
     },
   })
+
+  useEffect(() => {
+    if (!isLoading && !isSuccess) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Success,
+        severity: "success",
+      })
+    )
+    reset()
+  }, [isLoading, isSuccess])
+
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    dispatch(
+      showSnackbar({
+        visible: true,
+        message: MesageSnackbar.Error,
+        severity: "error",
+      })
+    )
+  }, [error])
 
   return (
     <Grid
@@ -145,13 +176,12 @@ export const FormPQRS: React.FC<Props> = (props) => {
 }
 
 const FormPqrsSchema = Yup.object().shape({
-  phone: Yup.string().min(3).max(20).required("El teléfono no es valido."),
-  document: Yup.string()
-    .min(3)
-    .max(50)
+  type: Yup.string()
+    .min(3, "Minimo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El numero de documento no es valido."),
   description: Yup.string()
-    .min(3)
-    .max(250)
+    .min(3, "Minimo 3 caracteres")
+    .max(250, "Maximo 250 caracteres")
     .required("La descripción no es valida."),
 })

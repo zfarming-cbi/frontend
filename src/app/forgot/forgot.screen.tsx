@@ -49,7 +49,7 @@ export const ForgotPasswordScreen: FC = () => {
       height="100vh"
       container
       sx={{
-        backgroundColor: "#D0D0D1", //blue[100],
+        backgroundColor: "#D0D0D1",
       }}
     >
       <Grid item xs={10} sm={6} lg={4}>
@@ -85,6 +85,7 @@ export const ForgotPasswordScreen: FC = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={!!errors.email}
+              helperText={errors.email}
             />
             <Box sx={{ height: 8, width: 1 }} />
             {!!error && (
@@ -159,6 +160,7 @@ export const ForgotPasswordScreen: FC = () => {
 
 const ForgotSchema = Yup.object().shape({
   email: Yup.string()
+    .email("El correo electrónico no es válido")
     .min(3, "Minimo 3 caracteres")
     .max(50, "Maximo 50 caracteres")
     .required("El email no es valido."),

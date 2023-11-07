@@ -1,11 +1,23 @@
 import { API } from ".."
+import { PaginationDTO } from "../../../share/models/pagination"
 import { PqrsDTO } from "../../../share/models/pqrs"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getTickets: build.query<PqrsDTO[], { page: string; perPage: string }>({
-      query: ({ page, perPage }) => ({
-        url: `/pqrs?page=${page}&perPage=${perPage}`,
+    getTickets: build.query<PqrsDTO[], PaginationDTO>({
+      query: ({ page, perPage, search }) => ({
+        url: `/pqrs?search=${search}&page=${page}&perPage=${perPage}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      providesTags: ["Pqrs"],
+    }),
+    getPqrs: build.query<PqrsDTO, { pqrsId?: string }>({
+      query: ({ pqrsId }) => ({
+        url: `/pqrs/${pqrsId}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,8 +38,25 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["Pqrs"],
     }),
+    updatePqrs: build.mutation<PqrsDTO, PqrsDTO & { id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/pqrs/${id}`,
+        method: "PATCH",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+      invalidatesTags: ["Pqrs"],
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useGetTicketsQuery, useCreatePqrsMutation } = extendedApi
+export const {
+  useGetTicketsQuery,
+  useLazyGetTicketsQuery,
+  useCreatePqrsMutation,
+  useUpdatePqrsMutation,
+} = extendedApi

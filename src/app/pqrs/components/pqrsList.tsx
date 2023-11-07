@@ -1,7 +1,6 @@
 import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
-import { Box, Grid, IconButton } from "@mui/material"
-import { Delete, Edit } from "@mui/icons-material"
+import { Grid } from "@mui/material"
 import { DateTime } from "luxon"
 
 export interface PqrsListRow {
@@ -21,23 +20,13 @@ const COLUMNS_DEF: GridColDef[] = [
     width: 70,
   },
   {
-    field: "user.firstname",
+    field: "firstname",
     headerName: "Usuario",
     flex: 1,
   },
   {
-    field: "user.email",
+    field: "email",
     headerName: "Email",
-    flex: 1,
-  },
-  {
-    field: "phone",
-    headerName: "Teléfono",
-    flex: 1,
-  },
-  {
-    field: "document",
-    headerName: "Documento",
     flex: 1,
   },
   {

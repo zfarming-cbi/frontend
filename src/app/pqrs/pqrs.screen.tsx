@@ -2,10 +2,17 @@ import { Grid } from "@mui/material"
 import React, { FC } from "react"
 import { Toolbar, ToolbarButton } from "../../share/components/toolbar"
 import { Add as AddIcon, Search as FilterIcon } from "@mui/icons-material"
-import { useAppDispatch } from "../../settings/redux/hooks"
-import { showFormToAddPQRS } from "../../settings/redux/dialogs.slice"
+import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
+import {
+  showFormSearchPQRS,
+  showFormToAddPQRS,
+} from "../../settings/redux/dialogs.slice"
 import { PqrsList, PqrsListRow } from "./components/pqrsList"
 import { useGetTicketsQuery } from "../../settings/api/endpoints/pqrs"
+import {
+  selectorDataFilter,
+  setDataPqrs,
+} from "../../settings/redux/dataFilter.slice"
 
 export const PQRSScreen: FC = () => {
   const toolbarButtons: ToolbarButton[] = [
@@ -22,31 +29,44 @@ export const PQRSScreen: FC = () => {
     },
     {
       icon: <FilterIcon />,
-      action(params) {},
+      action() {
+        dispatch(
+          showFormSearchPQRS({
+            visible: true,
+            data: {},
+          })
+        )
+      },
     },
   ]
 
   const dispatch = useAppDispatch()
+  const filteredData = useAppSelector(selectorDataFilter)
+
   const { data } = useGetTicketsQuery({
     page: "1",
     perPage: "10",
+    search: "",
   })
+
+  React.useEffect(() => {
+    dispatch(setDataPqrs(data))
+  }, [data])
 
   const tickets = React.useMemo(() => {
     return (
-      data?.map<PqrsListRow>(
-        ({ id, type, description, document, phone, createdAt, user }) => ({
+      filteredData.dataPqrsFilter?.map<PqrsListRow>(
+        ({ id, type, description, createdAt, user }) => ({
           id,
           type,
           description,
-          document,
-          phone,
           createdAt,
-          user,
+          firstname: user.firstname,
+          email: user.email,
         })
       ) ?? []
     )
-  }, [data])
+  }, [filteredData.dataPqrsFilter])
 
   return (
     <Grid container flex={1} flexDirection="column">

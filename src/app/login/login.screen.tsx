@@ -185,6 +185,7 @@ export const LoginScreen: FC = () => {
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
+    .email("El correo electrónico no es válido")
     .min(3, "Minimo 3 caracteres")
     .max(50, "Maximo 50 caracteres")
     .required("El nombre de usuario no es valido."),

@@ -29,7 +29,7 @@ import {
   Grass,
 } from "@mui/icons-material"
 
-import { FormPQRS } from "../pqrs/components/form-pqrs"
+import { FormPQRS } from "../pqrs/components/formCreatePqrs"
 import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
   closeFormCreateDevice,
@@ -43,6 +43,7 @@ import {
   closeFormCopyPlant,
   closeFormSearchDevice,
   closeFormSearchPlant,
+  closeFormSearchPQRS,
 } from "../../settings/redux/dialogs.slice"
 import { Dialog } from "../../share/components/dialog"
 import { FormCreateUser } from "../user/components/formCreateUser"
@@ -60,6 +61,7 @@ import {
   closeSnackbar,
   selectorSnackbar,
 } from "../../settings/redux/snackbar.slice"
+import { FormSearchPQRS } from "../pqrs/components/formSearchPqrs"
 
 export const DashboardScreen: FC = () => {
   const dispatch = useAppDispatch()
@@ -139,6 +141,7 @@ export const DashboardScreen: FC = () => {
     formCopyPlant,
     formSearchDevice,
     formSearchPlant,
+    formSearchPQRS,
   } = useAppSelector(selectorDialogs)
 
   const { visible, severity, message } = useAppSelector(selectorSnackbar)
@@ -159,6 +162,10 @@ export const DashboardScreen: FC = () => {
 
   const onClosePQRSForm = () => {
     dispatch(closeFormPQRS())
+  }
+
+  const onCloseFormSearchPQRS = () => {
+    dispatch(closeFormSearchPQRS())
   }
 
   const onCloseFormCreateUser = () => {
@@ -211,6 +218,7 @@ export const DashboardScreen: FC = () => {
   const onSaveFormSearchPlant = () => {}
   const onSaveFormSearchUser = () => {}
   const onSaveFormCopyPlant = () => {}
+  const onSaveFormSearchPQRS = () => {}
 
   return (
     <>
@@ -258,6 +266,17 @@ export const DashboardScreen: FC = () => {
         visible={formPQRS.visible}
       >
         <FormPQRS onCancel={onClosePQRSForm} onSave={onSavePQRSForm} />
+      </Dialog>
+
+      <Dialog
+        title={"Buscar PQRS"}
+        onClose={onCloseFormSearchPQRS}
+        visible={formSearchPQRS.visible}
+      >
+        <FormSearchPQRS
+          onCancel={onCloseFormSearchPQRS}
+          onSave={onSaveFormSearchPQRS}
+        />
       </Dialog>
 
       <Dialog

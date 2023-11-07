@@ -334,6 +334,6 @@ export const FormCreatePlant: FC<Props> = (props) => {
 const FormCreatePlantSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Minimo 3 caracteres")
-    .max(50, "Maximo 3 caracteres")
+    .max(50, "Maximo 50 caracteres")
     .required("El nombre no es valido."),
 })
