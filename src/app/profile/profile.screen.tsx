@@ -11,18 +11,18 @@ export const ProfileScreen: FC = () => {
       <Toolbar title="Configuración" />
       <Grid container flex={1}>
         <Grid item xs={12} md={6} lg={6} padding={1}>
+          <Card sx={{ height: "100%", display: "flex" }}>
+            <CardContent sx={{ flex: 1 }}>
+              <FormCompany />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6} lg={6} padding={1}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <FormProfile />
               <Divider />
               <FormChangePassword />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={6} padding={1}>
-          <Card sx={{ height: "100%", display: "flex" }}>
-            <CardContent sx={{ flex: 1 }}>
-              <FormCompany />
             </CardContent>
           </Card>
         </Grid>
