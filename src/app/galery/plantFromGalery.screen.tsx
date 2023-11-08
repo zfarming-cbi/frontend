@@ -33,7 +33,7 @@ import {
   selectorSnackbar,
   showSnackbar,
 } from "../../settings/redux/snackbar.slice"
-import { selectorDataFilter } from "../../settings/redux/dataFilter.slice"
+import { Rol } from "../../share/models/appSession"
 
 export const PlantFromGalery: React.FC = () => {
   const { plantId } = useParams()
@@ -48,7 +48,8 @@ export const PlantFromGalery: React.FC = () => {
   const [isPublic, setIsPublic] = React.useState<boolean>(false)
   const [growingTime, setGrowingTime] = React.useState<string>("")
   const [name, setName] = React.useState<string>("")
-  const { isLogged } = useAppSelector(selectorSession)
+  const { isLogged, rol } = useAppSelector(selectorSession)
+  const isRolAdmin = rol === Rol.Administrator
   const [doCreatePlant, { isLoading, error, reset, isSuccess }] =
     useCopyPlantMutation()
   const navigate = useNavigate()
@@ -76,6 +77,7 @@ export const PlantFromGalery: React.FC = () => {
     }
     doCreatePlant(plantCopy)
     setOpen(false)
+    setName("")
   }
 
   const closeFormCopyPlant = () => {
@@ -183,7 +185,7 @@ export const PlantFromGalery: React.FC = () => {
                     padding: 2,
                   }}
                 >
-                  {isLogged && (
+                  {isLogged && isRolAdmin && (
                     <Button size="small" onClick={openFormCopyPlant}>
                       Copiar formula
                     </Button>

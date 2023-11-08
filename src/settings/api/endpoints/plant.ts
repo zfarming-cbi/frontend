@@ -64,7 +64,7 @@ const extendedApi = API.injectEndpoints({
     }),
     copyPlant: build.mutation<PlantDTO, CopyPlantDTO>({
       query: (body) => ({
-        url: "/plants",
+        url: "/plants/copy-plant",
         method: "POST",
         body,
         headers: {

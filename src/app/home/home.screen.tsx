@@ -194,8 +194,6 @@ export const HomeScreen: React.FC = () => {
               </CardContent>
               <Box
                 style={{
-                  display: "flex",
-                  flex: 1,
                   backgroundColor:
                     DateTime.now() < DateTime.fromISO(farm.end_crop_dt)
                       ? "green"

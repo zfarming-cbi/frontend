@@ -59,7 +59,7 @@ export const FormProfile: FC = () => {
     validateOnChange: false,
     validationSchema: FormEditProfileSchema,
     async onSubmit(credentials) {
-      doUpdateUser(credentials)
+      doUpdateUser({ ...credentials, id: userId })
     },
   })
 

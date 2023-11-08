@@ -27,6 +27,9 @@ import {
   useGetMeasuringsQuery,
 } from "../../settings/api/endpoints/measuringHistory"
 import { BarChart } from "./components/barChart"
+import { Rol } from "../../share/models/appSession"
+import { useAppSelector } from "../../settings/redux/hooks"
+import { selectorSession } from "../../settings/redux/session.slice"
 
 export const DeviceMeasuringScreen: React.FC = () => {
   const { deviceId } = useParams()
@@ -39,8 +42,9 @@ export const DeviceMeasuringScreen: React.FC = () => {
   const [content, setContent] = React.useState<string>("")
   const [growingTime, setGrowingTime] = React.useState<string>("")
   const [image, setImage] = React.useState<string>("")
-  const [isPublic, setIsPublic] = React.useState<boolean>(false)
   const [doCreatePlant, { isLoading, error }] = useCopyPlantMutation()
+  const { rol } = useAppSelector(selectorSession)
+  const isRolAdmin = rol === Rol.Administrator
 
   React.useEffect(() => {
     setTitle(data?.name)
@@ -49,7 +53,6 @@ export const DeviceMeasuringScreen: React.FC = () => {
     setContent(data?.plant.content)
     setGrowingTime(data?.plant.growing_time)
     setImage(data?.plant.image)
-    setIsPublic(data?.plant.public)
     setOpen(true)
   }
   const closeFormCopyPlant = () => {
@@ -61,11 +64,12 @@ export const DeviceMeasuringScreen: React.FC = () => {
       name,
       content,
       growing_time: growingTime,
-      public: isPublic,
+      public: false,
       image,
     }
     doCreatePlant(data)
     setOpen(false)
+    setName("")
   }
 
   return (
@@ -114,7 +118,9 @@ export const DeviceMeasuringScreen: React.FC = () => {
                 justifyContent: "flex-end",
               }}
             >
-              <Button onClick={openFormCopyPlant}>Copiar formula</Button>
+              {isRolAdmin && (
+                <Button onClick={openFormCopyPlant}>Copiar formula</Button>
+              )}
             </CardActions>
           </Card>
           <Dialog open={open} onClose={closeFormCopyPlant}>

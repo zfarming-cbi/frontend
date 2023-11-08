@@ -1,3 +1,19 @@
+export enum ROUTE_TITLE {
+  Root = "Root",
+  Home = "Inicio",
+  Login = "Login",
+  Singup = "Signup",
+  Dashboard = "Dashboard",
+  User = "Usuarios",
+  PQRS = "PQRS",
+  Device = "Dispositivos",
+  Profile = "Perfil de usuario",
+  Company = "Compañia",
+  Plant = "Plantas",
+  Galery = "Galeria de plantas",
+  logout = "Cerrar sesión",
+}
+
 export enum ROUTE_PATH {
   Root = "/",
   Login = "/login",

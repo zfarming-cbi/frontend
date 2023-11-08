@@ -25,6 +25,7 @@ import {
   MesageSnackbar,
   showSnackbar,
 } from "../../../settings/redux/snackbar.slice"
+import { Rol } from "../../../share/models/appSession"
 
 const ImageButton = styled(ButtonBase)(() => ({
   position: "relative",
@@ -101,7 +102,8 @@ export const FormCompany: FC = () => {
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null)
   const [image, setImage] = React.useState<Blob>()
   const fileInputRef = React.useRef<HTMLInputElement | null>(null)
-  const { companyId = "" } = useAppSelector(selectorSession)
+  const { companyId = "", rol } = useAppSelector(selectorSession)
+  const isRolAdmin = rol === Rol.Administrator
   const { data } = useGetCompanyQuery({
     companyId,
   })
@@ -110,8 +112,6 @@ export const FormCompany: FC = () => {
     setFieldValue("name", data?.name ?? "")
     setFieldValue("nit", data?.nit ?? "")
     setSelectedImage(`${AppEnvVars.IMAGE_URL}${data?.logo}`)
-    console.log(">>>>", data?.logo)
-    console.log(">>>>", selectedImage)
   }, [data])
 
   useEffect(() => {
@@ -160,8 +160,8 @@ export const FormCompany: FC = () => {
     validateOnBlur: true,
     validateOnChange: false,
     validationSchema: FormEditCompanySchema,
-    async onSubmit(data) {
-      doUpdateCompany({ ...data, companyId, logo: image })
+    async onSubmit(dataCompany) {
+      doUpdateCompany({ ...dataCompany, companyId, logo: image })
     },
   })
 
@@ -204,7 +204,7 @@ export const FormCompany: FC = () => {
           flexDirection: "column",
         }}
       >
-        <ImageButton focusRipple onClick={handleClick}>
+        <ImageButton focusRipple onClick={handleClick} disabled={!isRolAdmin}>
           <ImageSrc
             style={{
               backgroundImage: selectedImage ? `url(${selectedImage})` : "",
@@ -230,10 +230,11 @@ export const FormCompany: FC = () => {
           name="name"
           id="name"
           value={nameInputValue}
-          disabled={isLoading}
+          disabled={!isRolAdmin}
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.name}
+          helperText={errors.name}
         />
       </Grid>
       <Grid item xs>
@@ -245,10 +246,11 @@ export const FormCompany: FC = () => {
           name="nit"
           id="nit"
           value={nitInputValue}
-          disabled={isLoading}
+          disabled={!isRolAdmin}
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.nit}
+          helperText={errors.nit}
         />
       </Grid>
       {!!error && (
@@ -266,13 +268,15 @@ export const FormCompany: FC = () => {
           {/* {JSON.stringify(error)} */}
         </Alert>
       )}
-      <DialogActions>
-        <Grid container item xs={12} justifyContent="end" marginTop={1}>
-          <Button sx={{ marginInline: 1 }} type="submit">
-            Guardar
-          </Button>
-        </Grid>
-      </DialogActions>
+      {isRolAdmin && (
+        <DialogActions>
+          <Grid container item xs={12} justifyContent="end" marginTop={1}>
+            <Button sx={{ marginInline: 1 }} type="submit">
+              Guardar
+            </Button>
+          </Grid>
+        </DialogActions>
+      )}
     </Grid>
   )
 }
@@ -280,10 +284,10 @@ export const FormCompany: FC = () => {
 const FormEditCompanySchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Minimo 3 caracteres")
-    .max(20, "Maximo 20 caracteres")
+    .max(50, "Maximo 20 caracteres")
     .required("El nombre no es valido."),
   nit: Yup.string()
     .min(3, "Minimo 3 caracteres")
-    .max(50, "Maximo 50 caracteres")
+    .max(30, "Maximo 50 caracteres")
     .required("El apellido no es valido."),
 })

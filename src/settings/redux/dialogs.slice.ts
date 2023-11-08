@@ -39,11 +39,6 @@ interface DialogsState {
     data?: any
   }
 
-  formCopyPlant: {
-    visible: boolean
-    data?: any
-  }
-
   formSearchPQRS: {
     visible: boolean
     data?: any
@@ -91,10 +86,6 @@ const initialState: DialogsState = {
     data: undefined,
   },
   formSearchPlant: {
-    visible: false,
-    data: undefined,
-  },
-  formCopyPlant: {
     visible: false,
     data: undefined,
   },
@@ -215,18 +206,6 @@ export const dialogsSlice = createSlice({
       state.formSearchPlant.visible = false
       state.formSearchPlant.data = undefined
     },
-
-    showFormCopyPlant: (
-      state,
-      action: PayloadAction<DialogsState["formCopyPlant"]>
-    ) => {
-      state.formCopyPlant.visible = action.payload.visible
-      state.formCopyPlant.data = action.payload.data
-    },
-    closeFormCopyPlant: (state) => {
-      state.formCopyPlant.visible = false
-      state.formCopyPlant.data = undefined
-    },
   },
 })
 
@@ -245,8 +224,6 @@ export const {
   showAsignDevice,
   closeFormSearchUser,
   showFormSearchUser,
-  showFormCopyPlant,
-  closeFormCopyPlant,
   showFormSearchDevice,
   closeFormSearchDevice,
   showFormSearchPlant,

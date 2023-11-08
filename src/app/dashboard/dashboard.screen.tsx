@@ -11,7 +11,7 @@ import {
 
 import { AuthenticationResetHandler } from "../../settings/routes/authentication.loader"
 import { Outlet, useNavigate } from "react-router-dom"
-import { ROUTE_PATH } from "../../settings/routes/routes"
+import { ROUTE_PATH, ROUTE_TITLE } from "../../settings/routes/routes"
 import { AppBar } from "./components/AppBar"
 import DrawerMenu, {
   DrawerHeader,
@@ -40,7 +40,6 @@ import {
   selectorDialogs,
   closeAsignDevice,
   closeFormSearchUser,
-  closeFormCopyPlant,
   closeFormSearchDevice,
   closeFormSearchPlant,
   closeFormSearchPQRS,
@@ -52,7 +51,6 @@ import { FormCreateDevice } from "../device/components/formCreateDevice"
 import { FormCreatePlant } from "../plant/components/formCreatePlant"
 import { AsigmentDevice } from "../farms/components/dialogAsignDevice"
 import { FormSearchUser } from "../user/components/formSearchUser"
-import { FormCopyPlant } from "../plant/components/formCopyPlant"
 import { Rol } from "../../share/models/appSession"
 import { FormSearchDevice } from "../device/components/formSearchDevice"
 import { FormSearchPlant } from "../plant/components/formSearchPlant"
@@ -71,49 +69,49 @@ export const DashboardScreen: FC = () => {
     [
       {
         icon: <HomeIcon />,
-        text: "Inicio",
+        text: ROUTE_TITLE.Home,
         action() {
           navigate(ROUTE_PATH.Dashboard)
         },
       },
       {
         icon: <AccountCircleIcon />,
-        text: "Perfil de usuario",
+        text: ROUTE_TITLE.Profile,
         action() {
           navigate(ROUTE_PATH.Profile)
         },
       },
       {
         icon: <PeopleIcon />,
-        text: "Usuarios",
+        text: ROUTE_TITLE.User,
         action() {
           navigate(ROUTE_PATH.User)
         },
       },
       {
         icon: <SupportAgentIcon />,
-        text: "Galería Plantas",
+        text: ROUTE_TITLE.PQRS,
         action() {
           navigate(ROUTE_PATH.PQRS)
         },
       },
       {
         icon: <DeviceIcon />,
-        text: "Dispositivos",
+        text: ROUTE_TITLE.Device,
         action() {
           navigate(ROUTE_PATH.Device)
         },
       },
       {
         icon: <PlantIcon />,
-        text: "Plantas",
+        text: ROUTE_TITLE.Plant,
         action() {
           navigate(ROUTE_PATH.Plant)
         },
       },
       {
         icon: <Grass />,
-        text: "Galeria de plantas",
+        text: ROUTE_TITLE.Galery,
         action() {
           navigate(ROUTE_PATH.Galery)
         },
@@ -124,7 +122,12 @@ export const DashboardScreen: FC = () => {
   if (token && token.rol != Rol.Administrator) {
     menuItems[MENU_MAIN_SESSION] = menuItems[MENU_MAIN_SESSION].filter(
       (item) => {
-        return item.text !== "Usuarios"
+        const lockOptions = [
+          ROUTE_TITLE.User,
+          ROUTE_TITLE.Device,
+          ROUTE_TITLE.Plant,
+        ]
+        return !lockOptions.includes(item.text)
       }
     )
   }
@@ -138,7 +141,6 @@ export const DashboardScreen: FC = () => {
     formCreatePlant,
     assignDevice,
     formSearchUser,
-    formCopyPlant,
     formSearchDevice,
     formSearchPlant,
     formSearchPQRS,
@@ -200,10 +202,6 @@ export const DashboardScreen: FC = () => {
     dispatch(closeFormSearchPlant())
   }
 
-  const onCloseFormCopyPlant = () => {
-    dispatch(closeFormCopyPlant())
-  }
-
   const onCloseSnackbar = () => {
     dispatch(closeSnackbar())
   }
@@ -217,7 +215,6 @@ export const DashboardScreen: FC = () => {
   const onSaveFormCreatePlant = () => {}
   const onSaveFormSearchPlant = () => {}
   const onSaveFormSearchUser = () => {}
-  const onSaveFormCopyPlant = () => {}
   const onSaveFormSearchPQRS = () => {}
 
   return (
@@ -251,7 +248,7 @@ export const DashboardScreen: FC = () => {
             [
               {
                 icon: <LogoutIcon />,
-                text: "Cerrar Sesión",
+                text: ROUTE_TITLE.logout,
                 action: onClickLogoutButton,
               },
             ],
@@ -364,16 +361,6 @@ export const DashboardScreen: FC = () => {
         <AsigmentDevice
           onCancel={onCloseAsignDevice}
           onSave={onSaveAsignDevice}
-        />
-      </Dialog>
-      <Dialog
-        title={"Copiar formula"}
-        onClose={onCloseFormCopyPlant}
-        visible={formCopyPlant.visible}
-      >
-        <FormCopyPlant
-          onCancel={onCloseFormCopyPlant}
-          onSave={onSaveFormCopyPlant}
         />
       </Dialog>
       <Snackbar

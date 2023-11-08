@@ -26,6 +26,7 @@ export const FormChangePassword: FC = () => {
     handleChange,
     handleBlur,
     handleSubmit,
+    setFieldValue,
     errors,
     values: {
       currentPassword: currentPasswordInputValue,
@@ -45,6 +46,8 @@ export const FormChangePassword: FC = () => {
     validationSchema: FormChangePasswordSchema,
     async onSubmit(credentials) {
       doChangePassword({ ...credentials, id: userId })
+      setFieldValue("currentPassword", "")
+      setFieldValue("newPassword", "")
     },
   })
 
@@ -107,6 +110,7 @@ export const FormChangePassword: FC = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.currentPassword}
+          helperText={errors.currentPassword}
         />
       </Grid>
       <Grid item xs>
@@ -123,6 +127,7 @@ export const FormChangePassword: FC = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={!!errors.newPassword}
+          helperText={errors.newPassword}
         />
       </Grid>
       {!!error && (

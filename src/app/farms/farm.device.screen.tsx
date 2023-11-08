@@ -30,6 +30,7 @@ export interface DeviceByFarmListRow {
 
 export const DeviceByFarmScreen: React.FC = () => {
   const [title, setTitle] = React.useState<string>()
+  const [endCropDt, setEndCropDt] = React.useState<string>()
   const navigate = useNavigate()
   const { farmId } = useParams()
 
@@ -38,8 +39,8 @@ export const DeviceByFarmScreen: React.FC = () => {
 
   React.useEffect(() => {
     setTitle(farm?.data?.name)
+    setEndCropDt(farm?.data?.end_crop_dt)
   }, [farm])
-
   const toolbarButtons: ToolbarButton[] = [
     {
       icon: <AddIcon />,
@@ -71,7 +72,15 @@ export const DeviceByFarmScreen: React.FC = () => {
 
   return (
     <Grid container flex={1} flexDirection="column">
-      <Toolbar title={title} buttons={toolbarButtons} showButtonReturn={true} />
+      <Toolbar
+        title={title}
+        buttons={
+          DateTime.now() < DateTime.fromISO(endCropDt ?? "")
+            ? toolbarButtons
+            : []
+        }
+        showButtonReturn={true}
+      />
       <Grid item container gap={2} padding={2}>
         {devices.map((device, index) => (
           <Card sx={{ width: 250 }} key={index}>

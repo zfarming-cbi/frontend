@@ -10,6 +10,7 @@ import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import { ROUTE_TITLE } from "../../../settings/routes/routes"
 
 export const DRAWER_WIDTH = 240
 
@@ -65,7 +66,7 @@ export interface DrawerMenuProps {
   open: boolean
   handleDrawerClose: () => void
   items: {
-    text: string
+    text: ROUTE_TITLE
     icon: React.ReactNode
     action?: () => void
   }[][]
