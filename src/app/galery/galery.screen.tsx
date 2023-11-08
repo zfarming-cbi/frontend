@@ -40,6 +40,7 @@ export const GaleryScreen: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [filter, setFilter] = React.useState<string>("")
+  const [page, setPage] = React.useState<number>(1)
   const filteredData = useAppSelector(selectorDataFilter)
   const [doGetPlants, { data: searchPlants, isLoading, error }] =
     useLazyGetPlantsForGaleryQuery()
@@ -48,14 +49,25 @@ export const GaleryScreen: React.FC = () => {
   React.useEffect(() => {
     doGetPlants({
       perPage: "10",
-      page: "1",
+      page: String(page),
       search: filter,
     })
-  }, [filter])
+  }, [filter, page])
 
   React.useEffect(() => {
     dispatch(setDataPlant(searchPlants))
   }, [searchPlants])
+
+  const nextPage = () => {
+    setPage(page + 1)
+  }
+
+  const backPage = () => {
+    if (page === 1) {
+      return
+    }
+    setPage(page - 1)
+  }
 
   const plants = React.useMemo(() => {
     return (
@@ -89,15 +101,15 @@ export const GaleryScreen: React.FC = () => {
       padding={4}
       container
       rowSpacing={2}
-      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       justifyContent="center"
       alignItems="center"
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} md={12} lg={12}>
         <Grid
-          container
           item
           xs={12}
+          md={12}
+          lg={12}
           justifyContent={!isLogged ? "start" : "space-between"}
         >
           {isLogged && (
@@ -119,15 +131,23 @@ export const GaleryScreen: React.FC = () => {
             </Button>
           )}
         </Grid>
-        <Grid container item xs={12} justifyContent={"center"}>
+        <Grid container item xs={12} md={12} lg={12} justifyContent={"center"}>
           <img src={LOGO_FULL} width="30%" alt="Agricultura Cero" />
         </Grid>
-        <Grid container item xs={12} justifyContent={"center"}>
+        <Grid container item xs={12} md={12} lg={12} justifyContent={"center"}>
           <Typography variant="h4" noWrap component="div" align="center">
             Galeria de plantas
           </Typography>
         </Grid>
-        <Grid container item xs={12} justifyContent={"start"} marginBottom={2}>
+        <Grid
+          container
+          item
+          xs={12}
+          md={12}
+          lg={12}
+          justifyContent={"start"}
+          marginBottom={2}
+        >
           <TextField
             variant="outlined"
             label="Buscar planta"
@@ -138,10 +158,10 @@ export const GaleryScreen: React.FC = () => {
             }}
             onChange={(e) => setFilter(e.target.value)}
           />
-          <IconButton>
+          <IconButton onClick={backPage} disabled={page === 1}>
             <FirstPage />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={nextPage} disabled={searchPlants?.length === 0}>
             <LastPage />
           </IconButton>
         </Grid>
@@ -149,17 +169,14 @@ export const GaleryScreen: React.FC = () => {
       <Box
         alignSelf="center"
         sx={{
-          flex: 1,
+          width: "100%",
           display: "grid",
           gridGap: 16,
-          gridTemplateColumns: `repeat(3, auto)`,
-          width: "100%",
+          gridTemplateColumns: `repeat(auto-fit, minmax(350px, 420px))`,
         }}
       >
         {plants.map((plant, index) => {
-          const style = !index
-            ? { gridRowEnd: "span 1fr", gridColumnEnd: "span 2" }
-            : {}
+          const style = !index ? { gridColumn: "span 2" } : {}
           return (
             <Card
               sx={{
@@ -220,12 +237,6 @@ export const GaleryScreen: React.FC = () => {
                       <Typography fontWeight="ligth" fontSize={20} paddingY={1}>
                         {truncateContent(plant.content)}
                       </Typography>
-                      {/* <Box data-color-mode="light">
-                        <MDEditor.Markdown
-                          data-color-mode="light"
-                          source={truncateContent(plant.content)}
-                        />
-                      </Box> */}
                       <Typography
                         fontWeight="ligth"
                         fontSize={10}

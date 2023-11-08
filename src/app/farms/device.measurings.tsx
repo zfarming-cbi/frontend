@@ -75,8 +75,8 @@ export const DeviceMeasuringScreen: React.FC = () => {
   return (
     <Grid container flex={1} flexDirection="column">
       <Toolbar title={title} showButtonReturn={true} />
-      <Grid container flex={1} flexDirection={"row"}>
-        <Grid container item xs={4} md={5} flexDirection={"column"}>
+      <Grid container flexDirection={"row"}>
+        <Grid item xs={12} md={6} lg={6} flexDirection={"column"}>
           <Card
             sx={{
               display: "flex",
@@ -158,7 +158,7 @@ export const DeviceMeasuringScreen: React.FC = () => {
             </DialogActions>
           </Dialog>
         </Grid>
-        <Grid item container flex={1}>
+        <Grid item flex={1} xs={12} md={6} lg={6}>
           <Box
             sx={{
               display: "flex",

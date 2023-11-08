@@ -7,17 +7,10 @@ import { FormChangePassword } from "./components/form-change-password"
 
 export const ProfileScreen: FC = () => {
   return (
-    <Grid container flex={1} flexDirection="column">
+    <Grid container flex={1} flexDirection={"column"}>
       <Toolbar title="Configuración" />
-      <Box
-        padding={2}
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          flex: 1,
-        }}
-      >
-        <Grid item xs={6} padding={1}>
+      <Grid container flex={1}>
+        <Grid item xs={12} md={6} lg={6} padding={1}>
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <FormProfile />
@@ -26,14 +19,14 @@ export const ProfileScreen: FC = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6} padding={1}>
+        <Grid item xs={12} md={6} lg={6} padding={1}>
           <Card sx={{ height: "100%", display: "flex" }}>
             <CardContent sx={{ flex: 1 }}>
               <FormCompany />
             </CardContent>
           </Card>
         </Grid>
-      </Box>
+      </Grid>
     </Grid>
   )
 }

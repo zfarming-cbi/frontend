@@ -14,17 +14,17 @@ const extendedApi = API.injectEndpoints({
       }),
       providesTags: ["Farm"],
     }),
-    getFarmsForAsigned: build.query<FarmForAsignedDTO[], { userId?: string }>({
-      query: ({ userId }) => ({
-        url: `/farms/user-asigned/${userId}`,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-      }),
-      providesTags: ["Farm"],
-    }),
+    // getFarmsForAsigned: build.query<FarmForAsignedDTO[], { userId?: string }>({
+    //   query: ({ userId }) => ({
+    //     url: `/farms/user-asigned/${userId}`,
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       accept: "application/json",
+    //     },
+    //   }),
+    //   providesTags: ["Farm"],
+    // }),
     getFarm: build.query<FarmDTO, { farmId?: string }>({
       query: ({ farmId }) => ({
         url: `/farms/${farmId}`,

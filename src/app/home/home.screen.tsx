@@ -117,93 +117,118 @@ export const HomeScreen: React.FC = () => {
           ></SelectField>
         }
       />
-      <Grid item container gap={2} padding={2}>
+      <Grid container>
         {farms.map((farm, index) => (
-          <Card sx={{ width: 250 }} key={index}>
-            <CardActionArea
-              sx={{
-                display: "flex",
-                flex: 1,
-                flexDirection: "column",
-                height: "100%",
-              }}
-              onClick={() =>
-                navigate(
-                  ROUTE_PATH.DeviceByFarm.replace(
-                    ":farmId",
-                    farm.id?.toString() ?? ""
-                  )
-                )
-              }
-            >
-              <CardContent
+          <Grid
+            item
+            xs="auto"
+            sm="auto"
+            md={4}
+            lg={3}
+            gap={2}
+            padding={2}
+            key={index}
+            // sx={{ display: "flex", flex: 1 }}
+          >
+            <Card sx={{ display: "flex", flex: 1 }} key={index}>
+              <CardActionArea
                 sx={{
                   display: "flex",
                   flex: 1,
                   flexDirection: "column",
-                  paddingTop: 0,
-                  justifyContent: "space-between",
+                  height: "100%",
+                  padding: 0,
                 }}
+                onClick={() =>
+                  navigate(
+                    ROUTE_PATH.DeviceByFarm.replace(
+                      ":farmId",
+                      farm.id?.toString() ?? ""
+                    )
+                  )
+                }
               >
-                <Box
+                <CardContent
                   sx={{
-                    flexDirection: "column",
                     display: "flex",
+                    flex: 1,
+                    flexDirection: "column",
+                    paddingTop: 0,
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Typography
-                    fontWeight="ligth"
-                    fontSize={20}
-                    color={"black"}
-                    paddingTop={1}
+                  <Box
+                    sx={{
+                      flexDirection: "column",
+                      display: "flex",
+                    }}
                   >
-                    {farm.name}
-                  </Typography>
-                  <Typography
-                    fontWeight="ligth"
-                    fontSize={12}
-                    color={"grey"}
-                    paddingY={1}
+                    <Typography
+                      fontWeight="ligth"
+                      fontSize={20}
+                      color={"black"}
+                      paddingTop={1}
+                    >
+                      {farm.name}
+                    </Typography>
+                    <Typography
+                      fontWeight="ligth"
+                      fontSize={12}
+                      color={"grey"}
+                      paddingY={1}
+                    >
+                      {removeMd(farm.description)}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      flexDirection: "column",
+                      display: "flex",
+                    }}
                   >
-                    {removeMd(farm.description)}
-                  </Typography>
-                </Box>
+                    <Divider sx={{ mb: 1 }} />
+                    <Typography
+                      fontWeight="medium"
+                      fontSize={10}
+                      color={"grey"}
+                    >
+                      Dispositivos vinculados : {farm.devices}
+                    </Typography>
+                    <Typography
+                      fontWeight="medium"
+                      fontSize={10}
+                      color={"grey"}
+                    >
+                      Siembra :{" "}
+                      {DateTime.fromISO(farm.start_crop_dt).toLocaleString(
+                        DateTime.DATETIME_MED
+                      )}
+                    </Typography>
+                    <Typography
+                      fontWeight="medium"
+                      fontSize={10}
+                      color={"grey"}
+                    >
+                      Cosecha :{" "}
+                      {DateTime.fromISO(farm.end_crop_dt).toLocaleString(
+                        DateTime.DATETIME_MED
+                      )}
+                    </Typography>
+                  </Box>
+                </CardContent>
                 <Box
-                  sx={{
-                    flexDirection: "column",
-                    display: "flex",
+                  style={{
+                    backgroundColor:
+                      DateTime.now() < DateTime.fromISO(farm.end_crop_dt)
+                        ? "green"
+                        : "grey",
+                    width: "100%",
+                    padding: 7,
                   }}
-                >
-                  <Divider sx={{ mb: 1 }} />
-                  <Typography fontWeight="medium" fontSize={10} color={"grey"}>
-                    Dispositivos vinculados : {farm.devices}
-                  </Typography>
-                  <Typography fontWeight="medium" fontSize={10} color={"grey"}>
-                    Siembra :{" "}
-                    {DateTime.fromISO(farm.start_crop_dt).toLocaleString(
-                      DateTime.DATETIME_MED
-                    )}
-                  </Typography>
-                  <Typography fontWeight="medium" fontSize={10} color={"grey"}>
-                    Cosecha :{" "}
-                    {DateTime.fromISO(farm.end_crop_dt).toLocaleString(
-                      DateTime.DATETIME_MED
-                    )}
-                  </Typography>
-                </Box>
-              </CardContent>
-              <Box
-                style={{
-                  backgroundColor:
-                    DateTime.now() < DateTime.fromISO(farm.end_crop_dt)
-                      ? "green"
-                      : "grey",
-                  width: "100%",
-                  padding: 7,
-                }}
-              />
-            </CardActionArea>
-          </Card>
+                />
+              </CardActionArea>
+            </Card>
+          </Grid>
         ))}
       </Grid>
     </Grid>
