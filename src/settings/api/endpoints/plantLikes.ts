@@ -12,7 +12,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
-      providesTags: ["Likes"],
+      providesTags: ["Likes", "Plant"],
     }),
     getLike: build.query<LikeDTO, { plantId: string; userId: string }>({
       query: ({ plantId, userId }) => ({
@@ -23,7 +23,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
-      providesTags: ["Likes"],
+      providesTags: ["Likes", "Plant"],
     }),
     createLike: build.mutation<LikeDTO, LikeDTO>({
       query: (body) => ({
@@ -35,7 +35,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
-      invalidatesTags: ["Likes"],
+      invalidatesTags: ["Likes", "Plant"],
     }),
   }),
   overrideExisting: false,

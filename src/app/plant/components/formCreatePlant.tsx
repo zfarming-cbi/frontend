@@ -133,7 +133,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
         setContentEmpty(true)
         return
       }
-      doCreatePlant({ ...data, content: value ?? "", image: image })
+      doCreatePlant({ ...data, content: value ?? "", image })
       dispatch(closeFormCreatePlant())
     },
   })

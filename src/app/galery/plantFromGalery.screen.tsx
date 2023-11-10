@@ -64,7 +64,7 @@ export const PlantFromGalery: React.FC = () => {
     setContent(data?.content ?? "")
     setGrowingTime(data?.growing_time ?? "")
     setImage(data?.image)
-    setIsPublic(data?.public ?? false)
+    setIsPublic(false)
     setOpen(true)
   }
   const copyPlant = () => {

@@ -144,7 +144,6 @@ export const LoginScreen: FC = () => {
                 variant="filled"
               >
                 lo sentimos en este momento no podemos validar la información
-                {/* {JSON.stringify(error)} */}
               </Alert>
             )}
             <Box sx={{ height: 8, width: 1 }} />
@@ -188,7 +187,7 @@ const SignInSchema = Yup.object().shape({
     .email("El correo electrónico no es válido")
     .min(3, "Minimo 3 caracteres")
     .max(50, "Maximo 50 caracteres")
-    .required("El nombre de usuario no es valido."),
+    .required("El correo electrónico no es valido."),
   password: Yup.string()
     .min(3, "Minimo 3 caracteres")
     .max(50, "Maximo 50 caracteres")

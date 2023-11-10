@@ -12,7 +12,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
-      providesTags: ["Comments"],
+      providesTags: ["Comments", "Plant"],
     }),
     createComment: build.mutation<CommentDTO, CommentDTO>({
       query: (body) => ({
@@ -24,7 +24,7 @@ const extendedApi = API.injectEndpoints({
           accept: "application/json",
         },
       }),
-      invalidatesTags: ["Comments"],
+      invalidatesTags: ["Comments", "Plant"],
     }),
   }),
   overrideExisting: false,

@@ -99,7 +99,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
   const dispatch = useAppDispatch()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [image, setImage] = useState<Blob>()
-  const [doUpdatePlant, { isLoading, error, isSuccess, reset }] =
+  const [doUpdatePlant, { isLoading, error, isSuccess }] =
     useUpdatePlantMutation()
   const [value, setValue] = React.useState<string>()
   React.useState<HTMLTextAreaElement | null>()
@@ -128,12 +128,11 @@ export const FormUpdatePlant: FC<Props> = (props) => {
         setContentEmpty(true)
         return
       }
-      console.log(">>>>", { data })
-      doUpdatePlant({
+      await doUpdatePlant({
         ...data,
         id: dataPlant.id,
         content: value ?? "",
-        image: image,
+        image,
       })
       onClose()
     },
@@ -163,7 +162,6 @@ export const FormUpdatePlant: FC<Props> = (props) => {
         severity: "success",
       })
     )
-    reset()
   }, [isLoading, isSuccess])
 
   useEffect(() => {
@@ -258,21 +256,6 @@ export const FormUpdatePlant: FC<Props> = (props) => {
             label="Pública"
           />
         </Grid>
-        {!!error && (
-          <Alert
-            sx={{
-              marginTop: 1,
-              textAlign: "left",
-              fontSize: 10,
-              alignItems: "center",
-            }}
-            severity="error"
-            variant="filled"
-          >
-            lo sentimos en este momento no podemos validar la información
-            {/* {JSON.stringify(error)} */}
-          </Alert>
-        )}
         <DialogActions sx={{ padding: "0" }}>
           <Grid container item justifyContent="end" marginTop={1}>
             <Button type="submit">Guardar</Button>
@@ -281,6 +264,7 @@ export const FormUpdatePlant: FC<Props> = (props) => {
       </Grid>
       <Grid
         item
+        xs={12}
         sm={12}
         md={12}
         lg={12}

@@ -88,7 +88,6 @@ export const FormUpdateUser: FC<Props> = (props) => {
         severity: "success",
       })
     )
-    reset()
   }, [isLoading, isSuccess])
 
   useEffect(() => {

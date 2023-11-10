@@ -18,7 +18,7 @@ export const FormUpdateDevice: FC<Props> = (props) => {
   const [name, setName] = useState<string>(dataDevice.name)
   const [description, setDescription] = useState<string>(dataDevice.description)
   const [code, setCode] = useState<string>(dataDevice.code)
-  const [doUpdateDevice, { isLoading, error, isSuccess, reset }] =
+  const [doUpdateDevice, { isLoading, error, isSuccess }] =
     useUpdateDeviceMutation()
   const dispatch = useAppDispatch()
 
@@ -38,7 +38,6 @@ export const FormUpdateDevice: FC<Props> = (props) => {
         severity: "success",
       })
     )
-    reset()
   }, [isLoading, isSuccess])
 
   useEffect(() => {
