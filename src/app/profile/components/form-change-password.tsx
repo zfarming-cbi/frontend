@@ -65,7 +65,6 @@ export const FormChangePassword: FC = () => {
         severity: "success",
       })
     )
-    reset()
   }, [isLoading, isSuccess])
 
   useEffect(() => {

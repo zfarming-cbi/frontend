@@ -11,7 +11,6 @@ interface Props {
 
 export const BarChart: React.FC<Props> = (props) => {
   const { measurings } = props
-  const { deviceId } = useParams()
   const chartNodeRef = React.useRef<HTMLDivElement>(null)
   const chartRef = React.useRef<ECharts>()
 

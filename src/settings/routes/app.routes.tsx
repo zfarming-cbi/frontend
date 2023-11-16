@@ -46,6 +46,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
   {
     path: ROUTE_PATH.PlantFromGalery,
     element: <PlantFromGalery />,
+    loader: AuthenticationRouteLoader,
   },
   {
     path: ROUTE_PATH.ForgotPassword,

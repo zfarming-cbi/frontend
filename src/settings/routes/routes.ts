@@ -1,6 +1,6 @@
 export enum ROUTE_TITLE {
   Root = "Root",
-  Home = "Inicio",
+  Home = "Gestión de granjas",
   Login = "Login",
   Singup = "Signup",
   Dashboard = "Dashboard",

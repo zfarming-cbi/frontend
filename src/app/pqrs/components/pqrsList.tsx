@@ -1,6 +1,6 @@
 import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
-import { Grid } from "@mui/material"
+import { Grid, useMediaQuery } from "@mui/material"
 import { DateTime } from "luxon"
 
 export interface PqrsListRow {
@@ -12,12 +12,15 @@ export interface PqrsListRow {
   createdAt?: string
   user?: any
 }
+const isXsScreen = useMediaQuery("(max-width:600px)")
+const isSmScreen = useMediaQuery("(min-width:601px) and (max-width:960px)")
 
 const COLUMNS_DEF: GridColDef[] = [
   {
     field: "id",
     headerName: "#",
     width: 70,
+    hide: isXsScreen || isSmScreen,
   },
   {
     field: "firstname",
@@ -28,6 +31,7 @@ const COLUMNS_DEF: GridColDef[] = [
     field: "email",
     headerName: "Email",
     flex: 1,
+    hide: isXsScreen || isSmScreen,
   },
   {
     field: "type",
@@ -38,6 +42,7 @@ const COLUMNS_DEF: GridColDef[] = [
     field: "description",
     headerName: "Descripción",
     flex: 1,
+    hide: isXsScreen || isSmScreen,
   },
   {
     field: "createdAt",

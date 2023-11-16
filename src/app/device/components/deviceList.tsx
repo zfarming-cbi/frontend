@@ -6,6 +6,7 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  useMediaQuery,
 } from "@mui/material"
 import { Close, Edit } from "@mui/icons-material"
 import { FormUpdateDevice } from "./formUpdateDevice"
@@ -20,6 +21,8 @@ export interface DeviceListRow {
 export const DeviceList: React.FC<{ rows: DeviceListRow[] }> = (props) => {
   const [open, setOpen] = React.useState<boolean>(false)
   const [dataDevice, setDataDevice] = React.useState<any>()
+  const isXsScreen = useMediaQuery("(max-width:600px)")
+  const isSmScreen = useMediaQuery("(min-width:601px) and (max-width:960px)")
 
   const COLUMNS_DEF: GridColDef[] = [
     { field: "id", headerName: "#", width: 50 },
@@ -32,11 +35,13 @@ export const DeviceList: React.FC<{ rows: DeviceListRow[] }> = (props) => {
       field: "name",
       headerName: "Nombre del dispositivo",
       flex: 1,
+      hide: isXsScreen || isSmScreen,
     },
     {
       field: "description",
       headerName: "Descripción",
       flex: 1,
+      hide: isXsScreen || isSmScreen,
     },
     {
       field: "actions",

@@ -13,6 +13,7 @@ import {
   IconButton,
   Popper,
   Typography,
+  useMediaQuery,
 } from "@mui/material"
 import { Close, Delete, Edit } from "@mui/icons-material"
 import { useDeleteUserMutation } from "../../../settings/api/endpoints/user"
@@ -32,6 +33,8 @@ export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
   const [idUser, setIdUser] = React.useState<string>()
   const [dataUser, setDataUser] = React.useState<any>()
   const [doDelete, { error }] = useDeleteUserMutation()
+  const isXsScreen = useMediaQuery("(max-width:600px)")
+  const isSmScreen = useMediaQuery("(min-width:601px) and (max-width:960px)")
 
   const COLUMNS_DEF: GridColDef[] = [
     { field: "id", headerName: "#", width: 70 },
@@ -44,6 +47,7 @@ export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
       field: "lastname",
       headerName: "Apellido",
       flex: 1,
+      hide: isXsScreen || isSmScreen,
     },
     {
       field: "email",
@@ -54,6 +58,7 @@ export const UserList: React.FC<{ rows: UserListRow[] }> = (props) => {
       field: "rol",
       headerName: "Rol",
       flex: 1,
+      hide: isXsScreen || isSmScreen,
     },
     {
       field: "actions",

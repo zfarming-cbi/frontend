@@ -34,7 +34,8 @@ import { selectorSession } from "../../settings/redux/session.slice"
 export const DeviceMeasuringScreen: React.FC = () => {
   const { deviceId } = useParams()
   const { data } = useGetDeviceQuery({ deviceId })
-  const { data: measurings } = useGetMeasuringsQuery({ deviceId })
+  const { data: measurings, refetch: recallGetMeasuring } =
+    useGetMeasuringsQuery({ deviceId })
   const { data: measuringsAverage } = useGetMeasuringsAverageQuery({ deviceId })
   const [title, setTitle] = React.useState<string>()
   const [open, setOpen] = React.useState(false)
@@ -45,6 +46,15 @@ export const DeviceMeasuringScreen: React.FC = () => {
   const [doCreatePlant, { isLoading, error }] = useCopyPlantMutation()
   const { rol } = useAppSelector(selectorSession)
   const isRolAdmin = rol === Rol.Administrator
+
+  React.useEffect(() => {
+    const query = setInterval(() => {
+      recallGetMeasuring()
+    }, 120000)
+    return () => {
+      clearInterval(query)
+    }
+  }, [])
 
   React.useEffect(() => {
     setTitle(data?.name)

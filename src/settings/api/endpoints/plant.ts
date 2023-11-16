@@ -74,9 +74,12 @@ const extendedApi = API.injectEndpoints({
       }),
       invalidatesTags: ["Plant"],
     }),
-    getPlantsForGalery: build.query<PlantDTO[], PaginationDTO>({
-      query: ({ page, perPage, search }) => ({
-        url: `/plants/galery?search=${search}&page=${page}&perPage=${perPage}`,
+    getPlantsForGalery: build.query<
+      PlantDTO[],
+      PaginationDTO & { order?: string | number }
+    >({
+      query: ({ page, perPage, search, order }) => ({
+        url: `/plants/galery?search=${search}&order=${order}&page=${page}&perPage=${perPage}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",

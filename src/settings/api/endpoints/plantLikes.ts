@@ -3,7 +3,7 @@ import { LikeDTO } from "../../../share/models/like"
 
 const extendedApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getLikes: build.query<LikeDTO[], { plantId: string }>({
+    getLikes: build.query<LikeDTO[], { plantId?: string | number }>({
       query: ({ plantId }) => ({
         url: `/like-plant/${plantId}`,
         method: "GET",
@@ -46,4 +46,5 @@ export const {
   useCreateLikeMutation,
   useGetLikeQuery,
   useLazyGetLikeQuery,
+  useLazyGetLikesQuery,
 } = extendedApi

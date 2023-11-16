@@ -8,6 +8,7 @@ import {
   Grid,
   IconButton,
   Typography,
+  useMediaQuery,
 } from "@mui/material"
 import { Close, Delete, Edit } from "@mui/icons-material"
 import { FormUpdatePlant } from "./formUpdatePlant"
@@ -33,11 +34,14 @@ const truncateContent = (content: string) => {
 export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
   const [open, setOpen] = React.useState<boolean>(false)
   const [dataPlant, setDataPlant] = React.useState<any>()
+  const isXsScreen = useMediaQuery("(max-width:600px)")
+  const isSmScreen = useMediaQuery("(min-width:601px) and (max-width:960px)")
   const COLUMNS_DEF: GridColDef[] = [
     {
       field: "id",
       headerName: "#",
       width: 70,
+      hide: isXsScreen || isSmScreen,
     },
     {
       field: "name",
@@ -49,6 +53,7 @@ export const PlantsList: React.FC<{ rows: PlantListRow[] }> = (props) => {
       headerName: "Contenido",
       flex: 1,
       renderCell: (params) => truncateContent(params.row.content),
+      hide: isXsScreen || isSmScreen,
     },
     {
       field: "actions",

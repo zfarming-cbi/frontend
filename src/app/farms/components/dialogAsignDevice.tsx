@@ -9,6 +9,7 @@ import {
   Grid,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material"
 import { PlantListRow } from "../../plant/components/plantList"
 import { useLazyGetPlantsQuery } from "../../../settings/api/endpoints/plant"
@@ -44,24 +45,6 @@ const truncateContent = (content: string) => {
     return textPlane
   }
 }
-const COLUMNS_DEF_PLANTS: GridColDef[] = [
-  {
-    field: "name",
-    headerName: "Planta",
-    width: 125,
-  },
-  {
-    field: "content",
-    headerName: "Contenido",
-    flex: 1,
-    renderCell: (params) => truncateContent(params.row.content),
-  },
-]
-
-const COLUMNS_DEF_DEVICES: GridColDef[] = [
-  { field: "code", headerName: "Código", width: 150 },
-  { field: "name", headerName: "Nombre del dispositivo", flex: 1 },
-]
 
 export const AsigmentDevice: React.FC<Props> = (props) => {
   const { farmId = "" } = useParams()
@@ -74,6 +57,32 @@ export const AsigmentDevice: React.FC<Props> = (props) => {
   const [plantId, setPlantId] = useState<string>("")
   const [filterPlant, setFilterPlant] = React.useState<string>("")
   const [filterDevice, setFilterDevice] = React.useState<string>("")
+  const isXsScreen = useMediaQuery("(max-width:600px)")
+  const isSmScreen = useMediaQuery("(min-width:601px) and (max-width:960px)")
+  const COLUMNS_DEF_PLANTS: GridColDef[] = [
+    {
+      field: "name",
+      headerName: "Planta",
+      width: 125,
+    },
+    {
+      field: "content",
+      headerName: "Contenido",
+      flex: 1,
+      hide: isXsScreen || isSmScreen,
+      renderCell: (params) => truncateContent(params.row.content),
+    },
+  ]
+
+  const COLUMNS_DEF_DEVICES: GridColDef[] = [
+    { field: "code", headerName: "Código", width: 150 },
+    {
+      field: "name",
+      headerName: "Nombre del dispositivo",
+      flex: 1,
+      hide: isXsScreen || isSmScreen,
+    },
+  ]
 
   const [doGetPlants, { data: searchPlants, isLoading, error }] =
     useLazyGetPlantsQuery()

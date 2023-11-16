@@ -3,14 +3,20 @@ import IconButton from "@mui/material/IconButton"
 import Stack from "@mui/material/Stack"
 import { Comment, ContentCopy, ThumbUp } from "@mui/icons-material"
 import { Typography } from "@mui/material"
+import {
+  useGetLikesQuery,
+  useLazyGetLikesQuery,
+} from "../../../settings/api/endpoints/plantLikes"
 
 interface Props extends React.PropsWithChildren {
-  likes?: number
+  plantId?: number | string
   comments?: number
 }
 
 export const LikesComments: React.FC<Props> = (props) => {
-  const { likes, comments } = props
+  // const [doGetLikes, { data: dataLikes }] = useLazyGetLikesQuery()
+  const { comments, plantId } = props
+  const { data: dataLikes } = useGetLikesQuery({ plantId })
   return (
     <Stack
       direction="row"
@@ -27,7 +33,7 @@ export const LikesComments: React.FC<Props> = (props) => {
         alignSelf={"center"}
       >
         {" "}
-        {likes ?? 0}
+        {dataLikes?.length ?? 0}
       </Typography>
       <IconButton disabled>
         <Comment />

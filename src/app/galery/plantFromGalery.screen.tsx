@@ -178,7 +178,7 @@ export const PlantFromGalery: React.FC = () => {
                   flexDirection: "row",
                 }}
               >
-                <LikesComments likes={likes} comments={comments} />
+                <LikesComments comments={comments} plantId={data?.id} />
                 <Box
                   sx={{
                     flex: 1,
@@ -198,12 +198,12 @@ export const PlantFromGalery: React.FC = () => {
                 width: 300,
                 margin: "20px auto",
               }}
-              src={`${AppEnvVars.IMAGE_URL}${image}`}
+              src={image ? `${AppEnvVars.IMAGE_URL}${image}` : ""}
             />
             <Box data-color-mode="light" marginY={3} paddingY={2}>
               <MDEditor.Markdown data-color-mode="light" source={content} />
             </Box>
-            <Comments plantId={plantId} />
+            <Comments plantId={plantId} isLogged={isLogged} />
           </Box>
         </Grid>
       </Grid>

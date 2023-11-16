@@ -28,6 +28,7 @@ import { selectorSession } from "../../../settings/redux/session.slice"
 
 interface Props {
   plantId?: string
+  isLogged?: boolean
 }
 
 export interface CommentsListRow {
@@ -39,8 +40,8 @@ export interface CommentsListRow {
 }
 
 export const Comments: React.FC<Props> = (props) => {
-  const { plantId } = props
-  const { isLogged, userId = "" } = useAppSelector(selectorSession)
+  const { plantId, isLogged } = props
+  const { userId = "" } = useAppSelector(selectorSession)
   const [liked, setLiked] = React.useState<boolean>()
   const [message, setMessage] = React.useState<string>()
   const { data } = useGetCommentsQuery({ plantId: plantId ?? "" })

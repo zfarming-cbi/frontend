@@ -23,6 +23,7 @@ import {
   MesageSnackbar,
   showSnackbar,
 } from "../../../settings/redux/snackbar.slice"
+import { SelectField } from "../../../share/components/selectField"
 
 interface Props {
   onSave(): void
@@ -239,6 +240,19 @@ export const FormCreatePlant: FC<Props> = (props) => {
         )}
         <Grid item xs>
           <TextField
+            id="number"
+            label="Tiempo de cosecha/semanas"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              defaultValue: 8,
+              min: 4,
+              max: 16,
+            }}
+          />
+          {/* <TextField
             fullWidth
             label="Fecha de siembra"
             type="date"
@@ -251,7 +265,7 @@ export const FormCreatePlant: FC<Props> = (props) => {
             onChange={handleChange}
             onBlur={handleBlur}
             error={!!errors.growing_time}
-          />
+          /> */}
         </Grid>
         <Grid item xs>
           <FormControlLabel

@@ -65,7 +65,7 @@ export const CircularChart: FC<Props> = (props) => {
     }
     chart.setOption(option)
     chartRef.current = chart
-  }, [])
+  }, [measurings])
   return (
     <Box>
       <div
