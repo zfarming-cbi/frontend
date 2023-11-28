@@ -36,7 +36,8 @@ export const DeviceMeasuringScreen: React.FC = () => {
   const { data } = useGetDeviceQuery({ deviceId })
   const { data: measurings, refetch: recallGetMeasuring } =
     useGetMeasuringsQuery({ deviceId })
-  const { data: measuringsAverage } = useGetMeasuringsAverageQuery({ deviceId })
+  const { data: measuringsAverage, refetch: recallGetAverageMeasuring } =
+    useGetMeasuringsAverageQuery({ deviceId })
   const [title, setTitle] = React.useState<string>()
   const [open, setOpen] = React.useState(false)
   const [name, setName] = React.useState<string>("")
@@ -50,6 +51,7 @@ export const DeviceMeasuringScreen: React.FC = () => {
   React.useEffect(() => {
     const query = setInterval(() => {
       recallGetMeasuring()
+      recallGetAverageMeasuring()
     }, 120000)
     return () => {
       clearInterval(query)

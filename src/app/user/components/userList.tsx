@@ -1,7 +1,6 @@
 import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
 import {
-  Alert,
   Box,
   Button,
   Dialog,
@@ -11,8 +10,6 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  Popper,
-  Typography,
   useMediaQuery,
 } from "@mui/material"
 import { Close, Delete, Edit } from "@mui/icons-material"

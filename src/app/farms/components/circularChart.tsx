@@ -43,7 +43,6 @@ export const CircularChart: FC<Props> = (props) => {
         type: "category",
         data: measurings?.namesSensor,
       },
-      tooltip: {},
       series: [
         {
           type: "bar",
@@ -58,10 +57,6 @@ export const CircularChart: FC<Props> = (props) => {
           showBackground: false,
         },
       ],
-      legend: {
-        show: true,
-        data: measurings?.namesSensor,
-      },
     }
     chart.setOption(option)
     chartRef.current = chart

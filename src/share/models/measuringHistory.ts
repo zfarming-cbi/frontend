@@ -1,6 +1,7 @@
 export interface MeasuringHistoryDTO {
   names: string[]
   dates: string[]
+  createdHour: string
   data: any[]
   maxRange: number
 }

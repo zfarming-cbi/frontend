@@ -37,14 +37,6 @@ interface Props {
   onSave(): void
   onCancel(): void
 }
-const truncateContent = (content: string) => {
-  const textPlane = content.replace(/[*#\\]/g, "")
-  if (textPlane.length > 100) {
-    return textPlane.substring(0, 100) + "..."
-  } else {
-    return textPlane
-  }
-}
 
 export const AsigmentDevice: React.FC<Props> = (props) => {
   const { farmId = "" } = useParams()

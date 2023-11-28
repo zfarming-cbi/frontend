@@ -13,6 +13,7 @@ export const BarChart: React.FC<Props> = (props) => {
   const { measurings } = props
   const chartNodeRef = React.useRef<HTMLDivElement>(null)
   const chartRef = React.useRef<ECharts>()
+  // const hours = measurings?.createdHour.split(",")
 
   useEffect(() => {
     const processedMeasurings = measurings?.data.map((measuring: any) => ({
@@ -27,7 +28,8 @@ export const BarChart: React.FC<Props> = (props) => {
         right: 250,
       },
       xAxis: {
-        data: measurings?.dates,
+        // data: Array.from(new Set(hours?.map((a: any) => a))),
+        data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       },
       yAxis: {},
       series: processedMeasurings,
