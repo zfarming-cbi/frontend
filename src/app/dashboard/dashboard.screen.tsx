@@ -27,6 +27,7 @@ import {
   AccountCircle as AccountCircleIcon,
   Yard as PlantIcon,
   Grass,
+  Agriculture as FarmsIcons,
 } from "@mui/icons-material"
 
 import { FormPQRS } from "../pqrs/components/formCreatePqrs"
@@ -68,38 +69,17 @@ export const DashboardScreen: FC = () => {
   const menuItems: DrawerMenuProps["items"] = [
     [
       {
-        icon: <HomeIcon />,
+        icon: <Grass />,
+        text: ROUTE_TITLE.Galery,
+        action() {
+          navigate(ROUTE_PATH.Galery)
+        },
+      },
+      {
+        icon: <FarmsIcons />,
         text: ROUTE_TITLE.Home,
         action() {
           navigate(ROUTE_PATH.Dashboard)
-        },
-      },
-      {
-        icon: <AccountCircleIcon />,
-        text: ROUTE_TITLE.Profile,
-        action() {
-          navigate(ROUTE_PATH.Profile)
-        },
-      },
-      {
-        icon: <PeopleIcon />,
-        text: ROUTE_TITLE.User,
-        action() {
-          navigate(ROUTE_PATH.User)
-        },
-      },
-      {
-        icon: <SupportAgentIcon />,
-        text: ROUTE_TITLE.PQRS,
-        action() {
-          navigate(ROUTE_PATH.PQRS)
-        },
-      },
-      {
-        icon: <DeviceIcon />,
-        text: ROUTE_TITLE.Device,
-        action() {
-          navigate(ROUTE_PATH.Device)
         },
       },
       {
@@ -110,10 +90,10 @@ export const DashboardScreen: FC = () => {
         },
       },
       {
-        icon: <Grass />,
-        text: ROUTE_TITLE.Galery,
+        icon: <DeviceIcon />,
+        text: ROUTE_TITLE.Device,
         action() {
-          navigate(ROUTE_PATH.Galery)
+          navigate(ROUTE_PATH.Device)
         },
       },
     ],
@@ -245,6 +225,29 @@ export const DashboardScreen: FC = () => {
           open={open}
           items={[
             ...menuItems,
+            [
+              {
+                icon: <AccountCircleIcon />,
+                text: ROUTE_TITLE.Profile,
+                action() {
+                  navigate(ROUTE_PATH.Profile)
+                },
+              },
+              {
+                icon: <PeopleIcon />,
+                text: ROUTE_TITLE.User,
+                action() {
+                  navigate(ROUTE_PATH.User)
+                },
+              },
+              {
+                icon: <SupportAgentIcon />,
+                text: ROUTE_TITLE.PQRS,
+                action() {
+                  navigate(ROUTE_PATH.PQRS)
+                },
+              },
+            ],
             [
               {
                 icon: <LogoutIcon />,

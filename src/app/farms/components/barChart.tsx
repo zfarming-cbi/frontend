@@ -21,6 +21,28 @@ export const BarChart: React.FC<Props> = (props) => {
       data: measuring.values,
       type: "line",
       stack: "x",
+       smooth: true,
+      emphasis: {
+        focus: 'series'
+      },
+      endLabel: {
+        show: true,
+        formatter: '{a}',
+        distance: 20
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'line'
+        }
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: false
+          }
+        }
+      },
     }))
     const chart = init(chartNodeRef.current)
     const option: EChartsCoreOption = {

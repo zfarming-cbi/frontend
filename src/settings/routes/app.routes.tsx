@@ -66,6 +66,14 @@ export const ROUTER_OPTIONS: RouteObject[] = [
         element: <HomeScreen />,
       },
       {
+        path: ROUTE_PATH.DeviceByFarm,
+        element: <DeviceByFarmScreen />,
+      },
+      {
+        path: ROUTE_PATH.DeviceMeasuring,
+        element: <DeviceMeasuringScreen />,
+      },
+      {
         path: ROUTE_PATH.User,
         element: <UserScreen />,
         loader: RolesRouteLoader,
@@ -74,14 +82,7 @@ export const ROUTER_OPTIONS: RouteObject[] = [
         path: ROUTE_PATH.PQRS,
         element: <PQRSScreen />,
       },
-      {
-        path: ROUTE_PATH.DeviceByFarm,
-        element: <DeviceByFarmScreen />,
-      },
-      {
-        path: ROUTE_PATH.DeviceMeasuring,
-        element: <DeviceMeasuringScreen />,
-      },
+
       {
         path: ROUTE_PATH.Device,
         element: <DeviceScreen />,
