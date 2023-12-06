@@ -12,26 +12,32 @@ export const CircularChart: FC<Props> = (props) => {
   const { measurings, title } = props
   const chartNodeRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<ECharts>()
+  console.log("namesSensor", measurings)
   useEffect(() => {
-    const series = measurings?.data.map((value) => ({
+    const series = measurings?.data.map((measuring) => ({
       type: "bar",
-      data: value,
+      data: [measuring.value],
+      name: measuring["sensor.name"],
       coordinateSystem: "polar",
-      itemStyle: {
-        color: function (params: any) {
-          var colors = ["red", "blue", "green", "orange", "purple", "grey"]
-          return colors[params.dataIndex]
-        },
-      },
+      // itemStyle: {
+      //   color: function (params: any) {
+      //     var colors = ["red", "blue", "green", "orange", "purple", "grey"]
+      //     return colors[params.dataIndex]
+      //   },
+      // },
       showBackground: false,
     }))
+    const series2 = undefined
+    console.log("namesSensor", series)
+
     const chart = init(chartNodeRef.current)
     const option: EChartsCoreOption = {
-      title: [
-        {
-          text: title,
-        },
-      ],
+      grid: {
+        left: "4%",
+        right: "4%",
+        bottom: "3%",
+        containLabel: true,
+      },
       polar: {
         radius: [30, "80%"],
       },
@@ -41,22 +47,13 @@ export const CircularChart: FC<Props> = (props) => {
       },
       radiusAxis: {
         type: "category",
+      },
+      tooltip: {},
+      series: series,
+      legend: {
+        show: true,
         data: measurings?.namesSensor,
       },
-      series: [
-        {
-          type: "bar",
-          data: measurings?.data,
-          coordinateSystem: "polar",
-          itemStyle: {
-            color: function (params: any) {
-              var colors = ["red", "blue", "green", "orange", "purple", "grey"]
-              return colors[params.dataIndex]
-            },
-          },
-          showBackground: false,
-        },
-      ],
     }
     chart.setOption(option)
     chartRef.current = chart

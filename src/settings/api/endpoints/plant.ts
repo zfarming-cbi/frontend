@@ -36,7 +36,7 @@ const extendedApi = API.injectEndpoints({
         const formData = new FormData()
         formData.append("name", name)
         formData.append("content", content)
-        formData.append("growing_time", growing_time)
+        formData.append("growing_time", JSON.stringify(growing_time))
         formData.append("public", JSON.stringify(isPublic))
         image && formData.append("files", image)
         return {

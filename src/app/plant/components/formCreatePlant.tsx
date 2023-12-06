@@ -119,13 +119,13 @@ export const FormCreatePlant: FC<Props> = (props) => {
   } = useFormik<{
     name: string
     content: string
-    growing_time: string
+    growing_time: number
     public: boolean
   }>({
     initialValues: {
       name: "",
       content: "",
-      growing_time: new Date().toString(),
+      growing_time: 8,
       public: false,
     },
     validationSchema: FormCreatePlantSchema,
@@ -247,25 +247,12 @@ export const FormCreatePlant: FC<Props> = (props) => {
               shrink: true,
             }}
             inputProps={{
-              defaultValue: 8,
               min: 4,
               max: 16,
             }}
-          />
-          {/* <TextField
-            fullWidth
-            label="Fecha de siembra"
-            type="date"
-            required
-            variant="outlined"
-            name="growing_time"
-            id="growing_time"
             value={growing_timeInputValue}
-            disabled={isLoading}
             onChange={handleChange}
-            onBlur={handleBlur}
-            error={!!errors.growing_time}
-          /> */}
+          />
         </Grid>
         <Grid item xs>
           <FormControlLabel

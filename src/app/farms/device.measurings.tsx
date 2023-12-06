@@ -1,13 +1,12 @@
 import * as React from "react"
 import Grid from "@mui/material/Grid"
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
@@ -30,6 +29,7 @@ import { BarChart } from "./components/barChart"
 import { Rol } from "../../share/models/appSession"
 import { useAppSelector } from "../../settings/redux/hooks"
 import { selectorSession } from "../../settings/redux/session.slice"
+import { ExpandMore } from "@mui/icons-material"
 
 export const DeviceMeasuringScreen: React.FC = () => {
   const { deviceId } = useParams()
@@ -42,11 +42,17 @@ export const DeviceMeasuringScreen: React.FC = () => {
   const [open, setOpen] = React.useState(false)
   const [name, setName] = React.useState<string>("")
   const [content, setContent] = React.useState<string>("")
-  const [growingTime, setGrowingTime] = React.useState<string>("")
+  const [growingTime, setGrowingTime] = React.useState<number>(0)
   const [image, setImage] = React.useState<string>("")
   const [doCreatePlant, { isLoading, error }] = useCopyPlantMutation()
   const { rol } = useAppSelector(selectorSession)
   const isRolAdmin = rol === Rol.Administrator
+  const [expanded, setExpanded] = React.useState<string | false>(false)
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false)
+    }
 
   React.useEffect(() => {
     const query = setInterval(() => {
@@ -87,28 +93,38 @@ export const DeviceMeasuringScreen: React.FC = () => {
   return (
     <Grid container flex={1} flexDirection="column">
       <Toolbar title={title} showButtonReturn={true} />
-      <Grid container flexDirection={"row"}>
-        <Grid item xs={12} md={6} lg={6} flexDirection={"column"}>
-          <Card
-            sx={{
-              display: "flex",
-              maxWidth: "800px",
-              marginLeft: 2,
-              flexDirection: "column",
-            }}
+      <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography sx={{ width: "30%", flexShrink: 0 }}>
+            Descripción de la planta
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid
+            container
+            flexDirection={"row"}
+            justifyContent={"space-between"}
           >
-            <CardMedia
-              component="img"
-              height={300}
-              image={`${AppEnvVars.IMAGE_URL}${data?.plant.image}`}
-              alt={data?.plant.name}
-              sx={{
-                objectFit: "contain",
-              }}
-            />
-            <CardContent sx={{ paddingX: 5 }}>
+            <Box sx={{ display: "flex", flex: 1 }} justifyContent={"center"}>
+              <img
+                height={400}
+                src={`${AppEnvVars.IMAGE_URL}${data?.plant.image}`}
+                alt={data?.plant.name}
+                style={{
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
+            <Box
+              sx={{ display: "flex", flex: 1 }}
+              flexDirection={"column"}
+              padding={2}
+            >
               <Typography
-                variant="h5"
+                variant="h4"
                 noWrap
                 textAlign={"center"}
                 fontWeight={"bold"}
@@ -116,25 +132,32 @@ export const DeviceMeasuringScreen: React.FC = () => {
               >
                 {data?.plant.name}
               </Typography>
-              <div data-color-mode="light">
-                <MDEditor.Markdown
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                flex={1}
+                justifyContent={"space-between"}
+              >
+                <Box
+                  display={"flex"}
+                  flex={1}
                   data-color-mode="light"
-                  source={data?.plant.content}
-                />
-              </div>
-            </CardContent>
-            <CardActions
-              sx={{
-                padding: 2,
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              {isRolAdmin && (
-                <Button onClick={openFormCopyPlant}>Copiar formula</Button>
-              )}
-            </CardActions>
-          </Card>
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <MDEditor.Markdown
+                    data-color-mode="light"
+                    source={data?.plant.content}
+                  />
+                </Box>
+                {isRolAdmin && (
+                  <Box display={"flex"} justifyContent={"end"}>
+                    <Button onClick={openFormCopyPlant}>Copiar formula</Button>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Grid>
           <Dialog open={open} onClose={closeFormCopyPlant}>
             <DialogTitle>Copiar formula</DialogTitle>
             <DialogContent>
@@ -169,23 +192,32 @@ export const DeviceMeasuringScreen: React.FC = () => {
               <Button onClick={copyPlant}>Copiar</Button>
             </DialogActions>
           </Dialog>
-        </Grid>
-        <Grid item flex={1} xs={12} md={6} lg={6}>
-          <Box
-            sx={{
-              display: "flex",
-              marginLeft: "auto",
-              marginRight: "auto",
-              flexDirection: "column",
-            }}
-          >
-            <CircularChart
-              title={data?.plant.name}
-              measurings={measuringsAverage}
-            />
-            <BarChart measurings={measurings} />
-          </Box>
-        </Grid>
+        </AccordionDetails>
+      </Accordion>
+
+      <Grid container>
+        {measurings?.data.map((measuring, index) => {
+          return (
+            <Grid item flex={1} xs={12} md={12} lg={6} key={index}>
+              <Box
+                sx={{
+                  display: "flex",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  flexDirection: "column",
+                }}
+              >
+                <BarChart measurings={measuring} dates={measurings?.dates} />
+              </Box>
+            </Grid>
+          )
+        })}
+        <Box display={"flex"} paddingTop={2}>
+          <CircularChart
+            title={data?.plant.name}
+            measurings={measuringsAverage}
+          />
+        </Box>
       </Grid>
     </Grid>
   )

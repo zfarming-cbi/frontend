@@ -1,71 +1,73 @@
 import { Box } from "@mui/material"
 import { ECharts, EChartsCoreOption, init } from "echarts"
-import React, { useEffect } from "react"
-import { MeasuringHistoryDTO } from "../../../share/models/measuringHistory"
-import { useNavigate, useParams } from "react-router-dom"
-import { ROUTE_PATH } from "../../../settings/routes/routes"
+import React, { useEffect, useState } from "react"
+import { MeasuringHistorySensorDTO } from "../../../share/models/measuringHistory"
 
 interface Props {
-  measurings?: MeasuringHistoryDTO
+  measurings?: MeasuringHistorySensorDTO
+  dates?: string[]
 }
 
 export const BarChart: React.FC<Props> = (props) => {
-  const { measurings } = props
+  const { measurings, dates } = props
   const chartNodeRef = React.useRef<HTMLDivElement>(null)
   const chartRef = React.useRef<ECharts>()
-  // const hours = measurings?.createdHour.split(",")
-
   useEffect(() => {
-    const processedMeasurings = measurings?.data.map((measuring: any) => ({
-      name: measuring.name,
-      data: measuring.values,
+    const processedMeasurings = {
+      name: measurings?.name,
+      data: measurings?.values,
       type: "line",
       stack: "x",
-       smooth: true,
+      smooth: true,
       emphasis: {
-        focus: 'series'
+        focus: "series",
       },
       endLabel: {
         show: true,
-        formatter: '{a}',
-        distance: 20
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'line'
-        }
+        formatter: "{a}",
+        distance: 20,
       },
       toolbox: {
         feature: {
           dataZoom: {
-            yAxisIndex: false
-          }
-        }
+            yAxisIndex: false,
+          },
+        },
       },
-    }))
+    }
     const chart = init(chartNodeRef.current)
     const option: EChartsCoreOption = {
       grid: {
-        right: 250,
+        left: "4%",
+        right: "4%",
+        bottom: "8%",
+        containLabel: true,
+      },
+      tooltip: {
+        trigger: "axis",
+      },
+      dataZoom: {
+        show: true,
       },
       xAxis: {
-        // data: Array.from(new Set(hours?.map((a: any) => a))),
-        data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        data: dates,
       },
-      yAxis: {},
+      yAxis: {
+        type: "value",
+        axisLabel: {
+          formatter: `{value} ${measurings?.graphical_unit}`,
+        },
+      },
       series: processedMeasurings,
       legend: {
         show: true,
-        data: measurings?.names,
-        right: 10,
-        orient: "vertical",
-        top: "center",
+        data: [measurings?.name],
       },
     }
     chart.setOption(option)
     chartRef.current = chart
   }, [measurings])
+
   return (
     <Box>
       <div

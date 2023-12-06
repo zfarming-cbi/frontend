@@ -1,3 +1,12 @@
+export interface MeasuringHistorySensorDTO {
+  sensorid: number
+  name: string
+  values: string[]
+  minRange: number
+  maxRange: number
+  graphical_unit: string
+}
+
 export interface MeasuringHistoryDTO {
   names: string[]
   dates: string[]
@@ -8,6 +17,6 @@ export interface MeasuringHistoryDTO {
 
 export interface MeasuringHistoryAverageDTO {
   namesSensor: string[]
-  data: number[]
+  data: any[]
   maxRange: number
 }

@@ -8,7 +8,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-
 import { AuthenticationResetHandler } from "../../settings/routes/authentication.loader"
 import { Outlet, useNavigate } from "react-router-dom"
 import { ROUTE_PATH, ROUTE_TITLE } from "../../settings/routes/routes"
@@ -29,7 +28,6 @@ import {
   Grass,
   Agriculture as FarmsIcons,
 } from "@mui/icons-material"
-
 import { FormPQRS } from "../pqrs/components/formCreatePqrs"
 import { useAppDispatch, useAppSelector } from "../../settings/redux/hooks"
 import {
@@ -99,17 +97,41 @@ export const DashboardScreen: FC = () => {
     ],
   ]
 
+  let menuAdministrator = [
+    {
+      icon: <AccountCircleIcon />,
+      text: ROUTE_TITLE.Profile,
+      action() {
+        navigate(ROUTE_PATH.Profile)
+      },
+    },
+    {
+      icon: <PeopleIcon />,
+      text: ROUTE_TITLE.User,
+      action() {
+        navigate(ROUTE_PATH.User)
+      },
+    },
+    {
+      icon: <SupportAgentIcon />,
+      text: ROUTE_TITLE.PQRS,
+      action() {
+        navigate(ROUTE_PATH.PQRS)
+      },
+    },
+  ]
+
   if (token && token.rol != Rol.Administrator) {
     menuItems[MENU_MAIN_SESSION] = menuItems[MENU_MAIN_SESSION].filter(
       (item) => {
-        const lockOptions = [
-          ROUTE_TITLE.User,
-          ROUTE_TITLE.Device,
-          ROUTE_TITLE.Plant,
-        ]
+        const lockOptions = [ROUTE_TITLE.Device, ROUTE_TITLE.Plant]
         return !lockOptions.includes(item.text)
       }
     )
+    menuAdministrator = menuAdministrator.filter((item) => {
+      const lockOptionsMenuAdministrator = [ROUTE_TITLE.User]
+      return !lockOptionsMenuAdministrator.includes(item.text)
+    })
   }
 
   const navigate = useNavigate()
@@ -225,29 +247,7 @@ export const DashboardScreen: FC = () => {
           open={open}
           items={[
             ...menuItems,
-            [
-              {
-                icon: <AccountCircleIcon />,
-                text: ROUTE_TITLE.Profile,
-                action() {
-                  navigate(ROUTE_PATH.Profile)
-                },
-              },
-              {
-                icon: <PeopleIcon />,
-                text: ROUTE_TITLE.User,
-                action() {
-                  navigate(ROUTE_PATH.User)
-                },
-              },
-              {
-                icon: <SupportAgentIcon />,
-                text: ROUTE_TITLE.PQRS,
-                action() {
-                  navigate(ROUTE_PATH.PQRS)
-                },
-              },
-            ],
+            menuAdministrator,
             [
               {
                 icon: <LogoutIcon />,

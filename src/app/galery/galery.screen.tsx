@@ -35,8 +35,9 @@ export interface PlantListRow {
   name: string
   likes: number
   comments: number
-  growing_time: string
+  growing_time: number
   content: string
+  createdAt?: string
   image: string | Blob
 }
 
@@ -94,13 +95,23 @@ export const GaleryScreen: React.FC = () => {
   const plants = React.useMemo(() => {
     return (
       filteredData.dataPlantFilter?.map<PlantListRow>(
-        ({ id, name, likes, comments, growing_time, content, image }) => ({
+        ({
+          id,
+          name,
+          likes,
+          comments,
+          growing_time,
+          content,
+          image,
+          createdAt,
+        }) => ({
           id,
           name,
           likes: likes?.length ?? 0,
           comments: comments?.length ?? 0,
           growing_time,
           content: content,
+          createdAt,
           image: image ?? "",
         })
       ) ?? []
@@ -284,7 +295,7 @@ export const GaleryScreen: React.FC = () => {
                         paddingY={1}
                       >
                         Publicado:{" "}
-                        {DateTime.fromISO(plant.growing_time).toLocaleString(
+                        {DateTime.fromISO(plant.createdAt ?? "").toLocaleString(
                           DateTime.DATETIME_MED
                         )}
                       </Typography>
