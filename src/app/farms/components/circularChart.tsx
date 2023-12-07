@@ -12,31 +12,25 @@ export const CircularChart: FC<Props> = (props) => {
   const { measurings, title } = props
   const chartNodeRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<ECharts>()
-  console.log("namesSensor", measurings)
   useEffect(() => {
     const series = measurings?.data.map((measuring) => ({
       type: "bar",
       data: [measuring.value],
       name: measuring["sensor.name"],
       coordinateSystem: "polar",
-      // itemStyle: {
-      //   color: function (params: any) {
-      //     var colors = ["red", "blue", "green", "orange", "purple", "grey"]
-      //     return colors[params.dataIndex]
-      //   },
-      // },
       showBackground: false,
     }))
-    const series2 = undefined
-    console.log("namesSensor", series)
 
     const chart = init(chartNodeRef.current)
     const option: EChartsCoreOption = {
+      // grid: {
+      //   left: "3%",
+      //   right: "3%",
+      //   bottom: "3%",
+      //   containLabel: true,
+      // },
       grid: {
-        left: "4%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true,
+        right: 100,
       },
       polar: {
         radius: [30, "80%"],
@@ -53,6 +47,9 @@ export const CircularChart: FC<Props> = (props) => {
       legend: {
         show: true,
         data: measurings?.namesSensor,
+        orient: "vertical",
+        right: 10,
+        top: "middle",
       },
     }
     chart.setOption(option)
@@ -63,7 +60,7 @@ export const CircularChart: FC<Props> = (props) => {
       <div
         id="myChart"
         ref={chartNodeRef}
-        style={{ width: 500, height: 500 }}
+        style={{ width: 900, height: 500 }}
       />
     </Box>
   )
