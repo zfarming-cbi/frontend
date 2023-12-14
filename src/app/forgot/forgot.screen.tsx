@@ -13,8 +13,9 @@ import { Box } from "@mui/system"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import LOGO_FULL from "../../assets/placeholder.png"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForgotMutation } from "../../settings/api/endpoints/authentication"
+import { ROUTE_PATH } from "../../settings/routes/routes"
 
 export const ForgotPasswordScreen: FC = () => {
   const navigate = useNavigate()
@@ -138,7 +139,7 @@ export const ForgotPasswordScreen: FC = () => {
               Enviar
             </LoadingButton>
             <Typography fontSize={12} textAlign={"center"} padding={1}>
-              <a href="/login">Iniciar sesión </a>
+              <Link to={ROUTE_PATH.Login}>Iniciar sesión </Link>
             </Typography>
           </Box>
           <Box paddingTop={4} paddingBottom={2}>
@@ -146,9 +147,9 @@ export const ForgotPasswordScreen: FC = () => {
               Todos los derechos reservados
               <br />
               Desarrollado por:
-              <a href="mailto:krisskira@gmail.com">krisskira@gmail.com</a>
+              <Link to="mailto:krisskira@gmail.com">krisskira@gmail.com</Link>
               <br />
-              <a href="https://kriverdevice.com">www.kriverdevice.com</a>
+              <Link to="https://kriverdevice.com">www.kriverdevice.com</Link>
             </Typography>
           </Box>
         </Paper>

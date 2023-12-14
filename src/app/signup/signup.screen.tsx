@@ -6,7 +6,7 @@ import { Box } from "@mui/system"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import LOGO_FULL from "../../assets/placeholder.png"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 import { useSignupMutation } from "../../settings/api/endpoints/authentication"
@@ -204,7 +204,7 @@ export const SignupScreen: FC = () => {
             </LoadingButton>
             <Typography fontSize={12} textAlign={"center"} padding={1}>
               ¿Ya tienes una cuenta?
-              <a href="/login"> Inicar sesión</a>
+              <Link to={ROUTE_PATH.Login}> Inicar sesión</Link>
             </Typography>
           </Box>
           <Box paddingTop={1} paddingBottom={2}>
@@ -212,9 +212,9 @@ export const SignupScreen: FC = () => {
               Todos los derechos reservados
               <br />
               Desarrollado por:
-              <a href="mailto:krisskira@gmail.com">krisskira@gmail.com</a>
+              <Link to="mailto:krisskira@gmail.com">krisskira@gmail.com</Link>
               <br />
-              <a href="https://kriverdevice.com">www.kriverdevice.com</a>
+              <Link to="https://kriverdevice.com">www.kriverdevice.com</Link>
             </Typography>
           </Box>
         </Paper>

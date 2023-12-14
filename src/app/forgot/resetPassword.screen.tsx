@@ -10,7 +10,7 @@ import {
   useResetPasswordMutation,
   useVerifyUuidQuery,
 } from "../../settings/api/endpoints/authentication"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { AuthenticationSaveHandler } from "../../settings/routes/authentication.loader"
 import { ROUTE_PATH } from "../../settings/routes/routes"
 
@@ -145,7 +145,7 @@ export const RecoverPasswordScreen: FC = () => {
                 Enviar
               </LoadingButton>
               <Typography fontSize={12} textAlign={"center"} padding={1}>
-                <a href="/login">Iniciar sesión </a>
+                <Link to={ROUTE_PATH.Login}>Iniciar sesión </Link>
               </Typography>
             </Box>
           )}
