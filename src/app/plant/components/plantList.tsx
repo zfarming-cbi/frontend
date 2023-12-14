@@ -1,23 +1,21 @@
 import * as React from "react"
 import { DataGrid, esES, GridColDef } from "@mui/x-data-grid"
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
   Grid,
   IconButton,
-  Typography,
   useMediaQuery,
 } from "@mui/material"
-import { Close, Delete, Edit } from "@mui/icons-material"
+import { Close, Edit } from "@mui/icons-material"
 import { FormUpdatePlant } from "./formUpdatePlant"
 
 export interface PlantListRow {
   id?: string | number
   name: string
   content: string
-  growing_time: string
+  growing_time: number
   public?: boolean
   image?: string | Blob
 }
