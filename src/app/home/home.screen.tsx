@@ -128,7 +128,6 @@ export const HomeScreen: React.FC = () => {
             gap={2}
             padding={2}
             key={index}
-            // sx={{ display: "flex", flex: 1 }}
           >
             <Card sx={{ display: "flex", flex: 1 }} key={index}>
               <CardActionArea

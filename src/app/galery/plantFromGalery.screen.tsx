@@ -46,7 +46,7 @@ export const PlantFromGalery: React.FC = () => {
   const [image, setImage] = React.useState<string>()
   const [open, setOpen] = React.useState(false)
   const [isPublic, setIsPublic] = React.useState<boolean>(false)
-  const [growingTime, setGrowingTime] = React.useState<string>("")
+  const [growingTime, setGrowingTime] = React.useState<number>(8)
   const [name, setName] = React.useState<string>("")
   const { isLogged, rol } = useAppSelector(selectorSession)
   const isRolAdmin = rol === Rol.Administrator
@@ -62,7 +62,7 @@ export const PlantFromGalery: React.FC = () => {
 
   const openFormCopyPlant = () => {
     setContent(data?.content ?? "")
-    setGrowingTime(data?.growing_time ?? "")
+    setGrowingTime(data?.growing_time ?? 8)
     setImage(data?.image)
     setIsPublic(false)
     setOpen(true)

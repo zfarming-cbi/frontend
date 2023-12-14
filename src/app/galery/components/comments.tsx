@@ -48,7 +48,7 @@ export const Comments: React.FC<Props> = (props) => {
 
   const [doGetLike, { data: like }] = useLazyGetLikeQuery()
   React.useEffect(() => {
-    setLiked(!!like?.like)
+    setLiked(Boolean(like?.like))
   }, [like])
   React.useEffect(() => {
     if (!isLogged) {
@@ -58,7 +58,7 @@ export const Comments: React.FC<Props> = (props) => {
       plantId: plantId ?? "",
       userId,
     })
-  }, [isLogged])
+  }, [])
   const [doCreateComment, { isLoading, error }] = useCreateCommentMutation()
   const [doCreateLike] = useCreateLikeMutation()
   const navigate = useNavigate()
@@ -86,7 +86,7 @@ export const Comments: React.FC<Props> = (props) => {
   const handleCreateLike = () => {
     setLiked(!liked)
     doCreateLike({
-      like: 1,
+      like: Number(!liked),
       userId,
       plantId: plantId,
     })
@@ -127,10 +127,7 @@ export const Comments: React.FC<Props> = (props) => {
               >
                 {liked ? "Te gusta" : "Me gusta"}
               </Typography>
-              <IconButton
-                onClick={handleCreateLike}
-                disabled={liked || !isLogged}
-              >
+              <IconButton onClick={handleCreateLike} disabled={!isLogged}>
                 <ThumbUp color={liked ? "primary" : "disabled"} />
               </IconButton>
             </Box>
