@@ -12,7 +12,6 @@ RUN yarn build
 RUN mv dist app
 
 FROM socialengine/nginx-spa:latest
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
+WORKDIR /app
 COPY --from=builder /source/app /app
 RUN chmod -R 777 /app
